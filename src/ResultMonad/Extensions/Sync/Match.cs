@@ -33,12 +33,12 @@ public static class MatchExtension
 
         U result = self switch
         {
-            Ok<T, E>(var value) => onOk(value),
-            Err<T, E>(var error) => onErr(error),
+            Ok<T, E>(var value) => onOk(value)
+                ?? throw new InvalidOperationException(Strings.Constants.OperationNullError),
+            Err<T, E>(var error) => onErr(error)
+                ?? throw new InvalidOperationException(Strings.Constants.OperationNullError),
             _ => throw new UnreachableException(Strings.Constants.ExhaustedError),
         };
-
-        Debug.Assert(result is not null, "Result should not be null.");
 
         return result;
     }
