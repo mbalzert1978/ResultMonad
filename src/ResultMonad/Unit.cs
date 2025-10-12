@@ -113,11 +113,7 @@ public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>, ISpanFormatta
     /// <param name="left">The first <see cref="Unit"/> instance to compare.</param>
     /// <param name="right">The second <see cref="Unit"/> instance to compare.</param>
     /// <returns>Always returns <see langword="true"/>.</returns>
-    public static bool operator ==(Unit left, Unit right)
-    {
-        Debug.Assert(left.Equals(right), "Operator == must match Equals result.");
-        return true;
-    }
+    public static bool operator ==(Unit left, Unit right) => true;
 
     /// <summary>
     /// Determines whether two <see cref="Unit"/> instances are not equal.
@@ -125,11 +121,7 @@ public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>, ISpanFormatta
     /// <param name="left">The first <see cref="Unit"/> instance to compare.</param>
     /// <param name="right">The second <see cref="Unit"/> instance to compare.</param>
     /// <returns>Always returns <see langword="false"/>.</returns>
-    public static bool operator !=(Unit left, Unit right)
-    {
-        Debug.Assert(!(left == right), "Operator != must be opposite of ==.");
-        return false;
-    }
+    public static bool operator !=(Unit left, Unit right) => false;
 
     /// <summary>
     /// Determines whether one <see cref="Unit"/> instance is less than another.
