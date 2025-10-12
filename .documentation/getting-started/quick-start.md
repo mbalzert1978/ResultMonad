@@ -1,10 +1,10 @@
 # Quick Start Guide
 
-This guide will help you write your first ResultMonad code in just a few minutes.
+This guide will help you write your first Monads code in just a few minutes.
 
 ## Prerequisites
 
-- ResultMonad installed ([Installation Guide](installation.md))
+- Monads installed ([Installation Guide](installation.md))
 - Basic C# knowledge
 - A C# project ready to use
 
@@ -15,7 +15,7 @@ Let's create a simple function that might fail and handle it using Result.
 ### Step 1: Import the Namespace
 
 ```csharp
-using ResultMonad;
+using Monads;
 ```
 
 ### Step 2: Create a Function That Returns Result
@@ -67,7 +67,7 @@ Console.WriteLine(errorMessage); // Output: Error: Cannot divide by zero
 Here's a complete console application:
 
 ```csharp
-using ResultMonad;
+using Monads;
 
 class Program
 {
@@ -188,7 +188,7 @@ result.Match(
 
 ```csharp
 using System.IO;
-using ResultMonad;
+using Monads;
 
 public class FileReader
 {
@@ -236,11 +236,11 @@ wordCount.Match(
 
 ## Working with Async Operations
 
-ResultMonad fully supports async/await:
+Monads fully supports async/await:
 
 ```csharp
 using System.Net.Http;
-using ResultMonad;
+using Monads;
 
 public async Task<Result<string, string>> FetchDataAsync(string url)
 {
@@ -340,7 +340,7 @@ public Result<T, string> TryExecute<T>(Func<T> operation)
 
 ### "The type 'Result' could not be found"
 
-- Ensure you have `using ResultMonad;` at the top of your file
+- Ensure you have `using Monads;` at the top of your file
 - Verify the package is installed: `dotnet list package`
 
 ### "Cannot convert from 'Ok' to 'Result'"

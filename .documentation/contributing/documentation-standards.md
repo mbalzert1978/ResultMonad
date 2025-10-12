@@ -1,6 +1,6 @@
 # Documentation Standards
 
-This document defines the documentation standards for the ResultMonad project to ensure consistency, clarity, and maintainability across all documentation.
+This document defines the documentation standards for the Monads project to ensure consistency, clarity, and maintainability across all documentation.
 
 ## XML Documentation Comments (Code)
 

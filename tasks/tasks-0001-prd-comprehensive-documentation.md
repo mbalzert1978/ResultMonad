@@ -1,4 +1,4 @@
-# Tasks: Comprehensive Documentation for ResultMonad
+# Tasks: Comprehensive Documentation for Monads
 
 **Based on:** 0001-prd-comprehensive-documentation.md  
 **Created:** 12. Oktober 2025  
@@ -112,7 +112,7 @@
   
 - [x] 3.0 Create Main README and Documentation Structure
   - [x] 3.1 Create `README.md` in project root with project overview and description
-  - [x] 3.2 Add "What is ResultMonad?" section explaining purpose and benefits
+  - [x] 3.2 Add "What is Monads?" section explaining purpose and benefits
   - [x] 3.3 Add "Quick Start" section with installation and basic usage examples
   - [x] 3.4 Add "Features" section listing key capabilities (Result type, extensions, async support, etc.)
   - [x] 3.5 Add "Documentation" section with links to .documentation folder structure
@@ -120,7 +120,7 @@
   - [x] 3.7 Add "Contributing" and "License" sections with links to detailed docs
   - [x] 3.8 Review README for clarity, completeness, and proper Markdown formatting
   
-- [ ] 4.0 Write Concept and Getting-Started Guides
+- [x] 4.0 Write Concept and Getting-Started Guides
   - [x] 4.1 Create `.documentation/getting-started/installation.md` with detailed installation/setup instructions
   - [x] 4.2 Create `.documentation/getting-started/quick-start.md` with step-by-step first usage example
   - [x] 4.3 Create `.documentation/getting-started/basic-concepts.md` introducing Result, Ok, Err, and basic operations

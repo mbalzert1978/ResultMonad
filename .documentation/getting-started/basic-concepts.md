@@ -1,6 +1,6 @@
 # Basic Concepts
 
-This guide introduces the fundamental concepts of ResultMonad and how to work with Result types effectively.
+This guide introduces the fundamental concepts of Monads and how to work with Result types effectively.
 
 ## Table of Contents
 
@@ -129,7 +129,7 @@ Result<int, string> result = new Ok<int, string>(42);
 
 ## Type Safety
 
-ResultMonad enforces type safety through constraints:
+Monads enforces type safety through constraints:
 
 ```csharp
 // ✅ Valid - both types are non-null

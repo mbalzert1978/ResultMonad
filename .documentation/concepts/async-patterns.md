@@ -1,6 +1,6 @@
 # Async Patterns
 
-This guide covers asynchronous programming patterns with ResultMonad, including Task and ValueTask variants.
+This guide covers asynchronous programming patterns with Monads, including Task and ValueTask variants.
 
 ## Table of Contents
 
@@ -14,7 +14,7 @@ This guide covers asynchronous programming patterns with ResultMonad, including 
 
 ## Overview
 
-ResultMonad provides full support for asynchronous operations through extension methods that work with both `Task<Result<T, E>>` and `ValueTask<Result<T, E>>`.
+Monads provides full support for asynchronous operations through extension methods that work with both `Task<Result<T, E>>` and `ValueTask<Result<T, E>>`.
 
 ### Why Async Support Matters
 
@@ -113,7 +113,7 @@ async ValueTask<Result<Config, string>> GetConfigAsync(string key)
 
 ## Async Extension Methods
 
-ResultMonad provides async variants of all core operations:
+Monads provides async variants of all core operations:
 
 ### MapAsync (Task)
 
@@ -633,7 +633,7 @@ await FetchDataAsync().ConfigureAwait(false);
 
 **Key Takeaways:**
 
-✅ ResultMonad supports both Task and ValueTask variants
+✅ Monads supports both Task and ValueTask variants
 
 ✅ Use Task for most cases, ValueTask for hot paths
 

@@ -1,6 +1,6 @@
 # Error Handling Patterns
 
-This guide covers best practices and patterns for error handling with ResultMonad.
+This guide covers best practices and patterns for error handling with Monads.
 
 ## Table of Contents
 

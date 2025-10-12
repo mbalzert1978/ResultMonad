@@ -1,6 +1,6 @@
 # Installation
 
-This guide covers how to install and set up ResultMonad in your C# project.
+This guide covers how to install and set up Monads in your C# project.
 
 ## Prerequisites
 
@@ -12,15 +12,15 @@ This guide covers how to install and set up ResultMonad in your C# project.
 
 ### Method 1: .NET CLI (Recommended)
 
-The simplest way to add ResultMonad to your project:
+The simplest way to add Monads to your project:
 
 ```bash
-dotnet add package ResultMonad
+dotnet add package Monads
 ```
 
 This command will:
 
-- Download the latest version of ResultMonad
+- Download the latest version of Monads
 - Add a package reference to your `.csproj` file
 - Restore the package automatically
 
@@ -29,7 +29,7 @@ This command will:
 If you're using Visual Studio, open the Package Manager Console and run:
 
 ```powershell
-Install-Package ResultMonad
+Install-Package Monads
 ```
 
 ### Method 3: Manual .csproj Edit
@@ -38,7 +38,7 @@ Add the package reference directly to your `.csproj` file:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="ResultMonad" Version="1.0.0" />
+  <PackageReference Include="Monads" Version="1.0.0" />
 </ItemGroup>
 ```
 
@@ -52,15 +52,15 @@ dotnet restore
 
 1. Right-click your project in Solution Explorer
 2. Select **Manage NuGet Packages**
-3. Search for **ResultMonad**
+3. Search for **Monads**
 4. Click **Install**
 
 ## Verifying Installation
 
-After installation, verify that ResultMonad is available:
+After installation, verify that Monads is available:
 
 ```csharp
-using ResultMonad;
+using Monads;
 
 // This should compile without errors
 Result<int, string> result = new Ok<int, string>(42);
@@ -72,26 +72,26 @@ Console.WriteLine(result.IsOk); // True
 ### Latest Stable Version
 
 ```bash
-dotnet add package ResultMonad
+dotnet add package Monads
 ```
 
 ### Specific Version
 
 ```bash
-dotnet add package ResultMonad --version 1.0.0
+dotnet add package Monads --version 1.0.0
 ```
 
 ### Pre-release Versions
 
 ```bash
-dotnet add package ResultMonad --prerelease
+dotnet add package Monads --prerelease
 ```
 
 ## Project Setup
 
 ### Target Framework
 
-ResultMonad requires **.NET 9.0** or later. Ensure your `.csproj` file has:
+Monads requires **.NET 9.0** or later. Ensure your `.csproj` file has:
 
 ```xml
 <PropertyGroup>
@@ -113,19 +113,19 @@ This ensures the compiler helps you handle null values correctly when working wi
 
 ### C# Language Version
 
-ResultMonad works with **C# 9.0** and later. Most projects targeting .NET 9.0 will use this by default.
+Monads works with **C# 9.0** and later. Most projects targeting .NET 9.0 will use this by default.
 
 ## Multi-Project Solutions
 
-If you have multiple projects in your solution that need ResultMonad:
+If you have multiple projects in your solution that need Monads:
 
 ```bash
 # Add to specific project
-dotnet add src/MyProject/MyProject.csproj package ResultMonad
+dotnet add src/MyProject/MyProject.csproj package Monads
 
 # Or navigate to each project directory
 cd src/MyProject
-dotnet add package ResultMonad
+dotnet add package Monads
 ```
 
 ### Using Directory.Packages.props (Central Package Management)
@@ -141,7 +141,7 @@ For solutions with many projects, consider central package management:
      </PropertyGroup>
      
      <ItemGroup>
-       <PackageVersion Include="ResultMonad" Version="1.0.0" />
+       <PackageVersion Include="Monads" Version="1.0.0" />
      </ItemGroup>
    </Project>
    ```
@@ -150,7 +150,7 @@ For solutions with many projects, consider central package management:
 
    ```xml
    <ItemGroup>
-     <PackageReference Include="ResultMonad" />
+     <PackageReference Include="Monads" />
    </ItemGroup>
    ```
 
@@ -225,6 +225,6 @@ If you encounter version conflicts with other packages:
 
 ## Additional Resources
 
-- [NuGet Package Page](https://www.nuget.org/packages/ResultMonad)
-- [GitHub Repository](https://github.com/mbalzert1978/ResultMonad)
+- [NuGet Package Page](https://www.nuget.org/packages/Monads)
+- [GitHub Repository](https://github.com/mbalzert1978/Monads)
 - [Release Notes](../changelog/changelog.md)

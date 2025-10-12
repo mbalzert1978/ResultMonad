@@ -1,20 +1,20 @@
-# ResultMonad
+# Monads
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/yourusername/ResultMonad)
-[![NuGet](https://img.shields.io/badge/nuget-v1.0.0-blue)](https://www.nuget.org/packages/ResultMonad)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/yourusername/Monads)
+[![NuGet](https://img.shields.io/badge/nuget-v1.0.0-blue)](https://www.nuget.org/packages/Monads)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-9.0-purple)](https://dotnet.microsoft.com/)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/yourusername/ResultMonad)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/yourusername/Monads)
 
 A functional programming library for C# that provides a robust Result type for railway-oriented programming and explicit error handling.
 
 ## Overview
 
-ResultMonad is a lightweight, type-safe implementation of the Result monad pattern in C#. It enables you to write cleaner, more maintainable code by making error handling explicit and composable, without relying on exceptions for control flow.
+Monads is a lightweight, type-safe implementation of the Result monad pattern in C#. It enables you to write cleaner, more maintainable code by making error handling explicit and composable, without relying on exceptions for control flow.
 
-## What is ResultMonad?
+## What is Monads?
 
-ResultMonad provides a `Result<T, E>` type that represents either a successful value (`Ok<T, E>`) or an error (`Err<T, E>`). This approach, known as railway-oriented programming, allows you to:
+Monads provides a `Result<T, E>` type that represents either a successful value (`Ok<T, E>`) or an error (`Err<T, E>`). This approach, known as railway-oriented programming, allows you to:
 
 - **Make errors explicit**: No more hidden exceptions in your method signatures
 - **Compose operations**: Chain multiple fallible operations together cleanly
@@ -37,13 +37,13 @@ ResultMonad provides a `Result<T, E>` type that represents either a successful v
 Add the package to your project:
 
 ```bash
-dotnet add package ResultMonad
+dotnet add package Monads
 ```
 
 ### Basic Usage
 
 ```csharp
-using ResultMonad;
+using Monads;
 
 // Create success and error results
 Result<int, string> success = new Ok<int, string>(42);

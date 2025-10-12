@@ -1,6 +1,6 @@
 # The Monad Pattern
 
-This guide explains the monad pattern, its theoretical foundations, and why ResultMonad implements it.
+This guide explains the monad pattern, its theoretical foundations, and why Monads implements it.
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ A monad is any type that implements two operations:
 1. **Return** (or **Unit**): Wraps a value in the monad
 2. **Bind** (or **FlatMap**): Chains operations on wrapped values
 
-In C#/ResultMonad:
+In C#/Monads:
 
 ```csharp
 // Return: Wrap a value
@@ -44,7 +44,7 @@ The term comes from category theory in mathematics. While the theory is complex,
 
 ## The Three Monad Laws
 
-For a type to be a proper monad, it must satisfy three mathematical laws. ResultMonad adheres to all three:
+For a type to be a proper monad, it must satisfy three mathematical laws. Monads adheres to all three:
 
 ### 1. Left Identity Law
 
@@ -291,7 +291,7 @@ var result = await FetchDataAsync()
     .ContinueWith(task => SaveData(task.Result));
 ```
 
-### ResultMonad + Task = Async Result Monad
+### Monads + Task = Async Result Monad
 
 ```csharp
 var result = await FetchUserAsync()

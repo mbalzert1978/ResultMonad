@@ -1,4 +1,4 @@
-# Product Requirements Document: Comprehensive Documentation for ResultMonad
+# Product Requirements Document: Comprehensive Documentation for Monads
 
 **PRD Number:** 0001  
 **Feature Name:** Comprehensive Documentation  
@@ -9,7 +9,7 @@
 
 ## 1. Introduction/Overview
 
-Das ResultMonad-Projekt benötigt eine umfassende, strukturierte Dokumentation, die sowohl für LLMs (Large Language Models) als auch für menschliche Entwickler optimiert ist. Die Dokumentation soll das gesamte Projekt erfassen - von der Architektur über alle Code-Komponenten bis hin zu praktischen Anwendungsbeispielen.
+Das Monads-Projekt benötigt eine umfassende, strukturierte Dokumentation, die sowohl für LLMs (Large Language Models) als auch für menschliche Entwickler optimiert ist. Die Dokumentation soll das gesamte Projekt erfassen - von der Architektur über alle Code-Komponenten bis hin zu praktischen Anwendungsbeispielen.
 
 **Problem:**
 
@@ -50,7 +50,7 @@ Erstellung einer hierarchischen Dokumentationsstruktur mit:
 
 ### US-2: Als Junior Developer
 
-"Als Junior Developer möchte ich eine verständliche Einführung in das Monad-Pattern und konkrete Beispiele für die ResultMonad-Verwendung finden, damit ich das Pattern korrekt in meinem Code anwenden kann."
+"Als Junior Developer möchte ich eine verständliche Einführung in das Monad-Pattern und konkrete Beispiele für die Monads-Verwendung finden, damit ich das Pattern korrekt in meinem Code anwenden kann."
 
 **Akzeptanzkriterien:**
 
@@ -221,7 +221,7 @@ Erstellung einer hierarchischen Dokumentationsstruktur mit:
 - FR-6.1: `<example>` Tags direkt im Code für IntelliSense
 - FR-6.2: Erweiterte Beispiele in `.documentation/examples/`
 - FR-6.3: Real-World Szenarien demonstriert
-- FR-6.4: Vor/Nach Vergleiche (ohne/mit ResultMonad)
+- FR-6.4: Vor/Nach Vergleiche (ohne/mit Monads)
 
 ### FR-7: CI/CD Dokumentations-Validierung
 
