@@ -15,7 +15,7 @@ This document outlines the comprehensive testing approach, coverage requirements
 
 ### Testing Pyramid
 
-```
+```Bash
     /\
    /UI\          <- Few, expensive, slow
   /____\
@@ -33,12 +33,14 @@ The Monads library focuses primarily on unit tests with targeted integration tes
 **Purpose**: Test individual methods and components in isolation
 
 **Characteristics**:
+
 - Fast execution (< 1ms per test)
 - No external dependencies
 - Deterministic results
 - High coverage of edge cases
 
 **Example**:
+
 ```csharp
 [Test]
 public void Map_WithOkResult_TransformsValueCorrectly()
@@ -63,11 +65,13 @@ public void Map_WithOkResult_TransformsValueCorrectly()
 **Purpose**: Test mathematical properties and invariants
 
 **Characteristics**:
+
 - Tests properties that should hold for all inputs
 - Discovers edge cases automatically
 - Validates mathematical laws (functor, monad laws)
 
 **Example**:
+
 ```csharp
 [Test]
 public void Map_FunctorIdentityLaw_MapWithIdentityReturnsOriginal()
@@ -107,12 +111,14 @@ public void Map_FunctorCompositionLaw_MapOfCompositionEqualsCompositionOfMaps()
 **Purpose**: Test interactions between components
 
 **Characteristics**:
+
 - Test realistic scenarios
 - May involve multiple classes
 - Test async composition chains
 - Validate error propagation
 
 **Example**:
+
 ```csharp
 [Test]
 public async Task ComplexAsyncChain_WithMixedResults_HandlesErrorsProperly()
@@ -141,12 +147,14 @@ public async Task ComplexAsyncChain_WithMixedResults_HandlesErrorsProperly()
 **Purpose**: Validate performance characteristics
 
 **Characteristics**:
+
 - Benchmark critical paths
 - Ensure no performance regressions
 - Test memory allocation patterns
 - Validate async performance
 
 **Example**:
+
 ```csharp
 [Test]
 public void Map_Performance_HandlesManyOperationsEfficiently()
@@ -196,7 +204,7 @@ public async Task AsyncChain_Performance_CompletesWithinReasonableTime()
 
 ### Project Structure
 
-```
+```bash
 tests/
 └── Tests.Monads.Result/
     ├── Tests.Monads.Result.csproj

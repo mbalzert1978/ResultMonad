@@ -135,7 +135,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=true
 
 Understanding the project structure is crucial for effective contributions:
 
-```
+```bash
 Monads/
 ├── .documentation/          # Comprehensive documentation
 │   ├── api-reference/      # API documentation

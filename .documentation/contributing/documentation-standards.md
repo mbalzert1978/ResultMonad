@@ -245,7 +245,7 @@ Description of the return value and its possible states.
 
 Additional information about behavior, performance, thread-safety, etc.
 
-## Examples
+## Basic Examples
 
 ### Basic Usage
 
@@ -268,7 +268,6 @@ var transformed = error.Method(...);
 
 - [Related Type A](./related-type-a.md)
 - [Related Method B](./related-method-b.md)
-```
 
 ### Cross-Referencing
 
@@ -303,7 +302,7 @@ docs: brief description of change
 Related to: Task X.Y in PRD-NNNN
 ```
 
-### Examples
+### Doc Examples
 
 ```bash
 docs: add XML docstrings for Result model

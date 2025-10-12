@@ -20,6 +20,7 @@ The extension method architecture is built around several key principles:
 The Map pattern transforms the success value while preserving the error structure.
 
 **Synchronous Map**:
+
 ```csharp
 public static Result<TResult, TError> Map<T, TResult, TError>(
     this Result<T, TError> result,
@@ -34,12 +35,14 @@ public static Result<TResult, TError> Map<T, TResult, TError>(
 ```
 
 **Design Rationale**:
+
 - **Preservation**: Error type remains unchanged
 - **Transformation**: Only success values are transformed
 - **Null Safety**: Argument validation prevents null reference exceptions
 - **Type Inference**: Generic parameters enable type inference from usage
 
 **Usage Pattern**:
+
 ```csharp
 Result<string, ValidationError> nameResult = GetUserName(id);
 Result<string, ValidationError> upperName = nameResult.Map(name => name.ToUpper());
@@ -50,6 +53,7 @@ Result<string, ValidationError> upperName = nameResult.Map(name => name.ToUpper(
 The Bind pattern enables chaining operations that can themselves fail.
 
 **Synchronous Bind**:
+
 ```csharp
 public static Result<TResult, TError> Bind<T, TResult, TError>(
     this Result<T, TError> result,
@@ -64,12 +68,14 @@ public static Result<TResult, TError> Bind<T, TResult, TError>(
 ```
 
 **Design Rationale**:
+
 - **Composition**: Enables chaining fallible operations
 - **Error Propagation**: Errors short-circuit the chain automatically
 - **Flat Structure**: Prevents nested Result<Result<T, E>, E> structures
 - **Railway Pattern**: Success and error paths are clearly separated
 
 **Usage Pattern**:
+
 ```csharp
 return GetUser(id)
     .Bind(user => ValidateUser(user))
@@ -81,6 +87,7 @@ return GetUser(id)
 The library provides comprehensive async support for both Task and ValueTask scenarios.
 
 **Task-Based Bind**:
+
 ```csharp
 public static async Task<Result<TResult, TError>> BindAsync<T, TResult, TError>(
     this Task<Result<T, TError>> resultTask,
@@ -97,6 +104,7 @@ public static async Task<Result<TResult, TError>> BindAsync<T, TResult, TError>(
 ```
 
 **ValueTask-Based Bind**:
+
 ```csharp
 public static async ValueTask<Result<TResult, TError>> BindAsync<T, TResult, TError>(
     this ValueTask<Result<T, TError>> resultTask,
@@ -113,6 +121,7 @@ public static async ValueTask<Result<TResult, TError>> BindAsync<T, TResult, TEr
 ```
 
 **Design Considerations**:
+
 - **ConfigureAwait(false)**: Library code doesn't capture SynchronizationContext
 - **Performance**: ValueTask variants avoid allocations in hot paths
 - **Consistency**: Same API surface for both Task and ValueTask
@@ -123,6 +132,7 @@ public static async ValueTask<Result<TResult, TError>> BindAsync<T, TResult, TEr
 Error transformation and recovery patterns provide flexible error management.
 
 **Error Mapping**:
+
 ```csharp
 public static Result<T, TErrorResult> MapErr<T, TError, TErrorResult>(
     this Result<T, TError> result,
@@ -137,6 +147,7 @@ public static Result<T, TErrorResult> MapErr<T, TError, TErrorResult>(
 ```
 
 **Fallback Operations (OrElse)**:
+
 ```csharp
 public static Result<T, TError> OrElse<T, TError>(
     this Result<T, TError> result,
@@ -151,6 +162,7 @@ public static Result<T, TError> OrElse<T, TError>(
 ```
 
 **Design Features**:
+
 - **Lazy Evaluation**: Fallback functions only execute when needed
 - **Type Consistency**: Error types must match for composition
 - **Resource Efficiency**: Avoids unnecessary computations
@@ -161,6 +173,7 @@ public static Result<T, TError> OrElse<T, TError>(
 Exhaustive pattern matching ensures all cases are handled.
 
 **Match with Return Value**:
+
 ```csharp
 public static TResult Match<T, TError, TResult>(
     this Result<T, TError> result,
@@ -177,6 +190,7 @@ public static TResult Match<T, TError, TResult>(
 ```
 
 **Match with Side Effects**:
+
 ```csharp
 public static Unit Match<T, TError>(
     this Result<T, TError> result,
@@ -200,6 +214,7 @@ public static Unit Match<T, TError>(
 ```
 
 **Pattern Benefits**:
+
 - **Exhaustiveness**: Compiler ensures both cases are handled
 - **Type Safety**: Return types must match in both branches
 - **Clarity**: Makes success/error handling explicit
@@ -212,6 +227,7 @@ public static Unit Match<T, TError>(
 Flattening removes nested Result structures that can arise from composition.
 
 **Synchronous Flatten**:
+
 ```csharp
 public static Result<T, TError> Flatten<T, TError>(
     this Result<Result<T, TError>, TError> result)
@@ -223,6 +239,7 @@ public static Result<T, TError> Flatten<T, TError>(
 ```
 
 **Async Flatten**:
+
 ```csharp
 public static async Task<Result<T, TError>> FlattenAsync<T, TError>(
     this Task<Result<Task<Result<T, TError>>, TError>> resultTask)
@@ -236,6 +253,7 @@ public static async Task<Result<T, TError>> FlattenAsync<T, TError>(
 ```
 
 **Use Cases**:
+
 - **Nested Operations**: When operations return Result<Result<T, E>, E>
 - **Composition Simplification**: Flattens complex operation chains
 - **API Cleanup**: Provides cleaner interfaces for consumers
@@ -245,6 +263,7 @@ public static async Task<Result<T, TError>> FlattenAsync<T, TError>(
 Predicate extensions provide convenient condition checking.
 
 **Success Predicate Checking**:
+
 ```csharp
 public static bool IsOkAnd<T, TError>(
     this Result<T, TError> result,
@@ -257,6 +276,7 @@ public static bool IsOkAnd<T, TError>(
 ```
 
 **Error Predicate Checking**:
+
 ```csharp
 public static bool IsErrAnd<T, TError>(
     this Result<T, TError> result,
@@ -269,6 +289,7 @@ public static bool IsErrAnd<T, TError>(
 ```
 
 **Benefits**:
+
 - **Conciseness**: Reduces boilerplate for common checks
 - **Safety**: Type-safe access to values during predicate checking
 - **Readability**: Makes conditional logic more expressive
@@ -301,6 +322,7 @@ namespace Monads.Extensions.Results.Async
 ```
 
 **Organization Benefits**:
+
 - **Selective Imports**: Developers can choose which extensions to include
 - **IntelliSense Clarity**: Related methods are grouped together
 - **Maintainability**: Clear separation of concerns for development
@@ -310,7 +332,7 @@ namespace Monads.Extensions.Results.Async
 
 Each extension method group is defined in its own file:
 
-```
+```bash
 Extensions/Results/Sync/
 ├── BindExtension.cs        # Bind operations
 ├── MapExtension.cs         # Map operations  
@@ -321,6 +343,7 @@ Extensions/Results/Sync/
 ```
 
 **Advantages**:
+
 - **Discoverability**: Easy to find specific functionality
 - **Maintainability**: Changes are isolated to specific files
 - **Testing**: Each extension can be tested independently
@@ -353,6 +376,7 @@ public static class BindExtension
 ```
 
 **Design Principles**:
+
 - **Single Responsibility**: Each class focuses on one type of operation
 - **Comprehensive Documentation**: XML docs for all public methods
 - **Consistent Signatures**: Similar patterns across all extensions
@@ -365,6 +389,7 @@ public static class BindExtension
 Critical performance paths are optimized for common scenarios:
 
 **Fast Path for Success Cases**:
+
 ```csharp
 public static Result<TResult, TError> Map<T, TResult, TError>(
     this Result<T, TError> result,
@@ -386,6 +411,7 @@ public static Result<TResult, TError> Map<T, TResult, TError>(
 ### Memory Efficiency
 
 **Struct-Based Intermediate Results** (where applicable):
+
 ```csharp
 // ValueTask usage to avoid Task allocation
 public static async ValueTask<Result<TResult, TError>> MapAsync<T, TResult, TError>(
@@ -407,6 +433,7 @@ public static async ValueTask<Result<TResult, TError>> MapAsync<T, TResult, TErr
 ### Lazy Evaluation Patterns
 
 **Deferred Execution for Expensive Operations**:
+
 ```csharp
 public static Result<T, TError> OrElse<T, TError>(
     this Result<T, TError> result,
@@ -432,6 +459,7 @@ When adding new extension methods, follow these patterns:
 6. **Async Support**: Consider both Task and ValueTask variants
 
 **Example New Extension**:
+
 ```csharp
 /// <summary>
 /// Filters the result based on a predicate, converting success to error if predicate fails.

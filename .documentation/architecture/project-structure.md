@@ -14,7 +14,7 @@ The Monads library follows a clean, modular architecture that separates concerns
 
 ## Root Directory Structure
 
-```
+```bash
 Monads/
 ├── .documentation/          # Comprehensive documentation
 ├── src/                     # Source code
@@ -31,6 +31,7 @@ Monads/
 ### Root-Level Configuration Files
 
 #### MSBuild Configuration
+
 - **`Directory.Build.props`**: Shared MSBuild properties and settings for all projects
   - Compiler settings and warnings
   - Package metadata (authors, license, etc.)
@@ -43,18 +44,20 @@ Monads/
   - Simplifies dependency updates
 
 #### .NET Configuration
+
 - **`global.json`**: Specifies the .NET SDK version and rollForward policy
   - Ensures consistent build environment across different machines
   - Controls which .NET SDK versions are acceptable
 
 #### Package Management
+
 - **`nuget.config`**: NuGet configuration for package sources and settings
   - Specifies package sources (NuGet.org, private feeds, etc.)
   - Package source mappings and security settings
 
 ## Source Code Structure (`src/`)
 
-```
+```bash
 src/
 └── Monads/
     ├── Monads.csproj           # Main library project file
@@ -77,6 +80,7 @@ src/
 The `Models` directory contains the fundamental types that define the monad implementations:
 
 #### `Results/` Subdirectory
+
 - **`Result{T,E}.cs`**: Abstract base class that defines the contract for all Result types
   - Contains shared logic and abstract methods
   - Defines factory methods for creating results
@@ -93,6 +97,7 @@ The `Models` directory contains the fundamental types that define the monad impl
   - Implements error-specific behavior
 
 #### `Unit.cs`
+
 - Special type representing the absence of a meaningful value
 - Used for operations that don't return data (equivalent to `void`)
 - Provides operators and implicit conversions for convenience
@@ -102,6 +107,7 @@ The `Models` directory contains the fundamental types that define the monad impl
 The `Extensions` directory contains all extension methods that provide the fluent API:
 
 #### Sync Extensions (`Extensions/Results/Sync/`)
+
 - **`BindExtension.cs`**: Monadic bind operations for chaining
 - **`MapExtension.cs`**: Functor map operations for transformations
 - **`MapErrExtension.cs`**: Error transformation operations
@@ -110,6 +116,7 @@ The `Extensions` directory contains all extension methods that provide the fluen
 - **`OrElseExtension.cs`**: Fallback and alternative value operations
 
 #### Async Extensions (`Extensions/Results/Async/`)
+
 - **`BindTaskExtension.cs`**: Async bind operations for Task<Result<T,E>>
 - **`BindValueTaskExtension.cs`**: Async bind operations for ValueTask<Result<T,E>>
 - **`MapTaskExtension.cs`**: Async map operations for Task<Result<T,E>>
@@ -127,6 +134,7 @@ The `Extensions` directory contains all extension methods that provide the fluen
 The `Strings` directory contains shared constants and resources:
 
 #### `Constants.cs`
+
 - Error message templates
 - Exception messages
 - Shared string resources
@@ -134,7 +142,7 @@ The `Strings` directory contains shared constants and resources:
 
 ## Test Structure (`tests/`)
 
-```
+```bash
 tests/
 └── Tests.Monads.Result/
     ├── Tests.Monads.Result.csproj  # Test project file
@@ -160,24 +168,27 @@ tests/
 ### Test Organization Principles
 
 #### Mirrored Structure
+
 - Test project structure mirrors the source code structure
 - Each source file has a corresponding test file with `Tests` suffix
 - Same namespace hierarchy maintained in test projects
 
 #### Test Categories
+
 - **Unit Tests**: Test individual methods and properties in isolation
 - **Integration Tests**: Test interaction between components
 - **Property Tests**: Test mathematical properties (associativity, etc.)
 - **Performance Tests**: Benchmark critical paths
 
 #### Test File Naming
+
 - Source file: `BindExtension.cs` → Test file: `BindTests.cs`
 - Class name: `BindExtensionTests` or `BindTests`
 - Clear, descriptive test method names following pattern: `Method_Scenario_ExpectedResult`
 
 ## Documentation Structure (`.documentation/`)
 
-```
+```bash
 .documentation/
 ├── api-reference/              # API documentation
 │   ├── models/                # Core type documentation
@@ -206,24 +217,28 @@ tests/
 ### Documentation Categories
 
 #### API Reference
+
 - **Comprehensive**: Every public type and member documented
 - **Examples**: Code examples for all major functionality
 - **Cross-References**: Links between related types and methods
 - **XML Integration**: Synced with XML documentation in source code
 
 #### Examples and Patterns
+
 - **Practical**: Real-world scenarios and use cases
 - **Progressive**: From simple to complex examples
 - **Best Practices**: Recommended patterns and anti-patterns
 - **Performance**: Guidance on efficient usage
 
 #### Architecture
+
 - **Design Rationale**: Why decisions were made
 - **Trade-offs**: Alternatives considered and rejected
 - **Extension Points**: How to extend the library
 - **Future Plans**: Roadmap and planned improvements
 
 #### Contributing
+
 - **Developer Setup**: Environment and tooling requirements
 - **Standards**: Code style, naming, and documentation standards
 - **Process**: How to contribute, review process, CI/CD
@@ -231,13 +246,14 @@ tests/
 
 ## Project Management (`tasks/`)
 
-```
+```bash
 tasks/
 ├── 0001-prd-comprehensive-documentation.md  # Product Requirements Document
 └── tasks-0001-prd-comprehensive-documentation.md  # Task breakdown
 ```
 
 ### Task Management
+
 - **PRD Documents**: Product requirements and specifications
 - **Task Breakdowns**: Detailed task lists and acceptance criteria
 - **Progress Tracking**: Status updates and completion tracking
@@ -247,7 +263,7 @@ tasks/
 
 ### Build Artifacts (`bin/` and `obj/`)
 
-```
+```bash
 src/Monads/
 ├── bin/
 │   └── Debug/
@@ -263,8 +279,10 @@ src/Monads/
 ```
 
 ### Package Structure
+
 When packaged as NuGet package, the library follows standard conventions:
-```
+
+```bash
 lib/
 ├── net9.0/
 │   ├── Monads.dll
@@ -278,18 +296,21 @@ lib/
 ## Dependency Management
 
 ### Central Package Management (CPM)
+
 The project uses Central Package Management to ensure consistent package versions:
 
 - **`Directory.Packages.props`**: Defines package versions centrally
 - **Project files**: Reference packages without versions
-- **Benefits**: 
+- **Benefits**:
   - Consistent versions across all projects
   - Easier dependency updates
   - Better dependency conflict resolution
   - Simplified project files
 
 ### Target Frameworks
+
 The library supports multiple .NET target frameworks:
+
 - **.NET 9.0**: Latest features and performance improvements
 - **.NET Standard 2.1**: Broad compatibility with .NET Core 3.0+
 - **.NET Standard 2.0**: Maximum compatibility (future consideration)
@@ -297,14 +318,16 @@ The library supports multiple .NET target frameworks:
 ## Naming Conventions
 
 ### File Naming
+
 - **PascalCase**: All C# source files use PascalCase (`Result.cs`, `BindExtension.cs`)
 - **Descriptive**: File names clearly indicate their purpose
-- **Consistent Suffixes**: 
+- **Consistent Suffixes**:
   - `Extension.cs` for extension method files
   - `Tests.cs` for test files
   - `{TypeName}.cs` for type definition files
 
 ### Namespace Organization
+
 ```csharp
 // Core models
 namespace Monads.Models;
@@ -320,6 +343,7 @@ namespace Tests.Monads.Extensions.Results.Sync;
 ```
 
 ### Type Naming
+
 - **Generic Parameters**: `T` for value type, `TError` or `E` for error type
 - **Result Types**: `Result<T, TError>`, `Ok<T, TError>`, `Err<T, TError>`
 - **Extension Classes**: Static classes with `Extension` suffix
@@ -328,18 +352,21 @@ namespace Tests.Monads.Extensions.Results.Sync;
 ## Integration Points
 
 ### IDE Integration
+
 - **IntelliSense**: XML documentation provides rich IDE tooltips
 - **Debugging**: Source stepping and symbol support
 - **Code Analysis**: Analyzers provide compile-time guidance
 - **Refactoring**: Proper namespace organization supports IDE refactoring tools
 
 ### CI/CD Integration
+
 - **Build Scripts**: MSBuild integration for automated builds
 - **Testing**: xUnit integration for automated test execution
 - **Documentation**: Automated documentation generation from XML comments
 - **Packaging**: NuGet package generation with proper metadata
 
 ### Extensibility Points
+
 - **Extension Methods**: Primary mechanism for adding functionality
 - **Namespace Organization**: Allows selective imports
 - **Interface Segregation**: Small, focused interfaces for different concerns
@@ -348,24 +375,28 @@ namespace Tests.Monads.Extensions.Results.Sync;
 ## Best Practices
 
 ### File Organization
+
 1. **One Type Per File**: Each class, interface, or enum in its own file
 2. **Logical Grouping**: Related functionality grouped in same directories
 3. **Clear Hierarchy**: Namespace hierarchy matches folder structure
 4. **Consistent Naming**: Follow established naming patterns
 
-### Dependency Management
+### Dependency Management BP
+
 1. **Minimal Dependencies**: Keep external dependencies to minimum
 2. **Version Pinning**: Use Central Package Management for consistency
 3. **Framework Targeting**: Support appropriate target frameworks
 4. **Transitive Dependencies**: Monitor and manage transitive dependencies
 
 ### Documentation
+
 1. **Comprehensive Coverage**: Document all public APIs
 2. **Examples**: Provide code examples for complex functionality
 3. **Cross-References**: Link related types and methods
 4. **Consistency**: Maintain consistent documentation style
 
 ### Testing
+
 1. **Mirror Structure**: Test structure matches source structure
 2. **Comprehensive Coverage**: High test coverage for all scenarios
 3. **Clear Names**: Descriptive test method names
