@@ -22,13 +22,6 @@ public static class MapExtension
         ArgumentNullException.ThrowIfNull(self);
         ArgumentNullException.ThrowIfNull(operation);
 
-        return self.Match(
-            value =>
-                Success<U, E>(
-                    operation(value)
-                        ?? throw new InvalidOperationException(Strings.Constants.OperationNullError)
-                ),
-            Failure<U, E>
-        );
+        return self.Match(value => Success<U, E>(operation(value)), Failure<U, E>);
     }
 }
