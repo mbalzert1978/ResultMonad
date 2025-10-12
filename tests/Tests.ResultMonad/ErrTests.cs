@@ -1,6 +1,6 @@
 namespace Tests.ResultMonad;
 
-public class UnitTest1
+public sealed class ErrTests
 {
     [Fact]
     public void Test1()
