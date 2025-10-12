@@ -76,7 +76,9 @@ public sealed class OrElseTests
     {
         Result<string, int> result = Failure<string, int>(404);
 
-        Result<string, string> recovered = result.OrElse(error => Success<string, string>("Recovered"));
+        Result<string, string> recovered = result.OrElse(error =>
+            Success<string, string>("Recovered")
+        );
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => string.Empty).Should().Be("Recovered");
@@ -87,7 +89,9 @@ public sealed class OrElseTests
     {
         Result<string, int> result = Failure<string, int>(404);
 
-        Result<string, string> recovered = result.OrElse(error => Failure<string, string>($"Error: {error}"));
+        Result<string, string> recovered = result.OrElse(error =>
+            Failure<string, string>($"Error: {error}")
+        );
 
         recovered.IsErr.Should().BeTrue();
         recovered.Match(value => string.Empty, error => error).Should().Be("Error: 404");
@@ -96,9 +100,14 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenOkResultWithComplexType_ShouldPreserveValue()
     {
-        Result<(bool Success, int Value), string> result = Success<(bool Success, int Value), string>((true, SuccessValue));
+        Result<(bool Success, int Value), string> result = Success<
+            (bool Success, int Value),
+            string
+        >((true, SuccessValue));
 
-        Result<(bool Success, int Value), int> recovered = result.OrElse(error => Failure<(bool Success, int Value), int>(0));
+        Result<(bool Success, int Value), int> recovered = result.OrElse(error =>
+            Failure<(bool Success, int Value), int>(0)
+        );
 
         recovered.IsOk.Should().BeTrue();
         (bool Success, int Value) tuple = recovered.Match(value => value, error => (false, 0));
@@ -109,9 +118,14 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenErrResultWithComplexTypeRecovery_ShouldReturnRecoveredValue()
     {
-        Result<(bool Success, int Value), string> result = Failure<(bool Success, int Value), string>(ErrorMessage);
+        Result<(bool Success, int Value), string> result = Failure<
+            (bool Success, int Value),
+            string
+        >(ErrorMessage);
 
-        Result<(bool Success, int Value), int> recovered = result.OrElse(error => Success<(bool Success, int Value), int>((false, FallbackValue)));
+        Result<(bool Success, int Value), int> recovered = result.OrElse(error =>
+            Success<(bool Success, int Value), int>((false, FallbackValue))
+        );
 
         recovered.IsOk.Should().BeTrue();
         (bool Success, int Value) tuple = recovered.Match(value => value, error => (false, 0));
@@ -125,7 +139,9 @@ public sealed class OrElseTests
         Result<int, int> result = Failure<int, int>(10);
 
         Result<int, int> recovered = result
-            .OrElse(error => error < 20 ? Failure<int, int>(error * 2) : Success<int, int>(FallbackValue))
+            .OrElse(error =>
+                error < 20 ? Failure<int, int>(error * 2) : Success<int, int>(FallbackValue)
+            )
             .OrElse(error => Success<int, int>(error + 5));
 
         recovered.IsOk.Should().BeTrue();
@@ -164,9 +180,7 @@ public sealed class OrElseTests
         Result<int, int> result = Failure<int, int>(404);
 
         Result<int, string> recovered = result.OrElse(error =>
-            error == 404
-                ? Success<int, string>(-1)
-                : Failure<int, string>("Unknown error")
+            error == 404 ? Success<int, string>(-1) : Failure<int, string>("Unknown error")
         );
 
         recovered.IsOk.Should().BeTrue();

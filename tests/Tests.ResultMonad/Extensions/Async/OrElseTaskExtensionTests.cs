@@ -24,7 +24,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = Task.FromResult(Success<int, string>(SuccessValue));
 
-        Result<int, int> recovered = await resultTask.OrElseAsync(error => Failure<int, int>(error.Length));
+        Result<int, int> recovered = await resultTask.OrElseAsync(error =>
+            Failure<int, int>(error.Length)
+        );
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(SuccessValue);
@@ -35,7 +37,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = Task.FromResult(Failure<int, string>(ErrorMessage));
 
-        Result<int, int> recovered = await resultTask.OrElseAsync(error => Failure<int, int>(error.Length));
+        Result<int, int> recovered = await resultTask.OrElseAsync(error =>
+            Failure<int, int>(error.Length)
+        );
 
         recovered.IsErr.Should().BeTrue();
         recovered.Match(value => 0, error => error).Should().Be(ErrorMessage.Length);
@@ -46,7 +50,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = Task.FromResult(Failure<int, string>(ErrorMessage));
 
-        Result<int, int> recovered = await resultTask.OrElseAsync(error => Success<int, int>(FallbackValue));
+        Result<int, int> recovered = await resultTask.OrElseAsync(error =>
+            Success<int, int>(FallbackValue)
+        );
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(FallbackValue);
@@ -57,7 +63,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Result<int, string> result = Success<int, string>(SuccessValue);
 
-        Result<int, int> recovered = await result.OrElseAsync(error => Task.FromResult(Failure<int, int>(error.Length)));
+        Result<int, int> recovered = await result.OrElseAsync(error =>
+            Task.FromResult(Failure<int, int>(error.Length))
+        );
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(SuccessValue);
@@ -68,7 +76,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Result<int, string> result = Failure<int, string>(ErrorMessage);
 
-        Result<int, int> recovered = await result.OrElseAsync(error => Task.FromResult(Failure<int, int>(error.Length)));
+        Result<int, int> recovered = await result.OrElseAsync(error =>
+            Task.FromResult(Failure<int, int>(error.Length))
+        );
 
         recovered.IsErr.Should().BeTrue();
         recovered.Match(value => 0, error => error).Should().Be(ErrorMessage.Length);
@@ -79,7 +89,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Result<int, string> result = Failure<int, string>(ErrorMessage);
 
-        Result<int, int> recovered = await result.OrElseAsync(error => Task.FromResult(Success<int, int>(FallbackValue)));
+        Result<int, int> recovered = await result.OrElseAsync(error =>
+            Task.FromResult(Success<int, int>(FallbackValue))
+        );
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(FallbackValue);
@@ -90,7 +102,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = Task.FromResult(Success<int, string>(SuccessValue));
 
-        Result<int, int> recovered = await resultTask.OrElseAsync(error => Task.FromResult(Failure<int, int>(error.Length)));
+        Result<int, int> recovered = await resultTask.OrElseAsync(error =>
+            Task.FromResult(Failure<int, int>(error.Length))
+        );
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(SuccessValue);
@@ -101,7 +115,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = Task.FromResult(Failure<int, string>(ErrorMessage));
 
-        Result<int, int> recovered = await resultTask.OrElseAsync(error => Task.FromResult(Failure<int, int>(error.Length)));
+        Result<int, int> recovered = await resultTask.OrElseAsync(error =>
+            Task.FromResult(Failure<int, int>(error.Length))
+        );
 
         recovered.IsErr.Should().BeTrue();
         recovered.Match(value => 0, error => error).Should().Be(ErrorMessage.Length);
@@ -112,7 +128,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = Task.FromResult(Failure<int, string>(ErrorMessage));
 
-        Result<int, int> recovered = await resultTask.OrElseAsync(error => Task.FromResult(Success<int, int>(FallbackValue)));
+        Result<int, int> recovered = await resultTask.OrElseAsync(error =>
+            Task.FromResult(Success<int, int>(FallbackValue))
+        );
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(FallbackValue);
@@ -123,7 +141,8 @@ public sealed class OrElseTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = null!;
 
-        Func<Task<Result<int, int>>> act = async () => await resultTask.OrElseAsync(error => Failure<int, int>(error.Length));
+        Func<Task<Result<int, int>>> act = async () =>
+            await resultTask.OrElseAsync(error => Failure<int, int>(error.Length));
 
         await act.Should().ThrowAsync<ArgumentNullException>();
     }
@@ -155,7 +174,9 @@ public sealed class OrElseTaskExtensionTests
     {
         Task<Result<string, int>> resultTask = Task.FromResult(Failure<string, int>(404));
 
-        Result<string, string> recovered = await resultTask.OrElseAsync(error => Success<string, string>("Recovered"));
+        Result<string, string> recovered = await resultTask.OrElseAsync(error =>
+            Success<string, string>("Recovered")
+        );
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => string.Empty).Should().Be("Recovered");
@@ -167,7 +188,9 @@ public sealed class OrElseTaskExtensionTests
         Task<Result<int, int>> resultTask = Task.FromResult(Failure<int, int>(10));
 
         Result<int, int> recovered = await resultTask
-            .OrElseAsync(error => error < 20 ? Failure<int, int>(error * 2) : Success<int, int>(FallbackValue))
+            .OrElseAsync(error =>
+                error < 20 ? Failure<int, int>(error * 2) : Success<int, int>(FallbackValue)
+            )
             .OrElseAsync(error => Success<int, int>(error + 5));
 
         recovered.IsOk.Should().BeTrue();
@@ -193,9 +216,7 @@ public sealed class OrElseTaskExtensionTests
         Task<Result<int, int>> resultTask = Task.FromResult(Failure<int, int>(404));
 
         Result<int, string> recovered = await resultTask.OrElseAsync(error =>
-            error == 404
-                ? Success<int, string>(-1)
-                : Failure<int, string>("Unknown error")
+            error == 404 ? Success<int, string>(-1) : Failure<int, string>("Unknown error")
         );
 
         recovered.IsOk.Should().BeTrue();
