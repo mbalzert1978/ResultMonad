@@ -76,12 +76,10 @@ public sealed class ErrTests
     [Fact]
     public void Err_WhenComparedWithSameError_ShouldBeEqual()
     {
-        // Arrange
         string error = ErrorMessage;
         Err<int, string> result1 = new(error);
         Err<int, string> result2 = new(error);
 
-        // Act & Assert
         result1.Should().Be(result2);
         (result1 == result2).Should().BeTrue();
     }
@@ -89,13 +87,11 @@ public sealed class ErrTests
     [Fact]
     public void Err_WhenComparedWithDifferentError_ShouldNotBeEqual()
     {
-        // Arrange
         string error1 = new("Error 1");
         string error2 = new("Error 2");
         Err<int, string> result1 = new(error1);
         Err<int, string> result2 = new(error2);
 
-        // Act & Assert
         result1.Should().NotBe(result2);
         (result1 != result2).Should().BeTrue();
     }
@@ -103,13 +99,11 @@ public sealed class ErrTests
     [Fact]
     public void Err_WhenComparedWithEqualErrorValues_ShouldBeEqualAndHashCodesMatch()
     {
-        // Arrange
         string error1 = new("Same message");
         string error2 = new("Same message");
         Err<int, string> result1 = new(error1);
         Err<int, string> result2 = new(error2);
 
-        // Act & Assert
         result1.Should().Be(result2);
         result1.GetHashCode().Should().Be(result2.GetHashCode());
     }
@@ -117,11 +111,9 @@ public sealed class ErrTests
     [Fact]
     public void Err_WhenAssignedToResultBase_ShouldBeAssignableAndIsErrTrue()
     {
-        // Arrange
         string error = "Error";
         Err<int, string> err = new(error);
 
-        // Act
         Result<int, string> result = err;
 
         result.Should().BeOfType<Err<int, string>>();
@@ -131,15 +123,10 @@ public sealed class ErrTests
     [Fact]
     public void Err_WhenUsedWithDifferentErrorTypes_ShouldMaintainTypeInformation()
     {
-        // Arrange
-        string stringError = "String error";
-        int intError = 42;
+        Err<int, string> stringResult = new("String error");
+        Err<int, int> intResult = new(42);
 
-        // Act
-        Err<int, string> stringResult = new(stringError);
-        Err<int, int> intResult = new(intError);
-
-        stringResult.Error.Should().Be(stringError);
+        stringResult.Error.Should().Be("String error");
         stringResult.Error.Should().BeOfType<string>();
         intResult.Error.Should().Be(42);
         intResult.Error.GetType().Should().Be<int>();
