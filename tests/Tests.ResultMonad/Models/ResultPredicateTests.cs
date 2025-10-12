@@ -120,7 +120,9 @@ public sealed class ResultPredicateTests
     {
         Result<int, string> result = Failure<int, string>("Error: Something went wrong");
 
-        bool isErrAnd = result.IsErrAnd(error => error.StartsWith("Error:", StringComparison.Ordinal) && error.Length > 5);
+        bool isErrAnd = result.IsErrAnd(error =>
+            error.StartsWith("Error:", StringComparison.Ordinal) && error.Length > 5
+        );
 
         isErrAnd.Should().BeTrue();
     }
@@ -172,8 +174,12 @@ public sealed class ResultPredicateTests
     {
         Result<int, string> result = Failure<int, string>("ValidationError: Invalid input");
 
-        bool isValidationError = result.IsErrAnd(error => error.StartsWith("ValidationError:", StringComparison.Ordinal));
-        bool isSystemError = result.IsErrAnd(error => error.StartsWith("SystemError:", StringComparison.Ordinal));
+        bool isValidationError = result.IsErrAnd(error =>
+            error.StartsWith("ValidationError:", StringComparison.Ordinal)
+        );
+        bool isSystemError = result.IsErrAnd(error =>
+            error.StartsWith("SystemError:", StringComparison.Ordinal)
+        );
 
         isValidationError.Should().BeTrue();
         isSystemError.Should().BeFalse();
@@ -186,8 +192,7 @@ public sealed class ResultPredicateTests
 
         Action act = () => result.IsOkAnd(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("predicate");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("predicate");
     }
 
     [Fact]
@@ -197,7 +202,6 @@ public sealed class ResultPredicateTests
 
         Action act = () => result.IsErrAnd(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("predicate");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("predicate");
     }
 }
