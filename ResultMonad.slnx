@@ -13,9 +13,9 @@
     <File Path="nuget.config" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/ResultMonad/ResultMonad.csproj" />
+    <Project Path="src/Monads/Monads.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/Tests.ResultMonad/Tests.ResultMonad.csproj" />
+    <Project Path="tests/Tests.Monads.Result/Tests.Monads.Result.csproj" />
   </Folder>
 </Solution>
