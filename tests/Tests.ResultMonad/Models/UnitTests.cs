@@ -3,6 +3,7 @@
 // </copyright>
 
 using ResultMonad;
+using static ResultMonad.ResultFactory;
 
 namespace Tests.ResultMonad;
 
@@ -213,7 +214,7 @@ public sealed class UnitTests
     [Fact]
     public void Unit_WhenUsedInResultType_ShouldRepresentNoValue()
     {
-        Result<Unit, string> result = ResultFactory.Ok<Unit, string>(Unit.Default);
+        Result<Unit, string> result = Success<Unit, string>(Unit.Default);
 
         result.Should().BeOfType<Ok<Unit, string>>();
         result.IsOk.Should().BeTrue();
@@ -222,7 +223,7 @@ public sealed class UnitTests
     [Fact]
     public void Unit_WhenUsedInErrorResult_ShouldWorkCorrectly()
     {
-        Result<Unit, string> result = ResultFactory.Err<Unit, string>("error");
+        Result<Unit, string> result = Failure<Unit, string>("error");
 
         result.Should().BeOfType<Err<Unit, string>>();
         result.IsErr.Should().BeTrue();

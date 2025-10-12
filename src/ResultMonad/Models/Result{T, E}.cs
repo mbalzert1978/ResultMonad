@@ -45,18 +45,18 @@ public static class ResultFactory
     /// <summary>
     /// Creates a successful result containing the specified value.
     /// </summary>
-    /// <typeparam name="TValue">The type of the success value.</typeparam>
-    /// <typeparam name="TError">The type of the error.</typeparam>
+    /// <typeparam name="T">The type of the success value.</typeparam>
+    /// <typeparam name="E">The type of the error.</typeparam>
     /// <param name="value">The value to wrap in the result.</param>
-    /// <returns>A new <see cref="ResultMonad.Ok{TValue, TError}"/> instance containing the specified value.</returns>
+    /// <returns>A new <see cref="Ok{TValue, TError}"/> instance containing the specified value.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> is null.</exception>
-    public static Result<TValue, TError> Ok<TValue, TError>(TValue value)
-        where TError : notnull
-        where TValue : notnull
+    public static Result<T, E> Success<T, E>(T value)
+        where E : notnull
+        where T : notnull
     {
         ArgumentNullException.ThrowIfNull(value);
 
-        Ok<TValue, TError> result = new(value);
+        Ok<T, E> result = new(value);
 
         Debug.Assert(result.IsOk, "Created Ok result must have IsOk == true.");
 
@@ -66,18 +66,18 @@ public static class ResultFactory
     /// <summary>
     /// Creates a failed result containing the specified error.
     /// </summary>
-    /// <typeparam name="TValue">The type of the success value.</typeparam>
-    /// <typeparam name="TError">The type of the error.</typeparam>
+    /// <typeparam name="T">The type of the success value.</typeparam>
+    /// <typeparam name="E">The type of the error.</typeparam>
     /// <param name="error">The error to wrap in the result.</param>
-    /// <returns>A new <see cref="ResultMonad.Err{TValue, TError}"/> instance containing the specified error.</returns>
+    /// <returns>A new <see cref="Err{TValue, TError}"/> instance containing the specified error.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="error"/> is null.</exception>
-    public static Result<TValue, TError> Err<TValue, TError>(TError error)
-        where TError : notnull
-        where TValue : notnull
+    public static Result<T, E> Failure<T, E>(E error)
+        where E : notnull
+        where T : notnull
     {
         ArgumentNullException.ThrowIfNull(error);
 
-        Err<TValue, TError> result = new(error);
+        Err<T, E> result = new(error);
 
         Debug.Assert(result.IsErr, "Created Err result must have IsErr == true.");
 

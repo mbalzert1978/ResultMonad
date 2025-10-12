@@ -3,6 +3,7 @@
 // </copyright>
 
 using ResultMonad;
+using static ResultMonad.ResultFactory;
 
 namespace Tests.ResultMonad;
 
@@ -58,7 +59,7 @@ public sealed class OkTests
     [Fact]
     public void Ok_WhenCreatedViaResultFactory_ShouldCreateOkInstance()
     {
-        Result<int, string> result = ResultFactory.Ok<int, string>(TestValue);
+        Result<int, string> result = Success<int, string>(TestValue);
 
         result.Should().BeOfType<Ok<int, string>>();
         result.IsOk.Should().BeTrue();
@@ -68,7 +69,7 @@ public sealed class OkTests
     [Fact]
     public void Ok_WhenCreatedViaResultFactoryWithNullValue_ShouldThrowArgumentNullException()
     {
-        Func<Result<string, string>> act = () => ResultFactory.Ok<string, string>(null!);
+        Func<Result<string, string>> act = () => Success<string, string>(null!);
 
         act.Should().Throw<ArgumentNullException>();
     }

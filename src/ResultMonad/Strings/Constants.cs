@@ -16,4 +16,6 @@ internal static class Constants
     /// The error message: "Result must be either Ok or Err."
     /// </value>
     public const string ExhaustedError = "Result must be either Ok or Err.";
+    public const string OperationNullError =
+        "The operation function returned null, which is not allowed.";
 }

@@ -3,6 +3,7 @@
 // </copyright>
 
 using ResultMonad;
+using static ResultMonad.ResultFactory;
 
 namespace Tests.ResultMonad;
 
@@ -58,7 +59,7 @@ public sealed class ErrTests
     [Fact]
     public void Err_WhenCreatedViaResultFactory_ShouldCreateErrInstance()
     {
-        Result<int, string> result = ResultFactory.Err<int, string>(ErrorMessage);
+        Result<int, string> result = Failure<int, string>(ErrorMessage);
 
         result.Should().BeOfType<Err<int, string>>();
         result.IsErr.Should().BeTrue();
@@ -68,7 +69,7 @@ public sealed class ErrTests
     [Fact]
     public void Err_WhenCreatedViaResultFactoryWithNullError_ShouldThrowArgumentNullException()
     {
-        Func<Result<int, string>> act = () => ResultFactory.Err<int, string>(null!);
+        Func<Result<int, string>> act = () => Failure<int, string>(null!);
 
         act.Should().Throw<ArgumentNullException>();
     }

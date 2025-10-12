@@ -5,6 +5,7 @@
 using System.Globalization;
 using ResultMonad;
 using ResultMonad.Extensions.Sync;
+using static ResultMonad.ResultFactory;
 
 namespace Tests.ResultMonad.Extensions.Sync;
 
@@ -19,7 +20,7 @@ public sealed class MatchTests
     [Fact]
     public void Match_WhenCalledWithOkResult_ShouldInvokeOnOkFunction()
     {
-        Result<int, string> result = ResultFactory.Ok<int, string>(SuccessValue);
+        Result<int, string> result = Success<int, string>(SuccessValue);
 
         int matched = result.Match(value => value * 2, error => 0);
 
@@ -29,7 +30,7 @@ public sealed class MatchTests
     [Fact]
     public void Match_WhenCalledWithErrResult_ShouldInvokeOnErrFunction()
     {
-        Result<int, string> result = ResultFactory.Err<int, string>(ErrorMessage);
+        Result<int, string> result = Failure<int, string>(ErrorMessage);
 
         string matched = result.Match(
             value => "success",
@@ -52,7 +53,7 @@ public sealed class MatchTests
     [Fact]
     public void Match_WhenOnOkIsNull_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = ResultFactory.Ok<int, string>(SuccessValue);
+        Result<int, string> result = Success<int, string>(SuccessValue);
 
         Func<int> act = () => result.Match(null!, error => 0);
 
@@ -62,7 +63,7 @@ public sealed class MatchTests
     [Fact]
     public void Match_WhenOnErrIsNull_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = ResultFactory.Err<int, string>(ErrorMessage);
+        Result<int, string> result = Failure<int, string>(ErrorMessage);
 
         Func<int> act = () => result.Match(value => value, null!);
 
@@ -72,7 +73,7 @@ public sealed class MatchTests
     [Fact]
     public void Match_WhenOkResultMatchedToString_ShouldReturnCorrectString()
     {
-        Result<int, string> result = ResultFactory.Ok<int, string>(SuccessValue);
+        Result<int, string> result = Success<int, string>(SuccessValue);
 
         string matched = result.Match(value => $"Value: {value}", error => $"Error: {error}");
 
@@ -82,7 +83,7 @@ public sealed class MatchTests
     [Fact]
     public void Match_WhenErrResultMatchedToString_ShouldReturnCorrectString()
     {
-        Result<int, string> result = ResultFactory.Err<int, string>(ErrorMessage);
+        Result<int, string> result = Failure<int, string>(ErrorMessage);
 
         string matched = result.Match(value => $"Value: {value}", error => $"Error: {error}");
 
@@ -92,7 +93,7 @@ public sealed class MatchTests
     [Fact]
     public void Match_WhenMatchingOkToComplexType_ShouldReturnCorrectType()
     {
-        Result<int, string> result = ResultFactory.Ok<int, string>(SuccessValue);
+        Result<int, string> result = Success<int, string>(SuccessValue);
 
         (bool Success, int Value) = result.Match(value => (true, value), error => (false, 0));
 
@@ -103,7 +104,7 @@ public sealed class MatchTests
     [Fact]
     public void Match_WhenMatchingErrToComplexType_ShouldReturnCorrectType()
     {
-        Result<int, string> result = ResultFactory.Err<int, string>(ErrorMessage);
+        Result<int, string> result = Failure<int, string>(ErrorMessage);
 
         (bool Success, string Message) = result.Match(
             value => (true, "OK"),
@@ -117,11 +118,11 @@ public sealed class MatchTests
     [Fact]
     public void Match_WhenChainedWithMultipleOperations_ShouldWorkCorrectly()
     {
-        Result<int, string> result = ResultFactory.Ok<int, string>(10);
+        Result<int, string> result = Success<int, string>(10);
 
         Result<int, string> intermediate = result.Match(
-            value => ResultFactory.Ok<int, string>(value + 5),
-            ResultFactory.Err<int, string>
+            value => Success<int, string>(value + 5),
+            Failure<int, string>
         );
 
         int matched = intermediate.Match(value => value * 2, error => 0);
