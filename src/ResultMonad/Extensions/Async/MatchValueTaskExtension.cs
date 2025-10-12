@@ -23,6 +23,8 @@ public static class MatchValueTaskExtension
     /// <param name="onErr">The function to invoke if the result is an <see cref="Err{T, E}"/>.</param>
     /// <returns>A <see cref="ValueTask{TResult}"/> containing the result of invoking either <paramref name="onOk"/> or <paramref name="onErr"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="onOk"/> or <paramref name="onErr"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if either <paramref name="onOk"/> or <paramref name="onErr"/> returns null.</exception>
+    /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     /// <remarks>
     /// This overload awaits the <paramref name="self"/> task and then delegates to the synchronous <see cref="MatchValueTaskExtension.Match{T, E, U}(Result{T, E}, Func{T, U}, Func{E, U})"/> method.
     /// Both match functions are executed synchronously after the result is awaited.
@@ -53,6 +55,7 @@ public static class MatchValueTaskExtension
     /// <param name="onErr">The asynchronous function to invoke if the result is an <see cref="Err{T, E}"/>.</param>
     /// <returns>A <see cref="ValueTask{TResult}"/> containing the result of invoking either <paramref name="onOk"/> or <paramref name="onErr"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="onOk"/> or <paramref name="onErr"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if either <paramref name="onOk"/> or <paramref name="onErr"/> returns null.</exception>
     /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     /// <remarks>
     /// This overload takes a synchronous result but invokes asynchronous match functions.
@@ -93,6 +96,8 @@ public static class MatchValueTaskExtension
     /// <param name="onErr">The asynchronous function to invoke if the result is an <see cref="Err{T, E}"/>.</param>
     /// <returns>A <see cref="ValueTask{TResult}"/> containing the result of invoking either <paramref name="onOk"/> or <paramref name="onErr"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="onOk"/> or <paramref name="onErr"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if either <paramref name="onOk"/> or <paramref name="onErr"/> returns null.</exception>
+    /// <exception cref="UnreachableException">Thrown if the result is neither <see cref
     /// <remarks>
     /// This overload awaits the <paramref name="self"/> task and then delegates to the <see cref="MatchAsync{T, E, U}(Result{T, E}, Func{T, ValueTask{U}}, Func{E, ValueTask{U}})"/> overload.
     /// Both the result and the selected match function are awaited asynchronously.

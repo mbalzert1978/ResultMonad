@@ -22,6 +22,8 @@ public static class MatchExtension
     /// <param name="onErr">The function to invoke if the result is an <see cref="Err{T, E}"/>.</param>
     /// <returns>The result of invoking either <paramref name="onOk"/> or <paramref name="onErr"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown if any of the parameters are null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if either <paramref name="onOk"/> or <paramref name="onErr"/> returns null.</exception>
+    /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     public static U Match<T, E, U>(this Result<T, E> self, Func<T, U> onOk, Func<E, U> onErr)
         where T : notnull
         where E : notnull

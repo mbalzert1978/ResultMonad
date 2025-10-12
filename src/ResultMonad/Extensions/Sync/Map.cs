@@ -21,6 +21,8 @@ public static class MapExtension
     /// <param name="operation">The mapping function to apply to the success value.</param>
     /// <returns>A new result with the transformed success value or the original error.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="operation"/> is <c>null</c>.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
+    /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     /// <remarks>
     /// This method applies the <paramref name="operation"/> function to the Ok value if the result is successful.
     /// If the result is Err, the error is propagated without invoking the mapping function.

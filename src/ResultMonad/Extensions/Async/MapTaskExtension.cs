@@ -25,6 +25,8 @@ public static class MapTaskExtension
     /// which is Ok with the mapped value if the original result was Ok, or Err with the original error if it was Err.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
+    /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     /// <remarks>
     /// This overload awaits the <paramref name="self"/> task, then applies the synchronous <paramref name="operation"/> to the Ok value.
     /// If the result is Err, the error is propagated without invoking the mapping function.
@@ -56,6 +58,8 @@ public static class MapTaskExtension
     /// which is Ok with the mapped value if the original result was Ok, or Err with the original error if it was Err.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
+    /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     /// <remarks>
     /// This overload takes a synchronous result and applies an asynchronous <paramref name="operation"/> to the Ok value.
     /// The operation is only invoked if the result is Ok; otherwise, the error is propagated.
@@ -92,6 +96,8 @@ public static class MapTaskExtension
     /// which is Ok with the mapped value if the original result was Ok, or Err with the original error if it was Err.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
+    /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     /// <remarks>
     /// This overload awaits both the <paramref name="self"/> task and the asynchronous <paramref name="operation"/>.
     /// The operation is only invoked if the awaited result is Ok; otherwise, the error is propagated.
