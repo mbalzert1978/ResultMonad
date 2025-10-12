@@ -1,0 +1,157 @@
+name: Documentation Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  validate-documentation:
+    name: Validate Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build project and check XML documentation warnings
+      run: |
+        echo "Building project and checking for XML documentation warnings..."
+        # Build with warnings as errors for documentation
+        dotnet build --no-restore --verbosity normal --configuration Release /p:TreatWarningsAsErrors=true /p:WarningsAsErrors="" /p:WarningsNotAsErrors=""
+        
+        # Specifically check for CS1591 warnings (missing XML documentation)
+        if dotnet build --no-restore --verbosity normal 2>&1 | grep -q "CS1591"; then
+          echo "❌ Missing XML documentation found (CS1591 warnings)"
+          dotnet build --no-restore --verbosity normal 2>&1 | grep "CS1591"
+          exit 1
+        else
+          echo "✅ All XML documentation requirements satisfied"
+        fi
+        
+    - name: Verify XML documentation files exist
+      run: |
+        echo "Checking for generated XML documentation files..."
+        find . -name "*.xml" -path "*/bin/*" | head -5
+        
+        if [ ! -f "src/Monads/bin/Release/net9.0/Monads.xml" ] && [ ! -f "src/Monads/bin/Debug/net9.0/Monads.xml" ]; then
+          echo "❌ XML documentation file not found"
+          exit 1
+        else
+          echo "✅ XML documentation files generated successfully"
+        fi
+        
+    - name: Install markdownlint-cli
+      run: npm install -g markdownlint-cli
+      
+    - name: Validate Markdown files
+      run: |
+        echo "Validating Markdown files for formatting and structure..."
+        
+        # Create markdownlint configuration
+        cat > .markdownlint.json << 'EOF'
+        {
+          "MD013": false,
+          "MD033": false,
+          "MD041": false,
+          "MD024": {
+            "siblings_only": true
+          }
+        }
+        EOF
+        
+        # Run markdownlint on documentation files
+        markdownlint .documentation/**/*.md README.md || {
+          echo "❌ Markdown formatting issues found"
+          exit 1
+        }
+        
+        echo "✅ All Markdown files pass validation"
+        
+    - name: Check documentation links
+      run: |
+        echo "Checking internal documentation links..."
+        
+        # Simple link validation for local files
+        find .documentation -name "*.md" -exec grep -l '\]([^)]*\.md)' {} \; | while read file; do
+          echo "Checking links in: $file"
+          
+          # Extract relative links to .md files
+          grep -o '\]([^)]*\.md)' "$file" | sed 's/](\(.*\))/\1/' | while read link; do
+            # Convert relative paths to absolute paths based on file location
+            dir=$(dirname "$file")
+            
+            if [[ "$link" == ../* ]]; then
+              target_file="$dir/$link"
+            elif [[ "$link" == ./* ]]; then
+              target_file="$dir/$link"
+            else
+              target_file=".documentation/$link"
+            fi
+            
+            # Normalize path
+            target_file=$(realpath -m "$target_file" 2>/dev/null || echo "$target_file")
+            
+            if [ ! -f "$target_file" ]; then
+              echo "❌ Broken link in $file: $link -> $target_file"
+              exit 1
+            fi
+          done
+        done
+        
+        echo "✅ All documentation links validated"
+        
+    - name: Run tests
+      run: |
+        echo "Running test suite to ensure documentation changes don't break functionality..."
+        dotnet test --no-build --verbosity normal --configuration Release
+        
+    - name: Documentation coverage report
+      run: |
+        echo "Generating documentation coverage summary..."
+        
+        total_files=$(find src -name "*.cs" | wc -l)
+        echo "Total source files: $total_files"
+        
+        total_md_files=$(find .documentation -name "*.md" | wc -l)
+        echo "Total documentation files: $total_md_files"
+        
+        total_lines=$(find .documentation -name "*.md" -exec wc -l {} + | tail -1 | awk '{print $1}')
+        echo "Total documentation lines: $total_lines"
+        
+        echo "📊 Documentation Statistics:"
+        echo "  - Source files documented: $total_files"
+        echo "  - Documentation files: $total_md_files" 
+        echo "  - Documentation lines: $total_lines"
+        
+        # Check if README exists
+        if [ -f "README.md" ]; then
+          echo "  ✅ Root README.md exists"
+        else
+          echo "  ❌ Root README.md missing"
+          exit 1
+        fi
+        
+        # Check if documentation structure exists
+        required_dirs=(".documentation/getting-started" ".documentation/concepts" ".documentation/api-reference" ".documentation/examples" ".documentation/architecture" ".documentation/contributing")
+        
+        for dir in "${required_dirs[@]}"; do
+          if [ -d "$dir" ]; then
+            echo "  ✅ $dir exists"
+          else
+            echo "  ❌ $dir missing"
+            exit 1
+          fi
+        done
+        
+        echo "🎉 Documentation validation completed successfully!"

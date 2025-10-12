@@ -29,6 +29,7 @@ Before contributing, ensure you have the following installed:
 ### Quick Start
 
 1. **Fork the Repository**
+
    ```bash
    # Fork on GitHub, then clone your fork
    git clone https://github.com/YOUR_USERNAME/Monads.git
@@ -36,6 +37,7 @@ Before contributing, ensure you have the following installed:
    ```
 
 2. **Verify Development Environment**
+
    ```bash
    # Check .NET SDK version
    dotnet --version  # Should be 9.0 or later
@@ -51,6 +53,7 @@ Before contributing, ensure you have the following installed:
    ```
 
 3. **Create a Feature Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -90,6 +93,7 @@ Before contributing, ensure you have the following installed:
    - SonarLint
 
 3. **Workspace Settings** (`.vscode/settings.json`):
+
    ```json
    {
      "editor.formatOnSave": true,
@@ -489,6 +493,7 @@ perf(async): reduce allocations in async operations
 ### Development Workflow
 
 1. **Create Feature Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -500,6 +505,7 @@ perf(async): reduce allocations in async operations
    - Run tests locally
 
 3. **Pre-commit Validation**
+
    ```bash
    # Build and test
    dotnet build
@@ -513,12 +519,14 @@ perf(async): reduce allocations in async operations
    ```
 
 4. **Commit Changes**
+
    ```bash
    git add .
    git commit -m "feat: add new extension method with tests and docs"
    ```
 
 5. **Push and Create Pull Request**
+
    ```bash
    git push origin feature/your-feature-name
    # Create PR on GitHub
@@ -608,7 +616,9 @@ Brief description of the changes.
 
 ## Documentation Standards
 
-### XML Documentation
+All contributions must include appropriate documentation and pass automated validation:
+
+### XML Documentation Requirements
 
 All public APIs must have comprehensive XML documentation:
 
@@ -634,10 +644,43 @@ All public APIs must have comprehensive XML documentation:
 public static Result<TResult, TError> Map<T, TResult, TError>(...) { ... }
 ```
 
-### Markdown Documentation
+**Important**: CS1591 warnings for missing XML documentation are treated as build failures in CI/CD.
+
+### Markdown Documentation Requirements
 
 - Use clear headings and structure
 - Include code examples for complex concepts
+- Update relevant documentation in the `.documentation/` folder
+- Follow the established documentation structure
+- Maintain consistency with existing documentation style
+- **All markdown files must pass markdownlint validation**
+- **All internal links must be valid and working**
+
+### Automated Documentation Validation
+
+Our CI/CD pipeline automatically validates:
+
+1. **XML Documentation**: Builds fail if CS1591 warnings are present
+2. **Markdown Formatting**: Uses markdownlint to ensure consistent formatting  
+3. **Link Validation**: Verifies all internal documentation links work
+4. **Documentation Structure**: Ensures required documentation directories exist
+5. **Test Suite**: All tests must pass before documentation changes are accepted
+
+#### Pre-commit Validation
+
+Before submitting a PR, ensure your changes pass local validation:
+
+```bash
+# Build and check for XML documentation warnings
+dotnet build --verbosity normal
+
+# Install and run markdownlint (if you have npm/node)
+npm install -g markdownlint-cli
+markdownlint .documentation/**/*.md README.md
+
+# Run full test suite  
+dotnet test
+
 - Cross-reference related functionality
 - Keep examples practical and relevant
 
