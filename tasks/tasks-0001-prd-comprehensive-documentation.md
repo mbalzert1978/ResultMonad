@@ -75,14 +75,14 @@
 
 ## Tasks
 
-- [ ] 1.0 Setup Documentation Infrastructure
+- [x] 1.0 Setup Documentation Infrastructure
   - [x] 1.1 Update `Directory.Build.props` to enable XML documentation generation (`GenerateDocumentationFile=true`)
   - [x] 1.2 Review and update `NoWarn` settings to enable CS1591 warnings for missing XML documentation
   - [x] 1.3 Create `.documentation/` folder structure with all subdirectories (getting-started, concepts, api-reference, examples, architecture, contributing)
   - [x] 1.4 Create documentation style guide template at `.documentation/contributing/documentation-standards.md`
   - [x] 1.5 Build project to verify XML documentation files are generated
   
-- [x] 2.0 Create XML Docstrings for All Code Elements
+- [ ] 2.0 Create XML Docstrings for All Code Elements
   - [ ] 2.1 Add/enhance XML docstrings for `src/Monads/Models/Unit.cs` (summary, remarks, examples if needed)
   - [ ] 2.2 Review and enhance XML docstrings for `src/Monads/Models/Results/Result{T, E}.cs` (add missing exception tags, examples)
   - [ ] 2.3 Add/enhance XML docstrings for `src/Monads/Models/Results/Ok{T, E}.cs` (summary, typeparam, remarks, examples)
