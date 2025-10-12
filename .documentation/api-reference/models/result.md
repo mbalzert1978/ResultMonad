@@ -1,4 +1,4 @@
-# Result&lt;T, E&gt; Type
+# Result<T, E> Type
 
 The `Result<T, E>` type is the core abstraction of the Monads library, providing a discriminated union that models either a success or an error state. This abstract record serves as the foundation for implementing the Result monad pattern in C#.
 
@@ -47,7 +47,7 @@ public bool IsErr => !IsOk;
 
 ## Methods
 
-### IsOkAnd(Func&lt;T, bool&gt;)
+### IsOkAnd(Func<T, bool>)
 
 Determines whether the result is `Ok<T, E>` and satisfies the specified predicate.
 
@@ -75,7 +75,7 @@ Result<int, string> errorResult = ResultFactory.Failure<int, string>("error");
 bool isStillPositive = errorResult.IsOkAnd(value => value > 0); // false
 ```
 
-### IsErrAnd(Func&lt;E, bool&gt;)
+### IsErrAnd(Func<E, bool>)
 
 Determines whether the result is `Err<T, E>` and satisfies the specified predicate.
 
@@ -114,7 +114,7 @@ The `Result<T, E>` type has two concrete implementations:
 
 The `ResultFactory` static class provides convenient factory methods for creating `Result<T, E>` instances.
 
-### Success&lt;T, E&gt;(T)
+### Success<T, E>(T)
 
 Creates a successful result containing the specified value.
 
@@ -141,7 +141,7 @@ Result<int, string> result = ResultFactory.Success<int, string>(42);
 Console.WriteLine(result.IsOk); // True
 ```
 
-### Failure&lt;T, E&gt;(E)
+### Failure<T, E>(E)
 
 Creates a failed result containing the specified error.
 
@@ -214,8 +214,8 @@ The `Result<T, E>` type follows functional programming principles:
 
 ## See Also
 
-- [Ok&lt;T, E&gt; Type](./ok.md) - Success result implementation
-- [Err&lt;T, E&gt; Type](./err.md) - Error result implementation  
+- [Ok<T, E> Type](./ok.md) - Success result implementation
+- [Err<T, E> Type](./err.md) - Error result implementation  
 - [Synchronous Extensions](../extensions/sync-extensions.md) - Extension methods for Result operations
 - [Asynchronous Extensions](../extensions/async-extensions.md) - Async extension methods
 - [Error Handling Concepts](../../concepts/error-handling.md) - Error handling patterns and best practices

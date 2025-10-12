@@ -370,7 +370,7 @@ public static class ResultDiagnostics
 
 ## See Also
 
-- [Result&lt;T, E&gt; Type](./models/result.md) - Base result type documentation
+- [Result<T, E> Type](./models/result.md) - Base result type documentation
 - [Synchronous Extensions](./extensions/sync-extensions.md) - Extension methods that can throw exceptions
 - [Asynchronous Extensions](./extensions/async-extensions.md) - Async extension methods and cancellation
 - [Error Handling Patterns](../examples/error-handling-patterns.md) - Best practices for error handling

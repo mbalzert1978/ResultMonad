@@ -1,4 +1,4 @@
-# Ok&lt;T, E&gt; Type
+# Ok<T, E> Type
 
 The `Ok<T, E>` type represents a successful result containing a value in the Result monad pattern. It is a sealed record that inherits from `Result<T, E>` and indicates that an operation completed successfully with a value of type `T`.
 
@@ -95,7 +95,7 @@ public bool IsErr => !IsOk;
 
 ## Methods
 
-### IsOkAnd(Func&lt;T, bool&gt;) (Inherited)
+### IsOkAnd(Func<T, bool>) (Inherited)
 
 Determines whether the result is successful and satisfies the specified predicate.
 
@@ -121,7 +121,7 @@ bool isPositive = result.IsOkAnd(value => value > 0); // true
 bool isNegative = result.IsOkAnd(value => value < 0); // false
 ```
 
-### IsErrAnd(Func&lt;E, bool&gt;) (Inherited)
+### IsErrAnd(Func<E, bool>) (Inherited)
 
 Determines whether the result is an error and satisfies the specified predicate.
 
@@ -219,8 +219,8 @@ string output = result.Match(
 
 ## See Also
 
-- [Result&lt;T, E&gt; Type](./result.md) - Base result type
-- [Err&lt;T, E&gt; Type](./err.md) - Error result implementation
+- [Result<T, E> Type](./result.md) - Base result type
+- [Err<T, E> Type](./err.md) - Error result implementation
 - [ResultFactory Class](./result.md#resultfactory) - Factory methods for creating results
 - [Synchronous Extensions](../extensions/sync-extensions.md) - Extension methods for Result operations
 - [Asynchronous Extensions](../extensions/async-extensions.md) - Async extension methods

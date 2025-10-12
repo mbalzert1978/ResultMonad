@@ -131,7 +131,7 @@ public string ToString(string? format, IFormatProvider? formatProvider)
 
 **Returns:** Always returns `"()"`.
 
-### TryFormat(Span&lt;char&gt;, out int, ReadOnlySpan&lt;char&gt;, IFormatProvider?)
+### TryFormat(Span<char>, out int, ReadOnlySpan<char>, IFormatProvider?)
 
 Tries to format the value of the current instance into the provided span of characters.
 
@@ -313,8 +313,8 @@ string message = final.Match(
 
 ## See Also
 
-- [Result&lt;T, E&gt; Type](./result.md) - Base result type that commonly uses Unit
-- [Ok&lt;T, E&gt; Type](./ok.md) - Success result that can contain Unit
+- [Result<T, E> Type](./result.md) - Base result type that commonly uses Unit
+- [Ok<T, E> Type](./ok.md) - Success result that can contain Unit
 - [Synchronous Extensions](../extensions/sync-extensions.md) - Extensions that work with Unit
 - [Asynchronous Extensions](../extensions/async-extensions.md) - Async extensions for Unit operations
 - [Common Scenarios](../../examples/common-scenarios.md) - Real-world Unit usage examples

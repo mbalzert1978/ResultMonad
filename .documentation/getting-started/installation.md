@@ -227,4 +227,4 @@ If you encounter version conflicts with other packages:
 
 - [NuGet Package Page](https://www.nuget.org/packages/Monads)
 - [GitHub Repository](https://github.com/mbalzert1978/Monads)
-- [Release Notes](../changelog/changelog.md)
+- [Project Repository](https://github.com/your-repo/monads) - View releases and changelog

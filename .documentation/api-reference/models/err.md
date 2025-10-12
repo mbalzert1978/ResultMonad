@@ -1,4 +1,4 @@
-# Err&lt;T, E&gt; Type
+# Err<T, E> Type
 
 The `Err<T, E>` type represents a failed result containing an error in the Result monad pattern. It is a sealed record that inherits from `Result<T, E>` and indicates that an operation failed with an error of type `E`.
 
@@ -95,7 +95,7 @@ public bool IsErr => !IsOk;
 
 ## Methods
 
-### IsErrAnd(Func&lt;E, bool&gt;) (Inherited)
+### IsErrAnd(Func<E, bool>) (Inherited)
 
 Determines whether the result is an error and satisfies the specified predicate.
 
@@ -121,7 +121,7 @@ bool isValidationError = result.IsErrAnd(err => err.Contains("Validation")); // 
 bool isNetworkError = result.IsErrAnd(err => err.Contains("Network")); // false
 ```
 
-### IsOkAnd(Func&lt;T, bool&gt;) (Inherited)
+### IsOkAnd(Func<T, bool>) (Inherited)
 
 Determines whether the result is successful and satisfies the specified predicate.
 
@@ -279,8 +279,8 @@ var result = new Err<Data, ApiError>(
 
 ## See Also
 
-- [Result&lt;T, E&gt; Type](./result.md) - Base result type
-- [Ok&lt;T, E&gt; Type](./ok.md) - Success result implementation
+- [Result<T, E> Type](./result.md) - Base result type
+- [Ok<T, E> Type](./ok.md) - Success result implementation
 - [ResultFactory Class](./result.md#resultfactory) - Factory methods for creating results
 - [Synchronous Extensions](../extensions/sync-extensions.md) - Extension methods for Result operations
 - [Asynchronous Extensions](../extensions/async-extensions.md) - Async extension methods

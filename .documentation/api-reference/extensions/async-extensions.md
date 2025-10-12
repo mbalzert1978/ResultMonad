@@ -473,7 +473,7 @@ async Task<Result<User, string>> CreateUserTransactionAsync(UserData userData)
 ## See Also
 
 - [Synchronous Extensions](./sync-extensions.md) - Sync versions of these operations
-- [Result&lt;T, E&gt; Type](../models/result.md) - Base result type
+- [Result<T, E> Type](../models/result.md) - Base result type
 - [Async Workflows](../../examples/async-workflows.md) - Detailed async usage examples
 - [Common Scenarios](../../examples/common-scenarios.md) - Real-world usage patterns
 - [Error Handling Patterns](../../examples/error-handling-patterns.md) - Async error handling best practices

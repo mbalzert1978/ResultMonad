@@ -374,9 +374,9 @@ All synchronous extension methods are thread-safe as they:
 
 ## See Also
 
-- [Result&lt;T, E&gt; Type](../models/result.md) - Base result type
+- [Result<T, E> Type](../models/result.md) - Base result type
 - [Asynchronous Extensions](./async-extensions.md) - Async versions of these operations
-- [Ok&lt;T, E&gt; Type](../models/ok.md) - Success result implementation
-- [Err&lt;T, E&gt; Type](../models/err.md) - Error result implementation
+- [Ok<T, E> Type](../models/ok.md) - Success result implementation
+- [Err<T, E> Type](../models/err.md) - Error result implementation
 - [Common Scenarios](../../examples/common-scenarios.md) - Real-world usage patterns
 - [Error Handling Patterns](../../examples/error-handling-patterns.md) - Error handling best practices
