@@ -97,7 +97,7 @@ public static class MatchValueTaskExtension
     /// <returns>A <see cref="ValueTask{TResult}"/> containing the result of invoking either <paramref name="onOk"/> or <paramref name="onErr"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="onOk"/> or <paramref name="onErr"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if either <paramref name="onOk"/> or <paramref name="onErr"/> returns null.</exception>
-    /// <exception cref="UnreachableException">Thrown if the result is neither <see cref
+    /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     /// <remarks>
     /// This overload awaits the <paramref name="self"/> task and then delegates to the <see cref="MatchAsync{T, E, U}(Result{T, E}, Func{T, ValueTask{U}}, Func{E, ValueTask{U}})"/> overload.
     /// Both the result and the selected match function are awaited asynchronously.

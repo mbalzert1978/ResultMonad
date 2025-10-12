@@ -13,6 +13,7 @@ namespace Monads.Results;
 /// <remarks>
 /// The <see cref="Unit"/> type is a singleton, meaning there is only one instance of this type.
 /// It is often used in functional programming to indicate that a function does not return a value.
+/// </remarks>
 public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>, ISpanFormattable
 {
     private const string VoidReturnValue = "()";

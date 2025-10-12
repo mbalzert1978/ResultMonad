@@ -2,6 +2,7 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
+using System.Diagnostics;
 using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Async;
@@ -25,7 +26,7 @@ public static class BindTaskExtension
     /// A <see cref="Task{TResult}"/> containing a new result with the value returned by the operation or the propagated error.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
-    /// exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
     /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     public static async Task<Result<U, E>> BindAsync<T, U, E>(
         this Task<Result<T, E>> self,
