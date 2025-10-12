@@ -89,7 +89,10 @@ public sealed class MapErrTests
         Result<int, (bool IsError, string Message)> mapped = result.MapErr(error => (true, error));
 
         mapped.IsErr.Should().BeTrue();
-        (bool IsError, string Message) tuple = mapped.Match(value => (false, string.Empty), error => error);
+        (bool IsError, string Message) tuple = mapped.Match(
+            value => (false, string.Empty),
+            error => error
+        );
         tuple.IsError.Should().BeTrue();
         tuple.Message.Should().Be(ErrorMessage);
     }
