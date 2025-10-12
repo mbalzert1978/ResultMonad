@@ -67,9 +67,7 @@ public sealed class MapErrTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = Task.FromResult(Success<int, string>(SuccessValue));
 
-        Result<int, int> mapped = await resultTask.MapErrAsync(error =>
-            Task.FromResult(error.Length)
-        );
+        Result<int, int> mapped = await resultTask.MapErrAsync(error => Task.FromResult(error.Length));
 
         mapped.IsOk.Should().BeTrue();
         mapped.Match(value => value, error => 0).Should().Be(SuccessValue);
@@ -80,9 +78,7 @@ public sealed class MapErrTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = Task.FromResult(Failure<int, string>(ErrorMessage));
 
-        Result<int, int> mapped = await resultTask.MapErrAsync(error =>
-            Task.FromResult(error.Length)
-        );
+        Result<int, int> mapped = await resultTask.MapErrAsync(error => Task.FromResult(error.Length));
 
         mapped.IsErr.Should().BeTrue();
         mapped.Match(value => 0, error => error).Should().Be(ErrorMessage.Length);
@@ -93,8 +89,7 @@ public sealed class MapErrTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = null!;
 
-        Func<Task<Result<int, int>>> act = async () =>
-            await resultTask.MapErrAsync(error => error.Length);
+        Func<Task<Result<int, int>>> act = async () => await resultTask.MapErrAsync(error => error.Length);
 
         await act.Should().ThrowAsync<ArgumentNullException>();
     }
@@ -137,15 +132,10 @@ public sealed class MapErrTaskExtensionTests
     {
         Task<Result<int, string>> resultTask = Task.FromResult(Failure<int, string>(ErrorMessage));
 
-        Result<int, (bool IsError, string Message)> mapped = await resultTask.MapErrAsync(error =>
-            (true, error)
-        );
+        Result<int, (bool IsError, string Message)> mapped = await resultTask.MapErrAsync(error => (true, error));
 
         mapped.IsErr.Should().BeTrue();
-        (bool IsError, string Message) tuple = mapped.Match(
-            value => (false, string.Empty),
-            error => error
-        );
+        (bool IsError, string Message) tuple = mapped.Match(value => (false, string.Empty), error => error);
         tuple.IsError.Should().BeTrue();
         tuple.Message.Should().Be(ErrorMessage);
     }
@@ -155,9 +145,7 @@ public sealed class MapErrTaskExtensionTests
     {
         Task<Result<int, int>> resultTask = Task.FromResult(Failure<int, int>(10));
 
-        Result<int, int> mapped = await resultTask
-            .MapErrAsync(error => error + 5)
-            .MapErrAsync(error => error * 2);
+        Result<int, int> mapped = await resultTask.MapErrAsync(error => error + 5).MapErrAsync(error => error * 2);
 
         mapped.IsErr.Should().BeTrue();
         mapped.Match(value => 0, error => error).Should().Be(30);
