@@ -23,7 +23,7 @@ public static class MapValueTaskExtension
     /// <param name="operation">A synchronous function to map the value from <typeparamref name="T"/> to <typeparamref name="U"/>.</param>
     /// <returns>
     /// A <see cref="ValueTask{TResult}"/> that produces a <see cref="Result{U, E}"/>,
-    /// which is Ok with the mapped value if the original result was Ok, or Err with the original error if it was Err.
+    /// applying the mapping function to the Ok value if the original result was Ok, or propagating the original error if it was Err.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
@@ -56,7 +56,7 @@ public static class MapValueTaskExtension
     /// <param name="operation">An asynchronous function to map the value from <typeparamref name="T"/> to <typeparamref name="U"/>.</param>
     /// <returns>
     /// A <see cref="ValueTask{TResult}"/> that produces a <see cref="Result{U, E}"/>,
-    /// which is Ok with the mapped value if the original result was Ok, or Err with the original error if it was Err.
+    /// applying the mapping function to the Ok value if the original result was Ok, or propagating the original error if it was Err.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
@@ -94,7 +94,7 @@ public static class MapValueTaskExtension
     /// <returns>
     /// A <see cref="ValueTask{TResult}"/> that produces a <see cref="Result{U, E}"/>,
     ///
-    /// which is Ok with the mapped value if the original result was Ok, or Err with the original error if it was Err.
+    /// applying the mapping function to the Ok value if the original result was Ok, or propagating the original error if it was Err.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
     /// <remarks>

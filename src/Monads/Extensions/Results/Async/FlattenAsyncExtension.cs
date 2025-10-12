@@ -25,10 +25,6 @@ public static class FlattenAsyncExtension
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
     /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
-    /// <remarks>
-    /// This method is useful for simplifying nested result structures, allowing for easier chaining of operations
-    /// that may fail.
-    /// </remarks>
     public static async Task<Result<T, E>> FlattenAsync<T, E>(
         this Task<Result<Result<T, E>, E>> self
     )
@@ -53,10 +49,6 @@ public static class FlattenAsyncExtension
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
     /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
-    /// <remarks>
-    /// This method is useful for simplifying nested result structures, allowing for easier chaining of operations
-    /// that may fail.
-    /// </remarks>
     public static async ValueTask<Result<T, E>> FlattenAsync<T, E>(
         this ValueTask<Result<Result<T, E>, E>> self
     )

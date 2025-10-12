@@ -22,8 +22,8 @@ public static class MapErrTaskExtension
     /// <param name="self">A <see cref="Task{TResult}"/> that produces a <see cref="Result{T, E}"/>.</param>
     /// <param name="operation">A synchronous function to map the error from <typeparamref name="E"/> to <typeparamref name="F"/>.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> that produces a <see cref="Result{T, F}"/>,
-    /// which is Ok with the original value if the original result was Ok, or Err with the mapped error if it was Err.
+    /// A <see cref="Task{TResult}"/> that yields a <see cref="Result{T, F}"/>,
+    /// which contains the original Ok value or the result of applying the mapping function to the original Err value.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="operation"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
@@ -52,8 +52,8 @@ public static class MapErrTaskExtension
     /// <param name="self">The <see cref="Result{T, E}"/> to map.</param>
     /// <param name="operation">An asynchronous function to map the error from <typeparamref name="E"/> to <typeparamref name="F"/>.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> that produces a <see cref="Result{T, F}"/>,
-    /// which is Ok with the original value if the original result was Ok, or Err with the mapped error if it was Err.
+    /// A <see cref="Task{TResult}"/> that yields a <see cref="Result{T, F}"/>,
+    /// which contains the original Ok value or the result of applying the mapping function to the original Err value.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="operation"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
@@ -86,9 +86,8 @@ public static class MapErrTaskExtension
     /// <param name="self">A <see cref="Task{TResult}"/> that produces a <see cref="Result{T, E}"/>.</param>
     /// <param name="operation">An asynchronous function to map the error from <typeparamref name="E"/> to <typeparamref name="F"/>.</param>
     /// <returns>
-    /// A <see cref="Task{TResult}"/> that produces a <see cref="Result{T, F}"/>,
-    ///
-    /// which is Ok with the original value if the original result was Ok, or Err with the mapped error if it was Err.
+    /// A <see cref="Task{TResult}"/> that yields a <see cref="Result{T, F}"/>,
+    /// which contains the original Ok value or the result of applying the mapping function to the original Err value.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="operation"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>

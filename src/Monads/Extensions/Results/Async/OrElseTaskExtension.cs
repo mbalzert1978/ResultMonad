@@ -22,7 +22,7 @@ public static class OrElseTaskExtension
     /// <param name="operation">A synchronous function to call with the error value if the result is Err.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> that produces a <see cref="Result{T, F}"/>,
-    /// containing the original Ok value if the result is Ok, or the result of calling the operation if the result is Err.
+    /// calls `operation` if the result is [`Err`], otherwise returns the [`Ok`] value of `self`.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="operation"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if <paramref name="operation"/> returns null.</exception>
@@ -51,7 +51,7 @@ public static class OrElseTaskExtension
     /// <param name="operation">An asynchronous function to call with the error value if the result is Err.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> that produces a <see cref="Result{T, F}"/>,
-    /// containing the original Ok value if the result is Ok, or the result of calling the operation if the result is Err.
+    /// calls `operation` if the result is [`Err`], otherwise returns the [`Ok`] value of `self`.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="operation"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if <paramref name="operation"/> returns null.</exception>
@@ -85,7 +85,7 @@ public static class OrElseTaskExtension
     /// <returns>
     /// A <see cref="Task{TResult}"/> that produces a <see cref="Result{T, F}"/>,
     ///
-    /// containing the original Ok value if the result is Ok, or the result of calling the operation if the result is Err.
+    /// calls `operation` if the result is [`Err`], otherwise returns the [`Ok`] value of `self`.
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="operation"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if <paramref name="operation"/> returns null.</exception>

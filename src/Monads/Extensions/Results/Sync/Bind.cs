@@ -28,17 +28,6 @@ public static class BindExtension
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="operation"/> is <c>null</c>.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
     /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
-    /// <example>
-    /// <code>
-    /// var result = new Ok&lt;int, string&gt;(5);
-    /// var bound = result.Bind(x => new Ok&lt;string, string&gt;(x.ToString()));
-    /// // bound is Ok("5")
-    /// 
-    /// var error = new Err&lt;int, string&gt;("Failed");
-    /// var boundError = error.Bind(x => new Ok&lt;string, string&gt;(x.ToString()));
-    /// // boundError is Err("Failed")
-    /// </code>
-    /// </example>
     public static Result<U, E> Bind<T, E, U>(
         this Result<T, E> self,
         Func<T, Result<U, E>> operation

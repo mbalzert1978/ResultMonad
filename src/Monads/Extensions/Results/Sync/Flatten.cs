@@ -17,10 +17,7 @@ public static class FlattenExtension
     /// <typeparam name="T">The type of the success value.</typeparam>
     /// <typeparam name="E">The type of the error value.</typeparam>
     /// <param name="self">The nested result to flatten.</param>
-    /// <returns>
-    /// A flattened <see cref="Result{T, E}"/> which is Ok with the inner value if both results are Ok,
-    /// or Err with the first encountered error.
-    /// </returns>
+    /// <returns>Converts from `Result&lt;Result&lt;T, E&gt;, E&gt;` to `Result&lt;T, E&gt;`.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
     /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
