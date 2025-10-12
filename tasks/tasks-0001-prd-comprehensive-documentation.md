@@ -76,14 +76,91 @@
 ## Tasks
 
 - [ ] 1.0 Setup Documentation Infrastructure
+  - [ ] 1.1 Update `Directory.Build.props` to enable XML documentation generation (`GenerateDocumentationFile=true`)
+  - [ ] 1.2 Review and update `NoWarn` settings to enable CS1591 warnings for missing XML documentation
+  - [ ] 1.3 Create `.documentation/` folder structure with all subdirectories (getting-started, concepts, api-reference, examples, architecture, contributing)
+  - [ ] 1.4 Create documentation style guide template at `.documentation/contributing/documentation-standards.md`
+  - [ ] 1.5 Build project to verify XML documentation files are generated
+  
 - [ ] 2.0 Create XML Docstrings for All Code Elements
+  - [ ] 2.1 Add/enhance XML docstrings for `src/Monads/Models/Unit.cs` (summary, remarks, examples if needed)
+  - [ ] 2.2 Review and enhance XML docstrings for `src/Monads/Models/Results/Result{T, E}.cs` (add missing exception tags, examples)
+  - [ ] 2.3 Add/enhance XML docstrings for `src/Monads/Models/Results/Ok{T, E}.cs` (summary, typeparam, remarks, examples)
+  - [ ] 2.4 Add/enhance XML docstrings for `src/Monads/Models/Results/Err{T, E}.cs` (summary, typeparam, remarks, examples)
+  - [ ] 2.5 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Sync/Bind.cs` (summary, param, returns, exception, example)
+  - [ ] 2.6 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Sync/Map.cs` (summary, param, returns, exception, example)
+  - [ ] 2.7 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Sync/MapErr.cs` (summary, param, returns, exception, example)
+  - [ ] 2.8 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Sync/Match.cs` (summary, param, returns, exception, example)
+  - [ ] 2.9 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Sync/Flatten.cs` (summary, param, returns, exception, example)
+  - [ ] 2.10 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Sync/OrElse.cs` (summary, param, returns, exception, example)
+  - [ ] 2.11 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/BindTaskExtension.cs` (summary, param, returns, exception, example, remarks about async)
+  - [ ] 2.12 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/BindValueTaskExtension.cs` (summary, param, returns, exception, example, remarks about ValueTask)
+  - [ ] 2.13 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/MapTaskExtension.cs` (summary, param, returns, exception, example, remarks)
+  - [ ] 2.14 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/MapValueTaskExtension.cs` (summary, param, returns, exception, example, remarks)
+  - [ ] 2.15 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/MapErrTaskExtension.cs` (summary, param, returns, exception, example, remarks)
+  - [ ] 2.16 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/MapErrValueTaskExtension.cs` (summary, param, returns, exception, example, remarks)
+  - [ ] 2.17 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/MatchTaskExtension.cs` (summary, param, returns, exception, example, remarks)
+  - [ ] 2.18 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/MatchValueTaskExtension.cs` (summary, param, returns, exception, example, remarks)
+  - [ ] 2.19 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/FlattenAsyncExtension.cs` (summary, param, returns, exception, example, remarks)
+  - [ ] 2.20 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/OrElseTaskExtension.cs` (summary, param, returns, exception, example, remarks)
+  - [ ] 2.21 Add comprehensive XML docstrings for `src/Monads/Extensions/Results/Async/OrElseValueTaskExtension.cs` (summary, param, returns, exception, example, remarks)
+  - [ ] 2.22 Add/enhance XML docstrings for `src/Monads/Strings/Constants.cs` (summary for class and all constants)
+  - [ ] 2.23 Build project and verify no CS1591 warnings remain
+  
 - [ ] 3.0 Create Main README and Documentation Structure
+  - [ ] 3.1 Create `README.md` in project root with project overview and description
+  - [ ] 3.2 Add "What is ResultMonad?" section explaining the purpose and benefits
+  - [ ] 3.3 Add "Quick Start" section with installation instructions and minimal working example
+  - [ ] 3.4 Add "Features" section listing key capabilities (Result type, extensions, async support, etc.)
+  - [ ] 3.5 Add "Documentation" section with table of contents linking to all `.documentation/` subdirectories
+  - [ ] 3.6 Add badges section (placeholder for build status, coverage, NuGet version if applicable)
+  - [ ] 3.7 Add "Contributing" and "License" sections with links to detailed docs
+  - [ ] 3.8 Review README for clarity, completeness, and proper Markdown formatting
+  
 - [ ] 4.0 Write Concept and Getting-Started Guides
+  - [ ] 4.1 Create `.documentation/getting-started/installation.md` with detailed installation/setup instructions
+  - [ ] 4.2 Create `.documentation/getting-started/quick-start.md` with step-by-step first usage example
+  - [ ] 4.3 Create `.documentation/getting-started/basic-concepts.md` introducing Result, Ok, Err, and basic operations
+  - [ ] 4.4 Create `.documentation/concepts/monad-pattern.md` explaining monad pattern theory and benefits
+  - [ ] 4.5 Create `.documentation/concepts/result-type.md` with in-depth Result<T,E> explanation
+  - [ ] 4.6 Create `.documentation/concepts/error-handling.md` covering error handling patterns and best practices
+  - [ ] 4.7 Create `.documentation/concepts/async-patterns.md` explaining Task vs ValueTask variants and async workflows
+  - [ ] 4.8 Add cross-references between concept documents and to API reference
+  - [ ] 4.9 Review all concept documents for technical accuracy and clarity
+  
 - [ ] 5.0 Create API Reference Documentation
+  - [ ] 5.1 Create `.documentation/api-reference/models/result.md` documenting Result<T,E> type with syntax, properties, methods
+  - [ ] 5.2 Create `.documentation/api-reference/models/ok.md` documenting Ok<T,E> with construction and usage
+  - [ ] 5.3 Create `.documentation/api-reference/models/err.md` documenting Err<T,E> with construction and usage
+  - [ ] 5.4 Create `.documentation/api-reference/models/unit.md` documenting Unit type and its purpose
+  - [ ] 5.5 Create `.documentation/api-reference/extensions/sync-extensions.md` documenting all sync extension methods (Bind, Map, MapErr, Match, Flatten, OrElse)
+  - [ ] 5.6 Create `.documentation/api-reference/extensions/async-extensions.md` documenting all async extension methods with Task/ValueTask variants
+  - [ ] 5.7 Create `.documentation/api-reference/exceptions.md` listing all possible exceptions with conditions and handling examples
+  - [ ] 5.8 Create `.documentation/examples/common-scenarios.md` with 5-10 real-world usage examples
+  - [ ] 5.9 Create `.documentation/examples/error-handling-patterns.md` with error handling patterns and anti-patterns
+  - [ ] 5.10 Create `.documentation/examples/async-workflows.md` demonstrating async chaining and composition
+  - [ ] 5.11 Create `.documentation/architecture/design-decisions.md` documenting key architectural choices
+  - [ ] 5.12 Create `.documentation/architecture/project-structure.md` explaining folder structure and organization
+  - [ ] 5.13 Create `.documentation/architecture/extension-architecture.md` explaining extension method design patterns
+  - [ ] 5.14 Create `.documentation/contributing/contributing-guidelines.md` with PR process, code review, and contribution workflow
+  - [ ] 5.15 Create `.documentation/contributing/coding-standards.md` documenting coding conventions and style requirements
+  - [ ] 5.16 Add consistent syntax highlighting and code examples to all API reference documents
+  - [ ] 5.17 Review all API reference documents for completeness and accuracy
+  
 - [ ] 6.0 Setup CI/CD Documentation Validation
+  - [ ] 6.1 Create `.github/workflows/` directory if it doesn't exist
+  - [ ] 6.2 Create `.github/workflows/documentation-validation.yml` workflow file
+  - [ ] 6.3 Add workflow step to build project and check for CS1591 warnings
+  - [ ] 6.4 Add workflow step to fail build if XML documentation warnings are present
+  - [ ] 6.5 Add workflow job to validate Markdown files (check for broken links, proper formatting)
+  - [ ] 6.6 Configure workflow to run on pull requests and main branch pushes
+  - [ ] 6.7 Test workflow by creating a test PR with intentional documentation issue
+  - [ ] 6.8 Update `.documentation/contributing/contributing-guidelines.md` to mention documentation requirements
+  - [ ] 6.9 Add documentation coverage report generation (optional: custom script or tool)
+  - [ ] 6.10 Verify all CI/CD checks pass on main branch
 
 ---
 
-**Phase 1 Complete: High-level tasks generated.**
+**Phase 2 Complete: Detailed sub-tasks generated.**
 
-I have generated the high-level tasks based on the PRD. Ready to generate the sub-tasks? Respond with 'Go' to proceed.
+All tasks are now fully specified with actionable sub-tasks. Each sub-task is designed to be completed independently and follows the existing codebase patterns. Start with Task 1.0 (Setup Documentation Infrastructure) as it provides the foundation for all subsequent tasks.
