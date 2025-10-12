@@ -26,7 +26,7 @@ public static class MatchValueTaskExtension
     /// <exception cref="InvalidOperationException">Thrown if either <paramref name="onOk"/> or <paramref name="onErr"/> returns null.</exception>
     /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
     /// <remarks>
-    /// This overload awaits the <paramref name="self"/> task and then delegates to the synchronous <see cref="MatchValueTaskExtension.Match{T, E, U}(Result{T, E}, Func{T, U}, Func{E, U})"/> method.
+    /// This overload awaits the <paramref name="self"/> task and then delegates to the synchronous <see cref="MatchExtension.Match{T, E, U}(Result{T, E}, Func{T, U}, Func{E, U})"/> method.
     /// Both match functions are executed synchronously after the result is awaited.
     /// </remarks>
     public static async ValueTask<U> MatchAsync<T, E, U>(

@@ -2,6 +2,7 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
+using System.Diagnostics;
 using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Sync;
@@ -27,6 +28,17 @@ public static class MapExtension
     /// This method applies the <paramref name="operation"/> function to the Ok value if the result is successful.
     /// If the result is Err, the error is propagated without invoking the mapping function.
     /// </remarks>
+    /// <example>
+    /// <code>
+    /// var result = new Ok&lt;int, string&gt;(42);
+    /// var mapped = result.Map(x => x * 2);
+    /// // mapped is Ok(84)
+    /// 
+    /// var error = new Err&lt;int, string&gt;("Failed");
+    /// var mappedError = error.Map(x => x * 2);
+    /// // mappedError is still Err("Failed")
+    /// </code>
+    /// </example>
     public static Result<U, E> Map<T, E, U>(this Result<T, E> self, Func<T, U> operation)
         where T : notnull
         where E : notnull

@@ -1,6 +1,7 @@
 // <copyright file="FlattenExtension.cs" company="Markus - Iorio">
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
+using System.Diagnostics;
 using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Sync;

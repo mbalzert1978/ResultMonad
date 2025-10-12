@@ -31,11 +31,21 @@ public abstract record Result<T, E>
     /// <summary>
     /// Determines whether the result is <see cref="Ok{TValue, TError}"/> and satisfies the specified predicate.
     /// </summary>
+    /// <param name="predicate">The function to test the success value.</param>
+    /// <returns>
+    /// <c>true</c> if the result is <see cref="Ok{TValue, TError}"/> and the predicate returns <c>true</c>; otherwise, <c>false</c>.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="predicate"/> is <c>null</c>.</exception>
     public abstract bool IsOkAnd(Func<T, bool> predicate);
 
     /// <summary>
     /// Determines whether the result is <see cref="Err{TValue, TError}"/> and satisfies the specified predicate.
     /// </summary>
+    /// <param name="predicate">The function to test the error value.</param>
+    /// <returns>
+    /// <c>true</c> if the result is <see cref="Err{TValue, TError}"/> and the predicate returns <c>true</c>; otherwise, <c>false</c>.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="predicate"/> is <c>null</c>.</exception>
     public abstract bool IsErrAnd(Func<E, bool> predicate);
 
     /// <summary>
