@@ -21,4 +21,18 @@ public sealed record Err<T, E>(E Error) : Result<T, E>
 
     // <inheritdoc/>
     public override bool IsOk => false;
+
+    // <inheritdoc/>
+    public override bool IsErrAnd(Func<E, bool> predicate)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        return predicate(Error);
+    }
+
+    // <inheritdoc/>
+    public override bool IsOkAnd(Func<T, bool> predicate)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        return false;
+    }
 }

@@ -29,6 +29,16 @@ public abstract record Result<T, E>
     public abstract bool IsOk { get; }
 
     /// <summary>
+    /// Determines whether the result is <see cref="Ok{TValue, TError}"/> and satisfies the specified predicate.
+    /// </summary>
+    public abstract bool IsOkAnd(Func<T, bool> predicate);
+
+    /// <summary>
+    /// Determines whether the result is <see cref="Err{TValue, TError}"/> and satisfies the specified predicate.
+    /// </summary>
+    public abstract bool IsErrAnd(Func<E, bool> predicate);
+
+    /// <summary>
     /// Gets a value indicating whether the result represents an error.
     /// </summary>
     /// <value>
