@@ -126,10 +126,10 @@
   - [x] 4.3 Create `.documentation/getting-started/basic-concepts.md` introducing Result, Ok, Err, and basic operations
   - [x] 4.4 Create `.documentation/concepts/monad-pattern.md` explaining monad pattern theory and benefits
   - [x] 4.5 Create `.documentation/concepts/result-type.md` with in-depth Result<T,E> explanation
-  - [ ] 4.6 Create `.documentation/concepts/error-handling.md` covering error handling patterns and best practices
-  - [ ] 4.7 Create `.documentation/concepts/async-patterns.md` explaining Task vs ValueTask variants and async workflows
-  - [ ] 4.8 Add cross-references between concept documents and to API reference
-  - [ ] 4.9 Review all concept documents for technical accuracy and clarity
+  - [x] 4.6 Create `.documentation/concepts/error-handling.md` covering error handling patterns and best practices
+  - [x] 4.7 Create `.documentation/concepts/async-patterns.md` explaining Task vs ValueTask variants and async workflows
+  - [x] 4.8 Add cross-references between concept documents and to API reference
+  - [x] 4.9 Review all concept documents for technical accuracy and clarity
   
 - [ ] 5.0 Create API Reference Documentation
   - [ ] 5.1 Create `.documentation/api-reference/models/result.md` documenting Result<T,E> type with syntax, properties, methods
