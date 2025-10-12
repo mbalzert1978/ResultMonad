@@ -9,16 +9,16 @@ namespace ResultMonad;
 /// <summary>
 /// Represents the base type for a discriminated union modeling either a success or an error.
 /// </summary>
-/// <typeparam name="TValue">The type of the success value.</typeparam>
-/// <typeparam name="TError">The type of the error value.</typeparam>
+/// <typeparam name="T">The type of the success value.</typeparam>
+/// <typeparam name="E">The type of the error value.</typeparam>
 /// <remarks>
 /// This abstract record serves as the foundation for the Result monad pattern.
 /// Use derived types <see cref="Ok{TValue, TError}"/> and <see cref="Err{TValue, TError}"/>
 /// to represent success and failure states respectively.
 /// </remarks>
-public abstract record Result<TValue, TError>
-    where TError : notnull
-    where TValue : notnull
+public abstract record Result<T, E>
+    where E : notnull
+    where T : notnull
 {
     /// <summary>
     /// Gets a value indicating whether the result represents a success.
