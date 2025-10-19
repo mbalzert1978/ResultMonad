@@ -19,6 +19,9 @@ public abstract record Option<T>
     /// <summary>
     /// Gets a value indicating whether the option has no value.
     /// </summary>
+    /// <returns>
+    /// <c>true</c> if the option is <see cref="None{T}"/>; otherwise, <c>false</c>.
+    /// </returns>
     public bool IsNone => !HasValue;
 }
 
