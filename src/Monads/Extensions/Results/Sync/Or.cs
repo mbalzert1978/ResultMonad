@@ -26,10 +26,7 @@ public static class OrExtension
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="res"/> is <see langword="null"/>.</exception>
     /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
-    public static Result<T, F> Or<T, E, F>(
-        this Result<T, E> self,
-        Result<T, F> res
-    )
+    public static Result<T, F> Or<T, E, F>(this Result<T, E> self, Result<T, F> res)
         where T : notnull
         where E : notnull
         where F : notnull

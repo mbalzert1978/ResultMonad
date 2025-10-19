@@ -21,7 +21,6 @@ public sealed class OrTests
         Result<int, string> x = Success<int, string>(2);
         Result<int, string> y = Failure<int, string>("late error");
 
-
         Result<int, string> result = x.Or(y);
 
         // Assert
