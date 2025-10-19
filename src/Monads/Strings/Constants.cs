@@ -18,6 +18,14 @@ internal static class Constants
     public const string ExhaustedResultError = "Result must be either Ok or Err.";
 
     /// <summary>
+    /// Gets the error message used when an Option type is exhaustively matched but is neither Some nor None.
+    /// </summary>
+    /// <value>
+    /// The error message: "Option must be either Some or None."
+    /// </value>
+    public const string ExhaustedOptionError = "Option must be either Some or None.";
+
+    /// <summary>
     /// Gets the error message used when an operation function returns null.
     /// </summary>
     /// <value>
