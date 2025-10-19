@@ -79,7 +79,7 @@ public static class MatchValueTaskExtension
                 ?? throw new InvalidOperationException(Strings.Constants.OperationNullError),
             Err<T, E>(var error) => await onErr(error).ConfigureAwait(false)
                 ?? throw new InvalidOperationException(Strings.Constants.OperationNullError),
-            _ => throw new UnreachableException(Strings.Constants.ExhaustedError),
+            _ => throw new UnreachableException(Strings.Constants.ExhaustedResultError),
         };
 
         return result;

@@ -39,7 +39,7 @@ public static class MatchExtension
                 ?? throw new InvalidOperationException(Strings.Constants.OperationNullError),
             Err<T, E>(var error) => onErr(error)
                 ?? throw new InvalidOperationException(Strings.Constants.OperationNullError),
-            _ => throw new UnreachableException(Strings.Constants.ExhaustedError),
+            _ => throw new UnreachableException(Strings.Constants.ExhaustedResultError),
         };
 
         return result;
