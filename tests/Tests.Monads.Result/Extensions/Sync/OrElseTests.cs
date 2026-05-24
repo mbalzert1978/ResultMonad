@@ -5,7 +5,7 @@
 using System.Globalization;
 using Monads.Results;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Sync;
 
@@ -21,9 +21,9 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenCalledWithOkResult_ShouldReturnOriginalOkValue()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
-        Result<int, int> recovered = result.OrElse(error => Failure<int, int>(error.Length));
+        Result<int, int> recovered = result.OrElse(error => Err<int, int>(error.Length));
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(SuccessValue);
@@ -32,9 +32,9 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenCalledWithErrResult_ShouldCallOperation()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
-        Result<int, int> recovered = result.OrElse(error => Failure<int, int>(error.Length));
+        Result<int, int> recovered = result.OrElse(error => Err<int, int>(error.Length));
 
         recovered.IsErr.Should().BeTrue();
         recovered.Match(value => 0, error => error).Should().Be(ErrorMessage.Length);
@@ -43,9 +43,9 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenCalledWithErrAndOperationReturnsOk_ShouldRecoverWithOkValue()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
-        Result<int, int> recovered = result.OrElse(error => Success<int, int>(FallbackValue));
+        Result<int, int> recovered = result.OrElse(error => Ok<int, int>(FallbackValue));
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(FallbackValue);
@@ -56,7 +56,7 @@ public sealed class OrElseTests
     {
         Result<int, string> result = null!;
 
-        Func<Result<int, int>> act = () => result.OrElse(error => Failure<int, int>(error.Length));
+        Func<Result<int, int>> act = () => result.OrElse(error => Err<int, int>(error.Length));
 
         act.Should().Throw<ArgumentNullException>();
     }
@@ -64,7 +64,7 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenOperationIsNull_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Func<Result<int, int>> act = () => result.OrElse<int, string, int>(null!);
 
@@ -74,10 +74,10 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenRecoveringErrToOkWithString_ShouldReturnCorrectValue()
     {
-        Result<string, int> result = Failure<string, int>(404);
+        Result<string, int> result = Err<string, int>(404);
 
         Result<string, string> recovered = result.OrElse(error =>
-            Success<string, string>("Recovered")
+            Ok<string, string>("Recovered")
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -87,10 +87,10 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenRecoveringErrToErrWithDifferentType_ShouldReturnNewError()
     {
-        Result<string, int> result = Failure<string, int>(404);
+        Result<string, int> result = Err<string, int>(404);
 
         Result<string, string> recovered = result.OrElse(error =>
-            Failure<string, string>($"Error: {error}")
+            Err<string, string>($"Error: {error}")
         );
 
         recovered.IsErr.Should().BeTrue();
@@ -100,13 +100,13 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenOkResultWithComplexType_ShouldPreserveValue()
     {
-        Result<(bool Success, int Value), string> result = Success<
+        Result<(bool Success, int Value), string> result = Ok<
             (bool Success, int Value),
             string
         >((true, SuccessValue));
 
         Result<(bool Success, int Value), int> recovered = result.OrElse(error =>
-            Failure<(bool Success, int Value), int>(0)
+            Err<(bool Success, int Value), int>(0)
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -118,13 +118,13 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenErrResultWithComplexTypeRecovery_ShouldReturnRecoveredValue()
     {
-        Result<(bool Success, int Value), string> result = Failure<
+        Result<(bool Success, int Value), string> result = Err<
             (bool Success, int Value),
             string
         >(ErrorMessage);
 
         Result<(bool Success, int Value), int> recovered = result.OrElse(error =>
-            Success<(bool Success, int Value), int>((false, FallbackValue))
+            Ok<(bool Success, int Value), int>((false, FallbackValue))
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -136,13 +136,13 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenChainedWithMultipleOperations_ShouldWorkCorrectly()
     {
-        Result<int, int> result = Failure<int, int>(10);
+        Result<int, int> result = Err<int, int>(10);
 
         Result<int, int> recovered = result
             .OrElse(error =>
-                error < 20 ? Failure<int, int>(error * 2) : Success<int, int>(FallbackValue)
+                error < 20 ? Err<int, int>(error * 2) : Ok<int, int>(FallbackValue)
             )
-            .OrElse(error => Success<int, int>(error + 5));
+            .OrElse(error => Ok<int, int>(error + 5));
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(25);
@@ -151,11 +151,11 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenChainedAndFirstSucceeds_ShouldSkipSecondOperation()
     {
-        Result<int, int> result = Failure<int, int>(10);
+        Result<int, int> result = Err<int, int>(10);
 
         Result<int, int> recovered = result
-            .OrElse(error => Success<int, int>(FallbackValue))
-            .OrElse(error => Success<int, int>(0));
+            .OrElse(error => Ok<int, int>(FallbackValue))
+            .OrElse(error => Ok<int, int>(0));
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(FallbackValue);
@@ -164,10 +164,10 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenRecoveringWithCultureSpecificOperation_ShouldWorkCorrectly()
     {
-        Result<string, string> result = Failure<string, string>("error");
+        Result<string, string> result = Err<string, string>("error");
 
         Result<string, string> recovered = result.OrElse(error =>
-            Success<string, string>(error.ToUpper(CultureInfo.InvariantCulture))
+            Ok<string, string>(error.ToUpper(CultureInfo.InvariantCulture))
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -177,10 +177,10 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenRecoveringBasedOnErrorCondition_ShouldWorkCorrectly()
     {
-        Result<int, int> result = Failure<int, int>(404);
+        Result<int, int> result = Err<int, int>(404);
 
         Result<int, string> recovered = result.OrElse(error =>
-            error == 404 ? Success<int, string>(-1) : Failure<int, string>("Unknown error")
+            error == 404 ? Ok<int, string>(-1) : Err<int, string>("Unknown error")
         );
 
         recovered.IsOk.Should().BeTrue();

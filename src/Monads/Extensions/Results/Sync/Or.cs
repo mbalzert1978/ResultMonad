@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Sync;
 
@@ -34,6 +33,6 @@ public static class OrExtension
         ArgumentNullException.ThrowIfNull(self);
         ArgumentNullException.ThrowIfNull(res);
 
-        return self.Match(Success<T, F>, _ => res);
+        return self.Match(Result.Ok<T, F>, _ => res);
     }
 }

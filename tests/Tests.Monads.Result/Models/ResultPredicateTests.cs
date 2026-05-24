@@ -3,7 +3,8 @@
 // </copyright>
 
 using Monads.Results;
-using static Monads.Results.ResultFactory;
+using Monads.Results.Extensions.Sync;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests;
 
@@ -18,7 +19,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsOkAnd_WhenCalledOnOkWithTruePredicate_ShouldReturnTrue()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         bool isOkAnd = result.IsOkAnd(value => value == SuccessValue);
 
@@ -28,7 +29,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsOkAnd_WhenCalledOnOkWithFalsePredicate_ShouldReturnFalse()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         bool isOkAnd = result.IsOkAnd(value => value > 100);
 
@@ -38,7 +39,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsOkAnd_WhenCalledOnErr_ShouldReturnFalse()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         bool isOkAnd = result.IsOkAnd(value => value == SuccessValue);
 
@@ -48,7 +49,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsOkAnd_WhenCalledOnErrWithTruePredicate_ShouldReturnFalse()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         bool isOkAnd = result.IsOkAnd(value => true);
 
@@ -58,7 +59,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsOkAnd_WhenCalledWithComplexPredicate_ShouldEvaluateCorrectly()
     {
-        Result<int, string> result = Success<int, string>(50);
+        Result<int, string> result = Ok<int, string>(50);
 
         bool isOkAnd = result.IsOkAnd(value => value > 10 && value < 100);
 
@@ -68,7 +69,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsOkAnd_WhenCalledOnOkWithStringType_ShouldWorkCorrectly()
     {
-        Result<string, string> result = Success<string, string>("test");
+        Result<string, string> result = Ok<string, string>("test");
 
         bool isOkAnd = result.IsOkAnd(value => value.StartsWith('t'));
 
@@ -78,7 +79,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsErrAnd_WhenCalledOnErrWithTruePredicate_ShouldReturnTrue()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         bool isErrAnd = result.IsErrAnd(error => error == ErrorMessage);
 
@@ -88,7 +89,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsErrAnd_WhenCalledOnErrWithFalsePredicate_ShouldReturnFalse()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         bool isErrAnd = result.IsErrAnd(error => error.Contains("Different"));
 
@@ -98,7 +99,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsErrAnd_WhenCalledOnOk_ShouldReturnFalse()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         bool isErrAnd = result.IsErrAnd(error => error == ErrorMessage);
 
@@ -108,7 +109,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsErrAnd_WhenCalledOnOkWithTruePredicate_ShouldReturnFalse()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         bool isErrAnd = result.IsErrAnd(error => true);
 
@@ -118,7 +119,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsErrAnd_WhenCalledWithComplexPredicate_ShouldEvaluateCorrectly()
     {
-        Result<int, string> result = Failure<int, string>("Error: Something went wrong");
+        Result<int, string> result = Err<int, string>("Error: Something went wrong");
 
         bool isErrAnd = result.IsErrAnd(error =>
             error.StartsWith("Error:", StringComparison.Ordinal) && error.Length > 5
@@ -130,7 +131,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsErrAnd_WhenCalledOnErrWithIntType_ShouldWorkCorrectly()
     {
-        Result<string, int> result = Failure<string, int>(404);
+        Result<string, int> result = Err<string, int>(404);
 
         bool isErrAnd = result.IsErrAnd(error => error >= 400 && error < 500);
 
@@ -140,7 +141,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsOkAnd_WhenChainedWithIsOkCheck_ShouldWorkCorrectly()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         bool isValid = result.IsOk && result.IsOkAnd(value => value > 0);
 
@@ -150,7 +151,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsErrAnd_WhenChainedWithIsErrCheck_ShouldWorkCorrectly()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         bool isValid = result.IsErr && result.IsErrAnd(error => !string.IsNullOrEmpty(error));
 
@@ -160,7 +161,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsOkAnd_WhenUsedForValidation_ShouldProvideCorrectResult()
     {
-        Result<int, string> result = Success<int, string>(15);
+        Result<int, string> result = Ok<int, string>(15);
 
         bool isValidRange = result.IsOkAnd(value => value >= 10 && value <= 20);
         bool isOutOfRange = result.IsOkAnd(value => value < 10);
@@ -172,7 +173,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsErrAnd_WhenUsedForErrorTypeChecking_ShouldProvideCorrectResult()
     {
-        Result<int, string> result = Failure<int, string>("ValidationError: Invalid input");
+        Result<int, string> result = Err<int, string>("ValidationError: Invalid input");
 
         bool isValidationError = result.IsErrAnd(error =>
             error.StartsWith("ValidationError:", StringComparison.Ordinal)
@@ -188,7 +189,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsOkAnd_WhenPredicateIsNull_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Action act = () => result.IsOkAnd(null!);
 
@@ -198,7 +199,7 @@ public sealed class ResultPredicateTests
     [Fact]
     public void IsErrAnd_WhenPredicateIsNull_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Action act = () => result.IsErrAnd(null!);
 

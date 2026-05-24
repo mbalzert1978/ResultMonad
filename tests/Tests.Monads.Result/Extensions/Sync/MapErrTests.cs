@@ -5,7 +5,7 @@
 using System.Globalization;
 using Monads.Results;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Sync;
 
@@ -20,7 +20,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenCalledWithOkResult_ShouldPreserveValue()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<int, int> mapped = result.MapErr(error => error.Length);
 
@@ -31,7 +31,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenCalledWithErrResult_ShouldMapError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<int, int> mapped = result.MapErr(error => error.Length);
 
@@ -52,7 +52,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenOperationIsNull_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Func<Result<int, int>> act = () => result.MapErr<int, string, int>(null!);
 
@@ -62,7 +62,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenMappingErrToString_ShouldReturnCorrectString()
     {
-        Result<int, int> result = Failure<int, int>(404);
+        Result<int, int> result = Err<int, int>(404);
 
         Result<int, string> mapped = result.MapErr(error => $"Error code: {error}");
 
@@ -73,7 +73,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenMappingOkToString_ShouldPreserveValue()
     {
-        Result<int, int> result = Success<int, int>(SuccessValue);
+        Result<int, int> result = Ok<int, int>(SuccessValue);
 
         Result<int, string> mapped = result.MapErr(error => $"Error code: {error}");
 
@@ -84,7 +84,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenMappingErrToComplexType_ShouldReturnCorrectType()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<int, (bool IsError, string Message)> mapped = result.MapErr(error => (true, error));
 
@@ -100,7 +100,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenMappingOkToComplexType_ShouldPreserveValue()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<int, (bool IsError, string Message)> mapped = result.MapErr(error => (true, error));
 
@@ -111,7 +111,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenChainedWithMultipleOperations_ShouldWorkCorrectly()
     {
-        Result<int, int> result = Failure<int, int>(10);
+        Result<int, int> result = Err<int, int>(10);
 
         Result<int, int> mapped = result.MapErr(error => error + 5).MapErr(error => error * 2);
 
@@ -122,7 +122,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenChainedAndHasOkValue_ShouldPreserveValue()
     {
-        Result<int, int> result = Success<int, int>(SuccessValue);
+        Result<int, int> result = Ok<int, int>(SuccessValue);
 
         Result<int, int> mapped = result.MapErr(error => error + 5).MapErr(error => error * 2);
 
@@ -133,7 +133,7 @@ public sealed class MapErrTests
     [Fact]
     public void MapErr_WhenMappingWithCultureSpecificOperation_ShouldWorkCorrectly()
     {
-        Result<int, string> result = Failure<int, string>("error");
+        Result<int, string> result = Err<int, string>("error");
 
         Result<int, string> mapped = result.MapErr(error =>
             error.ToUpper(CultureInfo.InvariantCulture)

@@ -4,7 +4,7 @@
 
 using Monads.Results;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Sync;
 
@@ -20,8 +20,8 @@ public sealed class FlattenTests
     [Fact]
     public void Flatten_WhenCalledWithOkOkResult_ShouldReturnInnerOkValue()
     {
-        Result<int, string> innerResult = Success<int, string>(SuccessValue);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Ok<int, string>(SuccessValue);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
 
@@ -34,8 +34,8 @@ public sealed class FlattenTests
     [Fact]
     public void Flatten_WhenCalledWithOkErrResult_ShouldReturnInnerErrValue()
     {
-        Result<int, string> innerResult = Failure<int, string>(InnerErrorMessage);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Err<int, string>(InnerErrorMessage);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
 
@@ -48,7 +48,7 @@ public sealed class FlattenTests
     [Fact]
     public void Flatten_WhenCalledWithErrResult_ShouldReturnOuterErrValue()
     {
-        Result<Result<int, string>, string> nestedResult = Failure<Result<int, string>, string>(
+        Result<Result<int, string>, string> nestedResult = Err<Result<int, string>, string>(
             ErrorMessage
         );
 
@@ -71,8 +71,8 @@ public sealed class FlattenTests
     [Fact]
     public void Flatten_WhenCalledWithComplexNestedOkOk_ShouldWorkCorrectly()
     {
-        Result<string, string> innerResult = Success<string, string>("inner value");
-        Result<Result<string, string>, string> nestedResult = Success<
+        Result<string, string> innerResult = Ok<string, string>("inner value");
+        Result<Result<string, string>, string> nestedResult = Ok<
             Result<string, string>,
             string
         >(innerResult);
@@ -86,8 +86,8 @@ public sealed class FlattenTests
     [Fact]
     public void Flatten_WhenChainedWithMap_ShouldWorkCorrectly()
     {
-        Result<int, string> innerResult = Success<int, string>(10);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Ok<int, string>(10);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
 
@@ -100,14 +100,14 @@ public sealed class FlattenTests
     [Fact]
     public void Flatten_WhenChainedWithBind_ShouldWorkCorrectly()
     {
-        Result<int, string> innerResult = Success<int, string>(10);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Ok<int, string>(10);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
 
         Result<int, string> result = nestedResult
             .Flatten()
-            .Bind(value => Success<int, string>(value + 5));
+            .Bind(value => Ok<int, string>(value + 5));
 
         result.IsOk.Should().BeTrue();
         result.Match(value => value, error => 0).Should().Be(15);
@@ -116,8 +116,8 @@ public sealed class FlattenTests
     [Fact]
     public void Flatten_WhenCalledWithDifferentTypes_ShouldWorkCorrectly()
     {
-        Result<bool, int> innerResult = Success<bool, int>(true);
-        Result<Result<bool, int>, int> nestedResult = Success<Result<bool, int>, int>(innerResult);
+        Result<bool, int> innerResult = Ok<bool, int>(true);
+        Result<Result<bool, int>, int> nestedResult = Ok<Result<bool, int>, int>(innerResult);
 
         Result<bool, int> flattened = nestedResult.Flatten();
 
@@ -128,7 +128,7 @@ public sealed class FlattenTests
     [Fact]
     public void Flatten_WhenCalledWithDifferentTypesAndError_ShouldPropagateError()
     {
-        Result<Result<bool, int>, int> nestedResult = Failure<Result<bool, int>, int>(404);
+        Result<Result<bool, int>, int> nestedResult = Err<Result<bool, int>, int>(404);
 
         Result<bool, int> flattened = nestedResult.Flatten();
 

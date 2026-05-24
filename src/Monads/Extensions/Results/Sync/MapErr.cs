@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Sync;
 
@@ -36,6 +35,6 @@ public static class MapErrExtension
         ArgumentNullException.ThrowIfNull(self);
         ArgumentNullException.ThrowIfNull(operation);
 
-        return self.Match(Success<T, F>, err => Failure<T, F>(operation(err)));
+        return self.Match(Result.Ok<T, F>, err => Result.Err<T, F>(operation(err)));
     }
 }

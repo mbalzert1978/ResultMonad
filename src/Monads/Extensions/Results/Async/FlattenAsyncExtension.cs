@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Async;
 
@@ -33,7 +32,7 @@ public static class FlattenAsyncExtension
     {
         ArgumentNullException.ThrowIfNull(self);
 
-        return await self.MatchAsync(ok => ok, Failure<T, E>).ConfigureAwait(false);
+        return await self.MatchAsync(ok => ok, Result.Err<T, E>).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -53,5 +52,5 @@ public static class FlattenAsyncExtension
         this ValueTask<Result<Result<T, E>, E>> self
     )
         where T : notnull
-        where E : notnull => await self.MatchAsync(ok => ok, Failure<T, E>).ConfigureAwait(false);
+        where E : notnull => await self.MatchAsync(ok => ok, Result.Err<T, E>).ConfigureAwait(false);
 }

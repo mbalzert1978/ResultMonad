@@ -6,7 +6,7 @@ using System.Globalization;
 using Monads.Results;
 using Monads.Results.Extensions.Async;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Async;
 
@@ -23,11 +23,11 @@ public sealed class OrElseValueTaskExtensionTests
     public async Task OrElseAsync_WhenCalledWithValueTaskOkAndSyncFunction_ShouldReturnOriginalOkValue()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         Result<int, int> recovered = await resultTask.OrElseAsync(error =>
-            Failure<int, int>(error.Length)
+            Err<int, int>(error.Length)
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -38,11 +38,11 @@ public sealed class OrElseValueTaskExtensionTests
     public async Task OrElseAsync_WhenCalledWithValueTaskErrAndSyncFunction_ShouldCallOperation()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Result<int, int> recovered = await resultTask.OrElseAsync(error =>
-            Failure<int, int>(error.Length)
+            Err<int, int>(error.Length)
         );
 
         recovered.IsErr.Should().BeTrue();
@@ -53,11 +53,11 @@ public sealed class OrElseValueTaskExtensionTests
     public async Task OrElseAsync_WhenCalledWithValueTaskErrAndSyncFunctionReturnsOk_ShouldRecoverWithOkValue()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Result<int, int> recovered = await resultTask.OrElseAsync(error =>
-            Success<int, int>(FallbackValue)
+            Ok<int, int>(FallbackValue)
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -67,10 +67,10 @@ public sealed class OrElseValueTaskExtensionTests
     [Fact]
     public async Task OrElseAsync_WhenCalledWithSyncOkAndAsyncFunction_ShouldReturnOriginalOkValue()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<int, int> recovered = await result.OrElseAsync(error =>
-            ValueTask.FromResult(Failure<int, int>(error.Length))
+            ValueTask.FromResult(Err<int, int>(error.Length))
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -80,10 +80,10 @@ public sealed class OrElseValueTaskExtensionTests
     [Fact]
     public async Task OrElseAsync_WhenCalledWithSyncErrAndAsyncFunction_ShouldCallOperation()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<int, int> recovered = await result.OrElseAsync(error =>
-            ValueTask.FromResult(Failure<int, int>(error.Length))
+            ValueTask.FromResult(Err<int, int>(error.Length))
         );
 
         recovered.IsErr.Should().BeTrue();
@@ -93,10 +93,10 @@ public sealed class OrElseValueTaskExtensionTests
     [Fact]
     public async Task OrElseAsync_WhenCalledWithSyncErrAndAsyncFunctionReturnsOk_ShouldRecoverWithOkValue()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<int, int> recovered = await result.OrElseAsync(error =>
-            ValueTask.FromResult(Success<int, int>(FallbackValue))
+            ValueTask.FromResult(Ok<int, int>(FallbackValue))
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -107,11 +107,11 @@ public sealed class OrElseValueTaskExtensionTests
     public async Task OrElseAsync_WhenCalledWithValueTaskOkAndAsyncFunction_ShouldReturnOriginalOkValue()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         Result<int, int> recovered = await resultTask.OrElseAsync(error =>
-            ValueTask.FromResult(Failure<int, int>(error.Length))
+            ValueTask.FromResult(Err<int, int>(error.Length))
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -122,11 +122,11 @@ public sealed class OrElseValueTaskExtensionTests
     public async Task OrElseAsync_WhenCalledWithValueTaskErrAndAsyncFunction_ShouldCallOperation()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Result<int, int> recovered = await resultTask.OrElseAsync(error =>
-            ValueTask.FromResult(Failure<int, int>(error.Length))
+            ValueTask.FromResult(Err<int, int>(error.Length))
         );
 
         recovered.IsErr.Should().BeTrue();
@@ -137,11 +137,11 @@ public sealed class OrElseValueTaskExtensionTests
     public async Task OrElseAsync_WhenCalledWithValueTaskErrAndAsyncFunctionReturnsOk_ShouldRecoverWithOkValue()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Result<int, int> recovered = await resultTask.OrElseAsync(error =>
-            ValueTask.FromResult(Success<int, int>(FallbackValue))
+            ValueTask.FromResult(Ok<int, int>(FallbackValue))
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -152,7 +152,7 @@ public sealed class OrElseValueTaskExtensionTests
     public async Task OrElseAsync_WhenOperationIsNullWithValueTask_ShouldThrowArgumentNullException()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
         Func<string, Result<int, int>> nullOperation = null!;
 
@@ -164,7 +164,7 @@ public sealed class OrElseValueTaskExtensionTests
     [Fact]
     public async Task OrElseAsync_WhenOperationIsNullWithSyncResult_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
         Func<string, ValueTask<Result<int, int>>> nullOperation = null!;
 
         Func<Task<Result<int, int>>> act = async () => await result.OrElseAsync(nullOperation);
@@ -175,10 +175,10 @@ public sealed class OrElseValueTaskExtensionTests
     [Fact]
     public async Task OrElseAsync_WhenRecoveringErrToOkWithString_ShouldReturnCorrectValue()
     {
-        ValueTask<Result<string, int>> resultTask = ValueTask.FromResult(Failure<string, int>(404));
+        ValueTask<Result<string, int>> resultTask = ValueTask.FromResult(Err<string, int>(404));
 
         Result<string, string> recovered = await resultTask.OrElseAsync(error =>
-            Success<string, string>("Recovered")
+            Ok<string, string>("Recovered")
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -188,13 +188,13 @@ public sealed class OrElseValueTaskExtensionTests
     [Fact]
     public async Task OrElseAsync_WhenChainedWithMultipleOperations_ShouldWorkCorrectly()
     {
-        ValueTask<Result<int, int>> resultTask = ValueTask.FromResult(Failure<int, int>(10));
+        ValueTask<Result<int, int>> resultTask = ValueTask.FromResult(Err<int, int>(10));
 
         Result<int, int> recovered = await resultTask
             .OrElseAsync(error =>
-                error < 20 ? Failure<int, int>(error * 2) : Success<int, int>(FallbackValue)
+                error < 20 ? Err<int, int>(error * 2) : Ok<int, int>(FallbackValue)
             )
-            .OrElseAsync(error => Success<int, int>(error + 5));
+            .OrElseAsync(error => Ok<int, int>(error + 5));
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => 0).Should().Be(25);
@@ -204,11 +204,11 @@ public sealed class OrElseValueTaskExtensionTests
     public async Task OrElseAsync_WhenRecoveringWithCultureSpecificOperation_ShouldWorkCorrectly()
     {
         ValueTask<Result<string, string>> resultTask = ValueTask.FromResult(
-            Failure<string, string>("error")
+            Err<string, string>("error")
         );
 
         Result<string, string> recovered = await resultTask.OrElseAsync(error =>
-            Success<string, string>(error.ToUpper(CultureInfo.InvariantCulture))
+            Ok<string, string>(error.ToUpper(CultureInfo.InvariantCulture))
         );
 
         recovered.IsOk.Should().BeTrue();
@@ -218,10 +218,10 @@ public sealed class OrElseValueTaskExtensionTests
     [Fact]
     public async Task OrElseAsync_WhenRecoveringBasedOnErrorCondition_ShouldWorkCorrectly()
     {
-        ValueTask<Result<int, int>> resultTask = ValueTask.FromResult(Failure<int, int>(404));
+        ValueTask<Result<int, int>> resultTask = ValueTask.FromResult(Err<int, int>(404));
 
         Result<int, string> recovered = await resultTask.OrElseAsync(error =>
-            error == 404 ? Success<int, string>(-1) : Failure<int, string>("Unknown error")
+            error == 404 ? Ok<int, string>(-1) : Err<int, string>("Unknown error")
         );
 
         recovered.IsOk.Should().BeTrue();

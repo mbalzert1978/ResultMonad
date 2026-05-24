@@ -6,7 +6,7 @@ using System.Globalization;
 using Monads.Results;
 using Monads.Results.Extensions.Async;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Async;
 
@@ -22,7 +22,7 @@ public sealed class MapErrValueTaskExtensionTests
     public async Task MapErrAsync_WhenCalledWithValueTaskOkAndSyncFunction_ShouldPreserveValue()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         Result<int, int> mapped = await resultTask.MapErrAsync(error => error.Length);
@@ -35,7 +35,7 @@ public sealed class MapErrValueTaskExtensionTests
     public async Task MapErrAsync_WhenCalledWithValueTaskErrAndSyncFunction_ShouldMapError()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Result<int, int> mapped = await resultTask.MapErrAsync(error => error.Length);
@@ -47,7 +47,7 @@ public sealed class MapErrValueTaskExtensionTests
     [Fact]
     public async Task MapErrAsync_WhenCalledWithSyncOkAndAsyncFunction_ShouldPreserveValue()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<int, int> mapped = await result.MapErrAsync(error =>
             ValueTask.FromResult(error.Length)
@@ -60,7 +60,7 @@ public sealed class MapErrValueTaskExtensionTests
     [Fact]
     public async Task MapErrAsync_WhenCalledWithSyncErrAndAsyncFunction_ShouldMapError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<int, int> mapped = await result.MapErrAsync(error =>
             ValueTask.FromResult(error.Length)
@@ -74,7 +74,7 @@ public sealed class MapErrValueTaskExtensionTests
     public async Task MapErrAsync_WhenCalledWithValueTaskOkAndAsyncFunction_ShouldPreserveValue()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         Result<int, int> mapped = await resultTask.MapErrAsync(error =>
@@ -89,7 +89,7 @@ public sealed class MapErrValueTaskExtensionTests
     public async Task MapErrAsync_WhenCalledWithValueTaskErrAndAsyncFunction_ShouldMapError()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Result<int, int> mapped = await resultTask.MapErrAsync(error =>
@@ -104,7 +104,7 @@ public sealed class MapErrValueTaskExtensionTests
     public async Task MapErrAsync_WhenOperationIsNullWithValueTask_ShouldThrowArgumentNullException()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
         Func<string, int> nullOperation = null!;
 
@@ -116,7 +116,7 @@ public sealed class MapErrValueTaskExtensionTests
     [Fact]
     public async Task MapErrAsync_WhenOperationIsNullWithSyncResult_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
         Func<string, ValueTask<int>> nullOperation = null!;
 
         Func<Task<Result<int, int>>> act = async () => await result.MapErrAsync(nullOperation);
@@ -127,7 +127,7 @@ public sealed class MapErrValueTaskExtensionTests
     [Fact]
     public async Task MapErrAsync_WhenMappingErrToString_ShouldReturnCorrectString()
     {
-        ValueTask<Result<int, int>> resultTask = ValueTask.FromResult(Failure<int, int>(404));
+        ValueTask<Result<int, int>> resultTask = ValueTask.FromResult(Err<int, int>(404));
 
         Result<int, string> mapped = await resultTask.MapErrAsync(error => $"Error code: {error}");
 
@@ -139,7 +139,7 @@ public sealed class MapErrValueTaskExtensionTests
     public async Task MapErrAsync_WhenMappingErrToComplexType_ShouldReturnCorrectType()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Result<int, (bool IsError, string Message)> mapped = await resultTask.MapErrAsync(error =>
@@ -158,7 +158,7 @@ public sealed class MapErrValueTaskExtensionTests
     [Fact]
     public async Task MapErrAsync_WhenChainedWithMultipleOperations_ShouldWorkCorrectly()
     {
-        ValueTask<Result<int, int>> resultTask = ValueTask.FromResult(Failure<int, int>(10));
+        ValueTask<Result<int, int>> resultTask = ValueTask.FromResult(Err<int, int>(10));
 
         Result<int, int> mapped = await resultTask
             .MapErrAsync(error => error + 5)
@@ -172,7 +172,7 @@ public sealed class MapErrValueTaskExtensionTests
     public async Task MapErrAsync_WhenMappingWithCultureSpecificOperation_ShouldWorkCorrectly()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>("error")
+            Err<int, string>("error")
         );
 
         Result<int, string> mapped = await resultTask.MapErrAsync(error =>

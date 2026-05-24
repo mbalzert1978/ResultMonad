@@ -3,7 +3,8 @@
 // </copyright>
 
 using Monads.Results;
-using static Monads.Results.ResultFactory;
+using Monads.Results.Extensions.Sync;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests;
 
@@ -214,18 +215,16 @@ public sealed class UnitTests
     [Fact]
     public void Unit_WhenUsedInResultType_ShouldRepresentNoValue()
     {
-        Result<Unit, string> result = Success<Unit, string>(Unit.Default);
+        Result<Unit, string> result = Ok<Unit, string>(Unit.Default);
 
-        result.Should().BeOfType<Ok<Unit, string>>();
         result.IsOk.Should().BeTrue();
     }
 
     [Fact]
     public void Unit_WhenUsedInErrorResult_ShouldWorkCorrectly()
     {
-        Result<Unit, string> result = Failure<Unit, string>("error");
+        Result<Unit, string> result = Err<Unit, string>("error");
 
-        result.Should().BeOfType<Err<Unit, string>>();
         result.IsErr.Should().BeTrue();
     }
 }
