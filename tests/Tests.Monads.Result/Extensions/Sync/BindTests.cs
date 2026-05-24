@@ -5,7 +5,7 @@
 using System.Globalization;
 using Monads.Results;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Sync;
 
@@ -20,9 +20,9 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenCalledWithOkResult_ShouldBindValue()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
-        Result<int, string> bound = result.Bind(value => Success<int, string>(value * 2));
+        Result<int, string> bound = result.Bind(value => Ok<int, string>(value * 2));
 
         bound.IsOk.Should().BeTrue();
         bound.Match(value => value, error => 0).Should().Be(84);
@@ -31,9 +31,9 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenCalledWithErrResult_ShouldPropagateError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
-        Result<int, string> bound = result.Bind(value => Success<int, string>(value * 2));
+        Result<int, string> bound = result.Bind(value => Ok<int, string>(value * 2));
 
         bound.IsErr.Should().BeTrue();
         bound.Match(value => string.Empty, error => error).Should().Be(ErrorMessage);
@@ -44,7 +44,7 @@ public sealed class BindTests
     {
         Result<int, string> result = null!;
 
-        Func<Result<int, string>> act = () => result.Bind(value => Success<int, string>(value * 2));
+        Func<Result<int, string>> act = () => result.Bind(value => Ok<int, string>(value * 2));
 
         act.Should().Throw<ArgumentNullException>();
     }
@@ -52,7 +52,7 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenOperationIsNull_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Func<Result<int, string>> act = () => result.Bind<int, string, int>(null!);
 
@@ -62,9 +62,9 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenOperationReturnsErr_ShouldReturnErr()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
-        Result<int, string> bound = result.Bind(value => Failure<int, string>("Operation error"));
+        Result<int, string> bound = result.Bind(value => Err<int, string>("Operation error"));
 
         bound.IsErr.Should().BeTrue();
         bound.Match(value => string.Empty, error => error).Should().Be("Operation error");
@@ -73,10 +73,10 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenBindingOkToString_ShouldReturnCorrectString()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<string, string> bound = result.Bind(value =>
-            Success<string, string>($"Value: {value}")
+            Ok<string, string>($"Value: {value}")
         );
 
         bound.IsOk.Should().BeTrue();
@@ -86,10 +86,10 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenBindingErrToString_ShouldPropagateError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<string, string> bound = result.Bind(value =>
-            Success<string, string>($"Value: {value}")
+            Ok<string, string>($"Value: {value}")
         );
 
         bound.IsErr.Should().BeTrue();
@@ -99,10 +99,10 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenBindingOkToComplexType_ShouldReturnCorrectType()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<(bool Success, int Value), string> bound = result.Bind(value =>
-            Success<(bool, int), string>((true, value))
+            Ok<(bool, int), string>((true, value))
         );
 
         bound.IsOk.Should().BeTrue();
@@ -114,10 +114,10 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenBindingErrToComplexType_ShouldPropagateError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<(bool Success, int Value), string> bound = result.Bind(value =>
-            Success<(bool, int), string>((true, value))
+            Ok<(bool, int), string>((true, value))
         );
 
         bound.IsErr.Should().BeTrue();
@@ -127,11 +127,11 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenChainedWithMultipleOperations_ShouldWorkCorrectly()
     {
-        Result<int, string> result = Success<int, string>(10);
+        Result<int, string> result = Ok<int, string>(10);
 
         Result<int, string> bound = result
-            .Bind(value => Success<int, string>(value + 5))
-            .Bind(value => Success<int, string>(value * 2));
+            .Bind(value => Ok<int, string>(value + 5))
+            .Bind(value => Ok<int, string>(value * 2));
 
         bound.IsOk.Should().BeTrue();
         bound.Match(value => value, error => 0).Should().Be(30);
@@ -140,11 +140,11 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenChainedAndEncountersError_ShouldStopPropagation()
     {
-        Result<int, string> result = Success<int, string>(10);
+        Result<int, string> result = Ok<int, string>(10);
 
         Result<int, string> bound = result
-            .Bind(value => Failure<int, string>("First error"))
-            .Bind(value => Success<int, string>(value * 2));
+            .Bind(value => Err<int, string>("First error"))
+            .Bind(value => Ok<int, string>(value * 2));
 
         bound.IsErr.Should().BeTrue();
         bound.Match(value => string.Empty, error => error).Should().Be("First error");
@@ -153,10 +153,10 @@ public sealed class BindTests
     [Fact]
     public void Bind_WhenBindingWithValidation_ShouldWorkCorrectly()
     {
-        Result<int, string> result = Success<int, string>(10);
+        Result<int, string> result = Ok<int, string>(10);
 
         Result<int, string> bound = result.Bind(value =>
-            value > 5 ? Success<int, string>(value) : Failure<int, string>("Value too small")
+            value > 5 ? Ok<int, string>(value) : Err<int, string>("Value too small")
         );
 
         bound.IsOk.Should().BeTrue();

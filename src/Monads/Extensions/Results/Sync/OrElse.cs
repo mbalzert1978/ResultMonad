@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Sync;
 
@@ -38,6 +37,6 @@ public static class OrElseExtension
         ArgumentNullException.ThrowIfNull(self);
         ArgumentNullException.ThrowIfNull(operation);
 
-        return self.Match(Success<T, F>, operation);
+        return self.Match(Result.Ok<T, F>, operation);
     }
 }

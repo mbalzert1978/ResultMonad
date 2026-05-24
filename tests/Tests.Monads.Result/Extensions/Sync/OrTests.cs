@@ -5,7 +5,7 @@
 using System.Globalization;
 using Monads.Results;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Sync;
 
@@ -18,8 +18,8 @@ public sealed class OrTests
     public void Or_WhenFirstResultIsOkAndSecondResultIsErr_ShouldReturnFirstOkResult()
     {
         // Arrange
-        Result<int, string> x = Success<int, string>(2);
-        Result<int, string> y = Failure<int, string>("late error");
+        Result<int, string> x = Ok<int, string>(2);
+        Result<int, string> y = Err<int, string>("late error");
 
         Result<int, string> result = x.Or(y);
 
@@ -31,8 +31,8 @@ public sealed class OrTests
     public void Or_WhenFirstResultIsErrAndSecondResultIsOk_ShouldReturnSecondOkResult()
     {
         // Arrange
-        Result<int, string> x = Failure<int, string>("early error");
-        Result<int, string> y = Success<int, string>(2);
+        Result<int, string> x = Err<int, string>("early error");
+        Result<int, string> y = Ok<int, string>(2);
 
         // Act
         Result<int, string> result = x.Or(y);
@@ -45,8 +45,8 @@ public sealed class OrTests
     public void Or_WhenBothResultsAreErr_ShouldReturnSecondErrResult()
     {
         // Arrange
-        Result<int, string> x = Failure<int, string>("not a 2");
-        Result<int, string> y = Failure<int, string>("late error");
+        Result<int, string> x = Err<int, string>("not a 2");
+        Result<int, string> y = Err<int, string>("late error");
 
         // Act
         Result<int, string> result = x.Or(y);
@@ -59,8 +59,8 @@ public sealed class OrTests
     public void Or_WhenBothResultsAreOk_ShouldReturnFirstOkResult()
     {
         // Arrange
-        Result<int, string> x = Success<int, string>(2);
-        Result<int, string> y = Success<int, string>(100);
+        Result<int, string> x = Ok<int, string>(2);
+        Result<int, string> y = Ok<int, string>(100);
 
         // Act
         Result<int, string> result = x.Or(y);

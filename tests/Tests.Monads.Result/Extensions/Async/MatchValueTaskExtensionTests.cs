@@ -5,7 +5,7 @@
 using System.Globalization;
 using Monads.Results;
 using Monads.Results.Extensions.Async;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Async;
 
@@ -21,7 +21,7 @@ public sealed class MatchValueTaskExtensionTests
     public async Task MatchAsync_WhenCalledWithValueTaskOkAndSyncFunctions_ShouldInvokeOnOk()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         int matched = await resultTask.MatchAsync(value => value * 2, error => 0);
@@ -33,7 +33,7 @@ public sealed class MatchValueTaskExtensionTests
     public async Task MatchAsync_WhenCalledWithValueTaskErrAndSyncFunctions_ShouldInvokeOnErr()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         string matched = await resultTask.MatchAsync(
@@ -47,7 +47,7 @@ public sealed class MatchValueTaskExtensionTests
     [Fact]
     public async Task MatchAsync_WhenCalledWithSyncOkAndAsyncFunctions_ShouldInvokeOnOk()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         int matched = await result.MatchAsync(
             value => ValueTask.FromResult(value * 2),
@@ -60,7 +60,7 @@ public sealed class MatchValueTaskExtensionTests
     [Fact]
     public async Task MatchAsync_WhenCalledWithSyncErrAndAsyncFunctions_ShouldInvokeOnErr()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         string matched = await result.MatchAsync(
             value => ValueTask.FromResult("success"),
@@ -74,7 +74,7 @@ public sealed class MatchValueTaskExtensionTests
     public async Task MatchAsync_WhenCalledWithValueTaskOkAndAsyncFunctions_ShouldInvokeOnOk()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         int matched = await resultTask.MatchAsync(
@@ -89,7 +89,7 @@ public sealed class MatchValueTaskExtensionTests
     public async Task MatchAsync_WhenCalledWithValueTaskErrAndAsyncFunctions_ShouldInvokeOnErr()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         string matched = await resultTask.MatchAsync(
@@ -104,7 +104,7 @@ public sealed class MatchValueTaskExtensionTests
     public void MatchAsync_WhenOnOkIsNullWithSyncFunctions_ShouldThrowArgumentNullException()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         Func<Task> act = async () => await resultTask.MatchAsync(null!, error => 0);
@@ -116,7 +116,7 @@ public sealed class MatchValueTaskExtensionTests
     public void MatchAsync_WhenOnErrIsNullWithSyncFunctions_ShouldThrowArgumentNullException()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Func<Task> act = async () => await resultTask.MatchAsync(value => value, null!);
@@ -127,7 +127,7 @@ public sealed class MatchValueTaskExtensionTests
     [Fact]
     public void MatchAsync_WhenOnOkIsNullWithAsyncFunctionsOnResult_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Func<Task> act = async () =>
             await result.MatchAsync(null!, error => ValueTask.FromResult(0));
@@ -138,7 +138,7 @@ public sealed class MatchValueTaskExtensionTests
     [Fact]
     public void MatchAsync_WhenOnErrIsNullWithAsyncFunctionsOnResult_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Func<Task> act = async () =>
             await result.MatchAsync(value => ValueTask.FromResult(value), null!);
@@ -149,7 +149,7 @@ public sealed class MatchValueTaskExtensionTests
     [Fact]
     public async Task MatchAsync_WhenMatchingOkToComplexTypeWithAsync_ShouldReturnCorrectType()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         (bool Success, int Value) = await result.MatchAsync(
             value => ValueTask.FromResult((true, value)),
@@ -163,7 +163,7 @@ public sealed class MatchValueTaskExtensionTests
     [Fact]
     public async Task MatchAsync_WhenMatchingErrToComplexTypeWithAsync_ShouldReturnCorrectType()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         (bool Success, string Message) = await result.MatchAsync(
             value => ValueTask.FromResult((true, "OK")),

@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Async;
 
@@ -38,7 +37,7 @@ public static class MapErrValueTaskExtension
     {
         ArgumentNullException.ThrowIfNull(operation);
 
-        return await self.MatchAsync(Success<T, F>, err => Failure<T, F>(operation(err)))
+        return await self.MatchAsync(Result.Ok<T, F>, err => Result.Err<T, F>(operation(err)))
             .ConfigureAwait(false);
     }
 
@@ -69,8 +68,8 @@ public static class MapErrValueTaskExtension
         ArgumentNullException.ThrowIfNull(operation);
 
         return await self.MatchAsync(
-                value => ValueTask.FromResult(Success<T, F>(value)),
-                async err => Failure<T, F>(await operation(err).ConfigureAwait(false))
+                value => ValueTask.FromResult(Result.Ok<T, F>(value)),
+                async err => Result.Err<T, F>(await operation(err).ConfigureAwait(false))
             )
             .ConfigureAwait(false);
     }
@@ -103,8 +102,8 @@ public static class MapErrValueTaskExtension
         ArgumentNullException.ThrowIfNull(operation);
 
         return await self.MatchAsync(
-                value => ValueTask.FromResult(Success<T, F>(value)),
-                async err => Failure<T, F>(await operation(err).ConfigureAwait(false))
+                value => ValueTask.FromResult(Result.Ok<T, F>(value)),
+                async err => Result.Err<T, F>(await operation(err).ConfigureAwait(false))
             )
             .ConfigureAwait(false);
     }

@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Sync;
 
@@ -39,6 +38,6 @@ public static class BindExtension
         ArgumentNullException.ThrowIfNull(self);
         ArgumentNullException.ThrowIfNull(operation);
 
-        return self.Match(operation, Failure<U, E>);
+        return self.Match(operation, Result.Err<U, E>);
     }
 }

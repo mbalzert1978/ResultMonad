@@ -2,7 +2,6 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 using System.Diagnostics;
-using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Sync;
 
@@ -31,6 +30,6 @@ public static class FlattenExtension
     {
         ArgumentNullException.ThrowIfNull(self);
 
-        return self.Match(ok => ok, Failure<T, E>);
+        return self.Match(ok => ok, Result.Err<T, E>);
     }
 }

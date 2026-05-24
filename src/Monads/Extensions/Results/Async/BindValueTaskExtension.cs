@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Async;
 
@@ -38,7 +37,7 @@ public static class BindValueTaskExtension
     {
         ArgumentNullException.ThrowIfNull(operation);
 
-        return await self.MatchAsync(operation, Failure<U, E>).ConfigureAwait(false);
+        return await self.MatchAsync(operation, Result.Err<U, E>).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -67,7 +66,7 @@ public static class BindValueTaskExtension
     {
         ArgumentNullException.ThrowIfNull(operation);
 
-        return await self.MatchAsync(operation, err => ValueTask.FromResult(Failure<U, E>(err)))
+        return await self.MatchAsync(operation, err => ValueTask.FromResult(Result.Err<U, E>(err)))
             .ConfigureAwait(false);
     }
 
@@ -97,7 +96,7 @@ public static class BindValueTaskExtension
     {
         ArgumentNullException.ThrowIfNull(operation);
 
-        return await self.MatchAsync(operation, err => ValueTask.FromResult(Failure<U, E>(err)))
+        return await self.MatchAsync(operation, err => ValueTask.FromResult(Result.Err<U, E>(err)))
             .ConfigureAwait(false);
     }
 }

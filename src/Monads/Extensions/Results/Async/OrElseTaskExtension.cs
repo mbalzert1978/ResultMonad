@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using static Monads.Results.ResultFactory;
 
 namespace Monads.Results.Extensions.Async;
 
@@ -38,7 +37,7 @@ public static class OrElseTaskExtension
         ArgumentNullException.ThrowIfNull(self);
         ArgumentNullException.ThrowIfNull(operation);
 
-        return await self.MatchAsync(Success<T, F>, operation).ConfigureAwait(false);
+        return await self.MatchAsync(Result.Ok<T, F>, operation).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -68,7 +67,7 @@ public static class OrElseTaskExtension
         ArgumentNullException.ThrowIfNull(operation);
 
         return await self.MatchAsync(
-                value => Task.FromResult(Success<T, F>(value)),
+                value => Task.FromResult(Result.Ok<T, F>(value)),
                 async error => await operation(error).ConfigureAwait(false)
             )
             .ConfigureAwait(false);
@@ -103,7 +102,7 @@ public static class OrElseTaskExtension
 
         return await (await self.ConfigureAwait(false))
             .MatchAsync(
-                value => Task.FromResult(Success<T, F>(value)),
+                value => Task.FromResult(Result.Ok<T, F>(value)),
                 async error => await operation(error).ConfigureAwait(false)
             )
             .ConfigureAwait(false);

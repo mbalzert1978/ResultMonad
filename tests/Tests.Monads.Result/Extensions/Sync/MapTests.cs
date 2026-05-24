@@ -5,7 +5,7 @@
 using System.Globalization;
 using Monads.Results;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Sync;
 
@@ -20,7 +20,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenCalledWithOkResult_ShouldMapValue()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<int, string> mapped = result.Map(value => value * 2);
 
@@ -31,7 +31,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenCalledWithErrResult_ShouldPropagateError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<int, string> mapped = result.Map(value => value * 2);
 
@@ -52,7 +52,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenOperationIsNull_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Func<Result<int, string>> act = () => result.Map<int, string, int>(null!);
 
@@ -62,7 +62,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenMappingOkToString_ShouldReturnCorrectString()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<string, string> mapped = result.Map(value => $"Value: {value}");
 
@@ -73,7 +73,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenMappingErrToString_ShouldPropagateError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<string, string> mapped = result.Map(value => $"Value: {value}");
 
@@ -84,7 +84,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenMappingOkToComplexType_ShouldReturnCorrectType()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<(bool Success, int Value), string> mapped = result.Map(value => (true, value));
 
@@ -97,7 +97,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenMappingErrToComplexType_ShouldPropagateError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<(bool Success, int Value), string> mapped = result.Map(value => (true, value));
 
@@ -108,7 +108,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenChainedWithMultipleOperations_ShouldWorkCorrectly()
     {
-        Result<int, string> result = Success<int, string>(10);
+        Result<int, string> result = Ok<int, string>(10);
 
         Result<int, string> mapped = result.Map(value => value + 5).Map(value => value * 2);
 
@@ -119,7 +119,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenChainedAndEncountersError_ShouldStopPropagation()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<int, string> mapped = result.Map(value => value + 5).Map(value => value * 2);
 
@@ -130,7 +130,7 @@ public sealed class MapTests
     [Fact]
     public void Map_WhenMappingWithCultureSpecificOperation_ShouldWorkCorrectly()
     {
-        Result<string, string> result = Success<string, string>("test");
+        Result<string, string> result = Ok<string, string>("test");
 
         Result<string, string> mapped = result.Map(value =>
             value.ToUpper(CultureInfo.InvariantCulture)

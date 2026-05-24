@@ -5,7 +5,7 @@
 using Monads.Results;
 using Monads.Results.Extensions.Async;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Async;
 
@@ -21,8 +21,8 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithTaskOkOkResult_ShouldReturnInnerOkValue()
     {
-        Result<int, string> innerResult = Success<int, string>(SuccessValue);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Ok<int, string>(SuccessValue);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
         Task<Result<Result<int, string>, string>> taskResult = Task.FromResult(nestedResult);
@@ -36,8 +36,8 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithTaskOkErrResult_ShouldReturnInnerErrValue()
     {
-        Result<int, string> innerResult = Failure<int, string>(InnerErrorMessage);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Err<int, string>(InnerErrorMessage);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
         Task<Result<Result<int, string>, string>> taskResult = Task.FromResult(nestedResult);
@@ -51,7 +51,7 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithTaskErrResult_ShouldReturnOuterErrValue()
     {
-        Result<Result<int, string>, string> nestedResult = Failure<Result<int, string>, string>(
+        Result<Result<int, string>, string> nestedResult = Err<Result<int, string>, string>(
             ErrorMessage
         );
         Task<Result<Result<int, string>, string>> taskResult = Task.FromResult(nestedResult);
@@ -75,8 +75,8 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithValueTaskOkOkResult_ShouldReturnInnerOkValue()
     {
-        Result<int, string> innerResult = Success<int, string>(SuccessValue);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Ok<int, string>(SuccessValue);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
         ValueTask<Result<Result<int, string>, string>> valueTaskResult = ValueTask.FromResult(
@@ -92,8 +92,8 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithValueTaskOkErrResult_ShouldReturnInnerErrValue()
     {
-        Result<int, string> innerResult = Failure<int, string>(InnerErrorMessage);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Err<int, string>(InnerErrorMessage);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
         ValueTask<Result<Result<int, string>, string>> valueTaskResult = ValueTask.FromResult(
@@ -109,7 +109,7 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithValueTaskErrResult_ShouldReturnOuterErrValue()
     {
-        Result<Result<int, string>, string> nestedResult = Failure<Result<int, string>, string>(
+        Result<Result<int, string>, string> nestedResult = Err<Result<int, string>, string>(
             ErrorMessage
         );
         ValueTask<Result<Result<int, string>, string>> valueTaskResult = ValueTask.FromResult(
@@ -125,8 +125,8 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenChainedWithMapAsync_ShouldWorkCorrectly()
     {
-        Result<int, string> innerResult = Success<int, string>(10);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Ok<int, string>(10);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
         Task<Result<Result<int, string>, string>> taskResult = Task.FromResult(nestedResult);
@@ -140,15 +140,15 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenChainedWithBindAsync_ShouldWorkCorrectly()
     {
-        Result<int, string> innerResult = Success<int, string>(10);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Ok<int, string>(10);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
         Task<Result<Result<int, string>, string>> taskResult = Task.FromResult(nestedResult);
 
         Result<int, string> result = await taskResult
             .FlattenAsync()
-            .BindAsync(value => Task.FromResult(Success<int, string>(value + 5)));
+            .BindAsync(value => Task.FromResult(Ok<int, string>(value + 5)));
 
         result.IsOk.Should().BeTrue();
         result.Match(value => value, error => 0).Should().Be(15);
@@ -157,8 +157,8 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithComplexNestedOkOk_ShouldWorkCorrectly()
     {
-        Result<string, string> innerResult = Success<string, string>("inner value");
-        Result<Result<string, string>, string> nestedResult = Success<
+        Result<string, string> innerResult = Ok<string, string>("inner value");
+        Result<Result<string, string>, string> nestedResult = Ok<
             Result<string, string>,
             string
         >(innerResult);
@@ -173,8 +173,8 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithDifferentTypes_ShouldWorkCorrectly()
     {
-        Result<bool, int> innerResult = Success<bool, int>(true);
-        Result<Result<bool, int>, int> nestedResult = Success<Result<bool, int>, int>(innerResult);
+        Result<bool, int> innerResult = Ok<bool, int>(true);
+        Result<Result<bool, int>, int> nestedResult = Ok<Result<bool, int>, int>(innerResult);
         Task<Result<Result<bool, int>, int>> taskResult = Task.FromResult(nestedResult);
 
         Result<bool, int> flattened = await taskResult.FlattenAsync();
@@ -186,7 +186,7 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithDifferentTypesAndError_ShouldPropagateError()
     {
-        Result<Result<bool, int>, int> nestedResult = Failure<Result<bool, int>, int>(404);
+        Result<Result<bool, int>, int> nestedResult = Err<Result<bool, int>, int>(404);
         Task<Result<Result<bool, int>, int>> taskResult = Task.FromResult(nestedResult);
 
         Result<bool, int> flattened = await taskResult.FlattenAsync();
@@ -198,8 +198,8 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithValueTaskAndComplexType_ShouldWorkCorrectly()
     {
-        Result<string, string> innerResult = Success<string, string>("test value");
-        Result<Result<string, string>, string> nestedResult = Success<
+        Result<string, string> innerResult = Ok<string, string>("test value");
+        Result<Result<string, string>, string> nestedResult = Ok<
             Result<string, string>,
             string
         >(innerResult);
@@ -216,8 +216,8 @@ public sealed class FlattenAsyncExtensionTests
     [Fact]
     public async Task FlattenAsync_WhenCalledWithValueTaskChainedWithMap_ShouldWorkCorrectly()
     {
-        Result<int, string> innerResult = Success<int, string>(15);
-        Result<Result<int, string>, string> nestedResult = Success<Result<int, string>, string>(
+        Result<int, string> innerResult = Ok<int, string>(15);
+        Result<Result<int, string>, string> nestedResult = Ok<Result<int, string>, string>(
             innerResult
         );
         ValueTask<Result<Result<int, string>, string>> valueTaskResult = ValueTask.FromResult(

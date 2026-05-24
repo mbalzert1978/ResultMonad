@@ -6,7 +6,7 @@ using System.Globalization;
 using Monads.Results;
 using Monads.Results.Extensions.Async;
 using Monads.Results.Extensions.Sync;
-using static Monads.Results.ResultFactory;
+using static Monads.Results.Result;
 
 namespace Monads.Results.Tests.Extensions.Async;
 
@@ -22,11 +22,11 @@ public sealed class BindValueTaskExtensionTests
     public async Task BindAsync_WhenCalledWithValueTaskOkAndSyncFunction_ShouldBindValue()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         Result<int, string> bound = await resultTask.BindAsync(value =>
-            Success<int, string>(value * 2)
+            Ok<int, string>(value * 2)
         );
 
         bound.IsOk.Should().BeTrue();
@@ -37,11 +37,11 @@ public sealed class BindValueTaskExtensionTests
     public async Task BindAsync_WhenCalledWithValueTaskErrAndSyncFunction_ShouldPropagateError()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Result<int, string> bound = await resultTask.BindAsync(value =>
-            Success<int, string>(value * 2)
+            Ok<int, string>(value * 2)
         );
 
         bound.IsErr.Should().BeTrue();
@@ -51,10 +51,10 @@ public sealed class BindValueTaskExtensionTests
     [Fact]
     public async Task BindAsync_WhenCalledWithSyncOkAndAsyncFunction_ShouldBindValue()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<int, string> bound = await result.BindAsync(value =>
-            ValueTask.FromResult(Success<int, string>(value * 2))
+            ValueTask.FromResult(Ok<int, string>(value * 2))
         );
 
         bound.IsOk.Should().BeTrue();
@@ -64,10 +64,10 @@ public sealed class BindValueTaskExtensionTests
     [Fact]
     public async Task BindAsync_WhenCalledWithSyncErrAndAsyncFunction_ShouldPropagateError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<int, string> bound = await result.BindAsync(value =>
-            ValueTask.FromResult(Success<int, string>(value * 2))
+            ValueTask.FromResult(Ok<int, string>(value * 2))
         );
 
         bound.IsErr.Should().BeTrue();
@@ -78,11 +78,11 @@ public sealed class BindValueTaskExtensionTests
     public async Task BindAsync_WhenCalledWithValueTaskOkAndAsyncFunction_ShouldBindValue()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         Result<int, string> bound = await resultTask.BindAsync(value =>
-            ValueTask.FromResult(Success<int, string>(value * 2))
+            ValueTask.FromResult(Ok<int, string>(value * 2))
         );
 
         bound.IsOk.Should().BeTrue();
@@ -93,11 +93,11 @@ public sealed class BindValueTaskExtensionTests
     public async Task BindAsync_WhenCalledWithValueTaskErrAndAsyncFunction_ShouldPropagateError()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Failure<int, string>(ErrorMessage)
+            Err<int, string>(ErrorMessage)
         );
 
         Result<int, string> bound = await resultTask.BindAsync(value =>
-            ValueTask.FromResult(Success<int, string>(value * 2))
+            ValueTask.FromResult(Ok<int, string>(value * 2))
         );
 
         bound.IsErr.Should().BeTrue();
@@ -108,7 +108,7 @@ public sealed class BindValueTaskExtensionTests
     public void BindAsync_WhenOperationIsNullWithSyncFunction_ShouldThrowArgumentNullException()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         Func<Task> act = async () =>
@@ -123,7 +123,7 @@ public sealed class BindValueTaskExtensionTests
     [Fact]
     public void BindAsync_WhenOperationIsNullWithAsyncFunctionOnResult_ShouldThrowArgumentNullException()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Func<Task> act = async () =>
         {
@@ -138,7 +138,7 @@ public sealed class BindValueTaskExtensionTests
     public void BindAsync_WhenOperationIsNullWithAsyncFunctionOnValueTask_ShouldThrowArgumentNullException()
     {
         ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Success<int, string>(SuccessValue)
+            Ok<int, string>(SuccessValue)
         );
 
         Func<Task> act = async () =>
@@ -153,10 +153,10 @@ public sealed class BindValueTaskExtensionTests
     [Fact]
     public async Task BindAsync_WhenOperationReturnsErr_ShouldReturnErr()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<int, string> bound = await result.BindAsync(value =>
-            ValueTask.FromResult(Failure<int, string>("Operation error"))
+            ValueTask.FromResult(Err<int, string>("Operation error"))
         );
 
         bound.IsErr.Should().BeTrue();
@@ -166,10 +166,10 @@ public sealed class BindValueTaskExtensionTests
     [Fact]
     public async Task BindAsync_WhenBindingOkToComplexTypeWithAsync_ShouldReturnCorrectType()
     {
-        Result<int, string> result = Success<int, string>(SuccessValue);
+        Result<int, string> result = Ok<int, string>(SuccessValue);
 
         Result<(bool Success, int Value), string> bound = await result.BindAsync(value =>
-            ValueTask.FromResult(Success<(bool, int), string>((true, value)))
+            ValueTask.FromResult(Ok<(bool, int), string>((true, value)))
         );
 
         bound.IsOk.Should().BeTrue();
@@ -181,10 +181,10 @@ public sealed class BindValueTaskExtensionTests
     [Fact]
     public async Task BindAsync_WhenBindingErrToComplexTypeWithAsync_ShouldPropagateError()
     {
-        Result<int, string> result = Failure<int, string>(ErrorMessage);
+        Result<int, string> result = Err<int, string>(ErrorMessage);
 
         Result<(bool Success, int Value), string> bound = await result.BindAsync(value =>
-            ValueTask.FromResult(Success<(bool, int), string>((true, value)))
+            ValueTask.FromResult(Ok<(bool, int), string>((true, value)))
         );
 
         bound.IsErr.Should().BeTrue();
@@ -194,11 +194,11 @@ public sealed class BindValueTaskExtensionTests
     [Fact]
     public async Task BindAsync_WhenChainedWithMultipleOperations_ShouldWorkCorrectly()
     {
-        Result<int, string> result = Success<int, string>(10);
+        Result<int, string> result = Ok<int, string>(10);
 
         Result<int, string> bound = await result
-            .BindAsync(value => ValueTask.FromResult(Success<int, string>(value + 5)))
-            .BindAsync(value => Success<int, string>(value * 2));
+            .BindAsync(value => ValueTask.FromResult(Ok<int, string>(value + 5)))
+            .BindAsync(value => Ok<int, string>(value * 2));
 
         bound.IsOk.Should().BeTrue();
         bound.Match(value => value, error => 0).Should().Be(30);
@@ -207,11 +207,11 @@ public sealed class BindValueTaskExtensionTests
     [Fact]
     public async Task BindAsync_WhenChainedAndEncountersError_ShouldStopPropagation()
     {
-        Result<int, string> result = Success<int, string>(10);
+        Result<int, string> result = Ok<int, string>(10);
 
         Result<int, string> bound = await result
-            .BindAsync(value => ValueTask.FromResult(Failure<int, string>("First error")))
-            .BindAsync(value => Success<int, string>(value * 2));
+            .BindAsync(value => ValueTask.FromResult(Err<int, string>("First error")))
+            .BindAsync(value => Ok<int, string>(value * 2));
 
         bound.IsErr.Should().BeTrue();
         bound.Match(value => string.Empty, error => error).Should().Be("First error");
