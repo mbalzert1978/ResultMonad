@@ -1,5 +1,60 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project
+
+**Monads** is a zero-dependency C# functional programming library providing `Result<T, E>` (railway-oriented programming) and a partial `Option<T>` implementation. Target: .NET 10, C# 14. Solution file: `Monads.slnx`.
+
+## Commands
+
+```bash
+dotnet build          # build — TreatWarningsAsErrors=true, zero warnings required
+dotnet test           # run all tests
+dotnet test --filter "FullyQualifiedName~BindTests"   # run a single test class
+dotnet pack           # produce NuGet package
+```
+
+## Architecture
+
+### Type hierarchy
+
+```text
+Result<T, E>           ← abstract record, T/E : notnull
+├── Ok<T, E>           ← sealed record, holds Value: T
+└── Err<T, E>          ← sealed record, holds Error: E
+```
+
+`Ok` and `Err` are currently public. A planned refactor (`refactor/AI-grilled` branch, see `.claude/prds/result-modernization-dotnet10-csharp14.md`) will make them `internal sealed` and add a `private protected` constructor to `Result<T, E>`. See `CONTEXT.md` for the canonical domain glossary.
+
+### Extension method layout
+
+```text
+src/Monads/Extensions/Results/
+├── Sync/      Map, MapErr, Bind, Match, Or, OrElse, Flatten
+└── Async/     *TaskExtension, *ValueTaskExtension — same features, three overloads each:
+               Task<Result> + sync op | Result + async op | Task<Result> + async op
+```
+
+`Match` is the single dispatch primitive — all other extensions are implemented via `Match`. Every internal `switch` on `Result<T, E>` has a `_ => throw new UnreachableException(...)` arm; this is required by Roslyn and is never reached.
+
+`ResultFactory.Success<T, E>(value)` / `ResultFactory.Failure<T, E>(error)` are the current construction API, imported via `using static Monads.Results.ResultFactory;`.
+
+### Key conventions
+
+- **One static class per file** for extensions, named `[Feature]Extension`
+- **Every public method** validates parameters with `ArgumentNullException.ThrowIfNull`
+- **Async methods** always call `.ConfigureAwait(false)` on every `await`
+- **Records over classes** — all core types use `abstract record` with sealed variants
+- **Expression-bodied members** for properties/operators/accessors; expanded bodies for methods and constructors
+- Copyright header on every file: `// <copyright file="X.cs" company="Markus - Iorio">`
+
+### Tests
+
+Framework: xunit v3 + AwesomeAssertions. Naming: `[Feature]_When[Condition]_Should[Outcome]`. Mirror the source folder structure under `tests/Tests.Monads.Result/`. Every extension needs: Ok path, Err path, null-parameter guards, chaining, type transformations, and (for async) all Task/ValueTask combinations.
+
+---
+
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
 **Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.

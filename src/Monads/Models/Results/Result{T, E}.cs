@@ -104,3 +104,12 @@ public static class ResultFactory
         return result;
     }
 }
+
+public static class ResultExt
+{
+    extension<T, E>(Result<T, E>) where T : notnull where E : notnull
+    {
+        public static Result<T, E> Ok(T value) => ResultFactory.Success<T, E>(value);
+        public static Result<T, E> Err(E error) => ResultFactory.Failure<T, E>(error);
+    }
+}
