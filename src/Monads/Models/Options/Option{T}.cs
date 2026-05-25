@@ -1,64 +1,67 @@
-using System.Diagnostics;
+// <copyright file="Option{T}.cs" company="Markus - Iorio">
+// Copyright (c) Markus - Iorio. All rights reserved.
+// </copyright>
 
-namespace Monads.Models.Options;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Monads.Options;
 
 /// <summary>
-/// Represents the base type for a discriminated union modeling either a value or absence of value.
+/// Represents an optional value: either <c>Some(value)</c> or <c>None</c>.
 /// </summary>
-public abstract record Option<T>
+/// <typeparam name="T">The type of the wrapped value. Must be non-nullable.</typeparam>
+public readonly record struct Option<T>
     where T : notnull
 {
     /// <summary>
-    /// Gets a value indicating whether the option has a value.
+    /// Initializes a new instance of the <see cref="Option{T}"/> struct in the Some state.
     /// </summary>
-    /// <returns>
-    /// <c>true</c> if the option is <see cref="Some{T}"/>; otherwise, <c>false</c>.
-    /// </returns>
-    public abstract bool HasValue { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether the option has no value.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if the option is <see cref="None{T}"/>; otherwise, <c>false</c>.
-    /// </returns>
-    public bool IsNone => !HasValue;
-}
-
-/// <summary>
-/// Provides factory methods for creating <see cref="Option{T}"/> instances.
-/// </summary>
-public static class OptionFactory
-{
-    /// <summary>
-    /// Creates an <see cref="Option{T}"/> representing a value.
-    /// </summary>
-    /// <param name="value">The value to wrap in the option.</param>
-    /// <returns>An instance of <see cref="Some{T}"/> containing the provided value.</returns>
-    /// <exception cref="ArgumentNullException">Thrown if the provided value is <c>null</c>.</exception>
-    public static Option<T> Some<T>(T value)
-        where T : notnull
+    /// <param name="value">The non-null value to wrap.</param>
+    internal Option(T value)
     {
-        ArgumentNullException.ThrowIfNull(value);
-
-        Some<T> some = new(value);
-
-        Debug.Assert(some.HasValue, "Some option should have a value.");
-
-        return some;
+        IsSome = value is not null;
+        Value = value;
     }
 
     /// <summary>
-    /// Creates an <see cref="Option{T}"/> representing no value.
+    /// Gets a value indicating whether this option holds a value.
+    /// When <c>true</c>, <see cref="Value"/> is guaranteed non-null.
     /// </summary>
-    /// <returns>An instance of <see cref="None{T}"/>.</returns>
-    public static Option<T> None<T>()
-        where T : notnull
+    [MemberNotNullWhen(true, nameof(Value))]
+    public bool IsSome { get; private init; }
+
+    /// <summary>
+    /// Gets a value indicating whether this option is empty.
+    /// </summary>
+    public bool IsNone => !IsSome;
+
+    /// <summary>
+    /// Gets the wrapped value when <see cref="IsSome"/> is <c>true</c>; otherwise <c>default</c>.
+    /// </summary>
+    public T? Value
     {
-        None<T> none = new();
-
-        Debug.Assert(none.IsNone, "None option should not have a value.");
-
-        return none;
+        get => IsSome ? field : default;
+        private init;
     }
+
+    /// <summary>
+    /// Invokes <paramref name="onSome"/> with the wrapped value when this option is Some,
+    /// otherwise invokes <paramref name="onNone"/>.
+    /// </summary>
+    /// <typeparam name="U">The result type returned by both branches.</typeparam>
+    /// <param name="onSome">Function invoked when this option is Some.</param>
+    /// <param name="onNone">Function invoked when this option is None.</param>
+    /// <returns>The value produced by the invoked branch.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when either callback is <c>null</c>.</exception>
+    public U Match<U>(Func<T, U> onSome, Func<U> onNone)
+        where U : notnull
+    {
+        ArgumentNullException.ThrowIfNull(onSome);
+        ArgumentNullException.ThrowIfNull(onNone);
+
+        return IsSome ? onSome(Value) : onNone();
+    }
+
+    /// <inheritdoc/>
+    public override string ToString() => IsSome ? $"Some({Value})" : "None";
 }

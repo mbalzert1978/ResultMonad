@@ -20,7 +20,7 @@ public sealed class OptionTests
     [Fact]
     public void Some_WhenConstructedWithValidValue_ShouldExposeIsSomeTrue()
     {
-        Option<int> option = Option.Some(TestValue);
+        var option = Option.Some(TestValue);
 
         option.IsSome.Should().BeTrue();
         option.IsNone.Should().BeFalse();
@@ -29,7 +29,7 @@ public sealed class OptionTests
     [Fact]
     public void Some_WhenConstructedWithValidValue_ShouldExposeWrappedValue()
     {
-        Option<int> option = Option.Some(TestValue);
+        var option = Option.Some(TestValue);
 
         option.Value.Should().Be(TestValue);
     }
@@ -45,7 +45,7 @@ public sealed class OptionTests
     [Fact]
     public void None_WhenConstructedExplicitly_ShouldExposeIsNoneTrue()
     {
-        Option<int> option = Option.None<int>();
+        var option = Option.None<int>();
 
         option.IsNone.Should().BeTrue();
         option.IsSome.Should().BeFalse();
@@ -54,7 +54,7 @@ public sealed class OptionTests
     [Fact]
     public void None_WhenConstructedExplicitly_ShouldReturnDefaultValue()
     {
-        Option<string> option = Option.None<string>();
+        var option = Option.None<string>();
 
         option.Value.Should().BeNull();
     }
@@ -71,7 +71,7 @@ public sealed class OptionTests
     [Fact]
     public void Value_WhenIsSomeIsTrue_ShouldBeTreatedAsNonNullable()
     {
-        Option<string> option = Option.Some(TestString);
+        var option = Option.Some(TestString);
 
         if (option.IsSome)
         {
@@ -91,7 +91,7 @@ public sealed class OptionTests
     [Fact]
     public void Match_WhenSome_ShouldInvokeOnSomeBranchAndReturnResult()
     {
-        Option<int> option = Option.Some(TestValue);
+        var option = Option.Some(TestValue);
 
         string matched = option.Match(value => $"value:{value}", () => "none");
 
@@ -101,7 +101,7 @@ public sealed class OptionTests
     [Fact]
     public void Match_WhenNone_ShouldInvokeOnNoneBranchAndReturnResult()
     {
-        Option<int> option = Option.None<int>();
+        var option = Option.None<int>();
 
         string matched = option.Match(value => $"value:{value}", () => "none");
 
@@ -111,8 +111,8 @@ public sealed class OptionTests
     [Fact]
     public void Equality_WhenBothSomeWithSameValue_ShouldBeEqual()
     {
-        Option<int> a = Option.Some(TestValue);
-        Option<int> b = Option.Some(TestValue);
+        var a = Option.Some(TestValue);
+        var b = Option.Some(TestValue);
 
         a.Should().Be(b);
         (a == b).Should().BeTrue();
@@ -122,8 +122,8 @@ public sealed class OptionTests
     [Fact]
     public void Equality_WhenBothNone_ShouldBeEqual()
     {
-        Option<int> a = Option.None<int>();
-        Option<int> b = Option.None<int>();
+        var a = Option.None<int>();
+        var b = Option.None<int>();
 
         a.Should().Be(b);
         (a == b).Should().BeTrue();
@@ -133,7 +133,7 @@ public sealed class OptionTests
     public void Equality_WhenDefaultAndExplicitNone_ShouldBeEqual()
     {
         Option<int> a = default;
-        Option<int> b = Option.None<int>();
+        var b = Option.None<int>();
 
         a.Should().Be(b);
         (a == b).Should().BeTrue();
@@ -142,8 +142,8 @@ public sealed class OptionTests
     [Fact]
     public void Equality_WhenSomeZeroAndNoneOfSameValueType_ShouldNotBeEqual()
     {
-        Option<int> some = Option.Some(0);
-        Option<int> none = Option.None<int>();
+        var some = Option.Some(0);
+        var none = Option.None<int>();
 
         some.Should().NotBe(none);
         (some == none).Should().BeFalse();
@@ -153,8 +153,8 @@ public sealed class OptionTests
     [Fact]
     public void Equality_WhenBothSomeWithDifferentValues_ShouldNotBeEqual()
     {
-        Option<int> a = Option.Some(1);
-        Option<int> b = Option.Some(2);
+        var a = Option.Some(1);
+        var b = Option.Some(2);
 
         a.Should().NotBe(b);
         (a != b).Should().BeTrue();
@@ -163,8 +163,8 @@ public sealed class OptionTests
     [Fact]
     public void GetHashCode_WhenBothSomeWithEqualValues_ShouldMatch()
     {
-        Option<string> a = Option.Some(new string("same"));
-        Option<string> b = Option.Some(new string("same"));
+        var a = Option.Some(new string("same"));
+        var b = Option.Some(new string("same"));
 
         a.GetHashCode().Should().Be(b.GetHashCode());
     }
