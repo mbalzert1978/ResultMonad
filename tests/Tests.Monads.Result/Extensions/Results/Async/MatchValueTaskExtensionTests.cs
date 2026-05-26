@@ -7,7 +7,7 @@ using Monads.Results;
 using Monads.Results.Extensions.Async;
 using static Monads.Results.Result;
 
-namespace Monads.Results.Tests.Extensions.Async;
+namespace Tests.Monads.Results.Extensions.Results.Async;
 
 /// <summary>
 /// Contains unit tests for the <see cref="MatchValueTaskExtension"/> type.

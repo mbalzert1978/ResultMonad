@@ -7,7 +7,7 @@ using Monads.Results.Extensions.Async;
 using Monads.Results.Extensions.Sync;
 using static Monads.Results.Result;
 
-namespace Monads.Results.Tests.Extensions.Async;
+namespace Tests.Monads.Results.Extensions.Results.Async;
 
 /// <summary>
 /// Contains unit tests for the <see cref="FlattenAsyncExtension"/> type.
