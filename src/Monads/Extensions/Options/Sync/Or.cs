@@ -19,7 +19,9 @@ public static class OrExtension
         /// <returns>
         /// <paramref name="self"/> when it is Some; otherwise <paramref name="other"/>.
         /// </returns>
-        public Option<T> Or(Option<T> other) =>
-            self.Match(_ => self, () => other);
+        public Option<T> Or(Option<T> other)
+        {
+            return self.Match(_ => self, () => other);
+        }
     }
 }
