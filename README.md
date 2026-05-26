@@ -1,170 +1,146 @@
 # Monads
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/yourusername/Monads)
-[![NuGet](https://img.shields.io/badge/nuget-v1.0.0-blue)](https://www.nuget.org/packages/Monads)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![.NET](https://img.shields.io/badge/.NET-9.0-purple)](https://dotnet.microsoft.com/)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/yourusername/Monads)
+Zero-dependency `Result<T, E>` and `Option<T>` for .NET 10 / C# 14, modeled on Rust's `Result` / `Option`.
 
-A functional programming library for C# that provides a robust Result type for railway-oriented programming and explicit error handling.
+## What it is
 
-## Overview
+Monads provides two types: `Result<T, E>` for railway-oriented error handling and `Option<T>` for explicit null-free optionals. Both target .NET 10 / C# 14. The entire public API is delivered via C# 14 `extension` blocks; the core types use a sealed internal hierarchy with no publicly constructible subtypes.
 
-Monads is a lightweight, type-safe implementation of the Result monad pattern in C#. It enables you to write cleaner, more maintainable code by making error handling explicit and composable, without relying on exceptions for control flow.
+## Status
 
-## What is Monads?
+Not published to NuGet. No CI pipeline. No LICENSE file. Use as a `<ProjectReference>` by cloning the repository.
 
-Monads provides a `Result<T, E>` type that represents either a successful value (`Ok<T, E>`) or an error (`Err<T, E>`). This approach, known as railway-oriented programming, allows you to:
-
-- **Make errors explicit**: No more hidden exceptions in your method signatures
-- **Compose operations**: Chain multiple fallible operations together cleanly
-- **Handle errors gracefully**: Process errors where it makes sense, not where exceptions are thrown
-- **Write safer code**: The type system ensures you handle both success and failure cases
-
-### Key Benefits
-
-- ✅ **Type-safe error handling**: Compiler enforces error handling at compile time
-- ✅ **No exception overhead**: Errors are values, not exceptions
-- ✅ **Functional composition**: Rich set of extension methods (`Map`, `Bind`, `Match`, etc.)
-- ✅ **Async/await support**: Full support for `Task` and `ValueTask` with async extension methods
-- ✅ **Railway-oriented programming**: Build robust data processing pipelines
-- ✅ **Zero dependencies**: Lightweight library with no external dependencies
-
-## Quick Start
-
-### Installation
-
-Add the package to your project:
+## Installation
 
 ```bash
-dotnet add package Monads
+git clone https://github.com/mbalzert1978/ResultMonad.git
 ```
 
-### Basic Usage
+Then in your project file:
+
+```xml
+<ItemGroup>
+  <ProjectReference Include="../path/to/ResultMonad/src/Monads/Monads.csproj" />
+</ItemGroup>
+```
+
+## Quick Start — `Result<T, E>`
 
 ```csharp
-using Monads;
+using Monads.Results;
+using Monads.Results.Extensions.Sync;
+using static Monads.Results.Result;
 
-// Create success and error results
-Result<int, string> success = new Ok<int, string>(42);
-Result<int, string> failure = new Err<int, string>("Something went wrong");
+Result<int, string> ok = Ok<int, string>(42);
+Result<int, string> err = Err<int, string>("something went wrong");
 
-// Pattern matching
-var message = success.Match(
-    ok: value => $"Success: {value}",
-    err: error => $"Error: {error}"
-);
+// Match is the single primitive
+string message = ok.Match(
+    onOk: v => $"got {v}",
+    onErr: e => $"failed: {e}");
 
-// Transform success values with Map
-var doubled = success.Map(x => x * 2);
+// Transform the success value
+Result<int, string> doubled = ok.Map(x => x * 2);
 
-// Chain operations with Bind
-Result<int, string> Divide(int a, int b) =>
-    b == 0 
-        ? new Err<int, string>("Division by zero") 
-        : new Ok<int, string>(a / b);
+// Chain fallible operations
+static Result<int, string> Divide(int a, int b) =>
+    b == 0 ? Err<int, string>("division by zero") : Ok<int, string>(a / b);
 
-var result = success
-    .Bind(x => Divide(x, 2))
-    .Map(x => x + 10);
+Result<int, string> chained = ok.Bind(x => Divide(x, 2));
 
-// Handle errors with OrElse
-var fallback = failure.OrElse(err => new Ok<int, string>(0));
+// Recover from errors
+Result<int, string> fallback = err.OrElse(e => Ok<int, string>(0));
 ```
 
-### Async Support
+## Quick Start — `Option<T>`
 
 ```csharp
-// All extension methods support Task and ValueTask
-async Task<Result<string, string>> FetchDataAsync()
-{
-    // Your async operation
-    return new Ok<string, string>("data");
-}
+using Monads.Options;
+using Monads.Options.Extensions.Sync;
+using Monads.Results;
+using static Monads.Options.Option;
 
-var result = await FetchDataAsync()
-    .Map(data => data.ToUpper())
-    .Bind(async data => await ProcessAsync(data));
+var some = Some(42);
+var none = None<int>();
+
+string message = some.Match(
+    onSome: v => $"got {v}",
+    onNone: () => "nothing");
+
+var doubled = some.Map(x => x * 2);
+var filtered = some.Filter(x => x > 10);
+
+// Bridge to Result
+Result<int, string> asResult = some.OkOr("not found");
 ```
 
-## Features
+## API Surface
 
-### Core Result Type
+### `Result<T, E>`
 
-- **`Result<T, E>`**: Abstract base type representing either success or failure
-- **`Ok<T, E>`**: Success variant containing a value of type `T`
-- **`Err<T, E>`**: Error variant containing an error of type `E`
-- **Type predicates**: `IsOk`, `IsErr`, `IsOkAnd()`, `IsErrAnd()` for result inspection
+| Operation | Description | Async |
+|-----------|-------------|:-----:|
+| `Match` | Dispatch on Ok/Err; all other operations are implemented in terms of this | Y |
+| `Map` | Transform the Ok value | Y |
+| `MapErr` | Transform the Err value | Y |
+| `MapOr` | Map Ok or return a default | Y |
+| `MapOrElse` | Map Ok or compute a default from Err | Y |
+| `Bind` | Chain a fallible operation | Y |
+| `And` | Return `other` if Ok, otherwise propagate Err | N |
+| `Or` | Return self if Ok, otherwise `other` | N |
+| `OrElse` | Return self if Ok, otherwise compute a fallback | Y |
+| `Flatten` | Collapse `Result<Result<T,E>,E>` | Y |
+| `Inspect` | Run a side-effect on Ok value, return self | Y |
+| `InspectErr` | Run a side-effect on Err value, return self | Y |
+| `ToOk` | Convert to `Option<T>` (Ok→Some, Err→None) | Y |
+| `ToErr` | Convert to `Option<E>` (Err→Some, Ok→None) | Y |
+| `Transpose` | Convert `Result<Option<T>,E>` ↔ `Option<Result<T,E>>` | Y |
+| `UnwrapOr` | Return Ok value or a default | Y |
+| `UnwrapOrElse` | Return Ok value or compute a default from Err | Y |
+| `IsOk` | `true` if Ok | N |
+| `IsErr` | `true` if Err | N |
+| `IsOkAnd` | `true` if Ok and predicate holds | N |
+| `IsErrAnd` | `true` if Err and predicate holds | N |
 
-### Functional Extensions
+Async (Y): three overloads exist per operation — `Task<Result>` + sync op, `Result` + async op, `Task<Result>` + async op. A `ValueTask` variant is provided for every `Task` variant.
 
-#### Synchronous Operations
+### `Option<T>`
 
-- **`Map`**: Transform the success value
-- **`MapErr`**: Transform the error value
-- **`Bind`**: Chain operations that return `Result` (flatMap/andThen)
-- **`Match`**: Pattern match on success or error
-- **`OrElse`**: Provide fallback for error cases
-- **`Flatten`**: Flatten nested results
+| Operation | Description | Async |
+|-----------|-------------|:-----:|
+| `IsSome` | `true` if Some (built-in property) | — |
+| `IsNone` | `true` if None (built-in property) | — |
+| `Match` | Dispatch on Some/None (built-in instance method) | Y |
+| `Map` | Transform the Some value | Y |
+| `MapOr` | Map Some or return a default | Y |
+| `MapOrElse` | Map Some or compute a default | Y |
+| `Bind` | Chain a fallible operation | Y |
+| `And` | Return `other` if Some, otherwise None | N |
+| `Or` | Return self if Some, otherwise `other` | N |
+| `OrElse` | Return self if Some, otherwise compute a fallback | Y |
+| `Filter` | Keep Some if predicate holds, otherwise None | Y |
+| `Flatten` | Collapse `Option<Option<T>>` | Y |
+| `OkOr` | Convert to `Result<T,E>` with an eager error | Y |
+| `OkOrElse` | Convert to `Result<T,E>` with a lazy error | Y |
+| `UnwrapOr` | Return Some value or a default | Y |
+| `UnwrapOrElse` | Return Some value or compute a default | Y |
+| `IsSomeAnd` | `true` if Some and predicate holds | N |
+| `IsNoneOr` | `true` if None or predicate holds | N |
+| `Xor` | Some if exactly one of self/other is Some, otherwise None | N |
+| `Zip` | Pair two Some values into `Option<(T, U)>`, otherwise None | N |
 
-#### Asynchronous Operations
+Async (Y): same three-overload pattern as `Result<T, E>` above.
 
-Full support for both `Task<Result<T, E>>` and `ValueTask<Result<T, E>>`:
+## Architecture
 
-- **`MapTask`** / **`MapValueTask`**: Transform async success values
-- **`MapErrTask`** / **`MapErrValueTask`**: Transform async error values
-- **`BindTask`** / **`BindValueTask`**: Chain async operations
-- **`MatchTask`** / **`MatchValueTask`**: Async pattern matching
-- **`OrElseTask`** / **`OrElseValueTask`**: Async fallback handling
-- **`FlattenAsync`**: Flatten nested async results
+`Result<T, E>` is an `abstract record` with a `private protected` constructor; `Ok<T, E>` and `Err<T, E>` are `internal sealed` variants — a third variant is unrepresentable and external subclassing is impossible. The entire public API is delivered via C# 14 `extension` blocks; `Match` is the only primitive for `Result<T, E>` and all other operations are implemented in terms of it. Method names and signatures deliberately mirror Rust's `Result` / `Option` to give Rust developers a familiar surface (see `CONTEXT.md` for the full glossary).
 
-### Additional Types
+## Further Reading
 
-- **`Unit`**: Represents absence of a meaningful value (similar to `void` but as a value)
-
-## Documentation
-
-Comprehensive documentation is available in the [`.documentation`](.documentation/) folder:
-
-### 📚 Core Documentation
-
-| Document | Description |
-|----------|-------------|
-| [Concepts](.documentation/concepts/) | Core concepts: Result type, railway-oriented programming, error handling patterns |
-| [Getting Started](.documentation/getting-started/) | Installation, first steps, basic examples, migration guides |
-| [API Reference](.documentation/api/) | Complete API documentation for all types and methods |
-
-### 🔧 Development
-
-| Document | Description |
-|----------|-------------|
-| [Architecture](.documentation/architecture/) | Project structure, design decisions, extension patterns |
-| [Contributing](.documentation/contributing/) | Contribution guidelines, coding standards, documentation standards |
-| [Testing](.documentation/testing/) | Testing philosophy, running tests, writing new tests |
-
-### 📋 Additional Resources
-
-| Document | Description |
-|----------|-------------|
-| [Examples](.documentation/examples/) | Real-world usage examples and patterns |
-| [FAQ](.documentation/faq/) | Frequently asked questions and troubleshooting |
-| [Changelog](.documentation/changelog/) | Version history and release notes |
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guide](.documentation/contributing/contributing.md) for details on:
-
-- Code of conduct
-- Development setup
-- Coding standards and guidelines
-- Documentation standards
-- Pull request process
-- Testing requirements
+- [`CONTEXT.md`](CONTEXT.md) — domain glossary: Result, Ok, Err, Match, Extension API, Factory Methods, Unreachable Branch
+- [`AGENTS.md`](AGENTS.md) — conventions for contributors and AI agents
+- [`docs/superpowers/specs/`](docs/superpowers/specs/) — implementation specs
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Made with ❤️ for functional programming in C#
+No license file is present in this repository. All rights reserved by the copyright holder (see file headers) until a license is added.
