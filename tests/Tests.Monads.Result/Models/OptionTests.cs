@@ -109,6 +109,26 @@ public sealed class OptionTests
     }
 
     [Fact]
+    public void Match_WhenOnSomeReturnsNull_ShouldThrowInvalidOperationException()
+    {
+        var option = Option.Some(TestValue);
+
+        Func<string> act = () => option.Match(_ => null!, () => "none");
+
+        act.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void Match_WhenOnNoneReturnsNull_ShouldThrowInvalidOperationException()
+    {
+        var option = Option.None<int>();
+
+        Func<string> act = () => option.Match(value => $"value:{value}", () => null!);
+
+        act.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
     public void Equality_WhenBothSomeWithSameValue_ShouldBeEqual()
     {
         var a = Option.Some(TestValue);

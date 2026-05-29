@@ -33,4 +33,21 @@ internal static class Constants
     /// </value>
     public const string OperationNullError =
         "The operation function returned null, which is not allowed.";
+
+    /// <summary>
+    /// Extension method for any non-nullable type that throws an InvalidOperationException with a predefined error message if the value is null.
+    /// </summary>
+    /// <typeparam name="U"></typeparam>
+    /// <param name="value"></param>
+    extension<U>(U value)
+        where U : notnull
+    {
+        /// <summary>
+        /// Throws an <see cref="InvalidOperationException"/> with a predefined error message if the provided value is null.
+        /// </summary>
+        /// <returns>The original value if it is not null.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the provided value is null.</exception>
+        internal U OrThrowIfNull() =>
+            value ?? throw new InvalidOperationException(OperationNullError);
+    }
 }

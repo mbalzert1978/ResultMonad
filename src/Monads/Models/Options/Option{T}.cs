@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Diagnostics.CodeAnalysis;
+using Monads.Strings;
 
 namespace Monads.Options;
 
@@ -53,13 +54,16 @@ public readonly record struct Option<T>
     /// <param name="onNone">Function invoked when this option is None.</param>
     /// <returns>The value produced by the invoked branch.</returns>
     /// <exception cref="ArgumentNullException">Thrown when either callback is <c>null</c>.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the invoked branch returns a null result.</exception>
     public U Match<U>(Func<T, U> onSome, Func<U> onNone)
         where U : notnull
     {
         ArgumentNullException.ThrowIfNull(onSome);
         ArgumentNullException.ThrowIfNull(onNone);
 
-        return IsSome ? onSome(Value) : onNone();
+        U result = IsSome ? onSome(Value) : onNone();
+
+        return result.OrThrowIfNull();
     }
 
     /// <inheritdoc/>

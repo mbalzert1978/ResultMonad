@@ -117,4 +117,18 @@ public sealed class MatchValueTaskExtensionTests
 
         await act.Should().ThrowAsync<ArgumentNullException>();
     }
+
+    [Fact]
+    public async Task MatchAsync_WhenAsyncBranchReturnsNull_ShouldThrowInvalidOperationException()
+    {
+        var self = Option.Some(TestValue);
+
+        Func<Task<string>> act = async () =>
+            await self.MatchAsync(
+                _ => new ValueTask<string>((string)null!),
+                () => new ValueTask<string>("none")
+            );
+
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
 }
