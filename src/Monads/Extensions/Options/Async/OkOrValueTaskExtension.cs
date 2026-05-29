@@ -23,8 +23,8 @@ public static class OkOrValueTaskExtension
         /// <param name="error">The error value used when the awaited option is None.</param>
         /// <returns>A value task producing the corresponding <see cref="Result{T, E}"/>.</returns>
         public async ValueTask<Result<T, E>> OkOrAsync<E>(E error)
-            where E : notnull
-            => await self.MatchAsync(Result.Ok<T, E>, () => Result.Err<T, E>(error))
+            where E : notnull =>
+            await self.MatchAsync(Result.Ok<T, E>, () => Result.Err<T, E>(error))
                 .ConfigureAwait(false);
     }
 }

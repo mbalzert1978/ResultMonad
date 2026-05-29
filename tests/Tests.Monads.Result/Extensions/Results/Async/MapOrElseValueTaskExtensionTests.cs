@@ -19,7 +19,9 @@ public sealed class MapOrElseValueTaskExtensionTests
     [Fact]
     public async Task MapOrElseAsync_WhenValueTaskOkAndSyncFns_ShouldReturnMappedValue()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         int mapped = await resultTask.MapOrElseAsync(err => err.Length, value => value * 2);
 
@@ -29,7 +31,9 @@ public sealed class MapOrElseValueTaskExtensionTests
     [Fact]
     public async Task MapOrElseAsync_WhenValueTaskErrAndSyncFns_ShouldReturnFallback()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
         int mapped = await resultTask.MapOrElseAsync(err => err.Length, value => value * 2);
 
@@ -39,11 +43,14 @@ public sealed class MapOrElseValueTaskExtensionTests
     [Fact]
     public async Task MapOrElseAsync_WhenValueTaskOkAndAsyncFns_ShouldReturnMappedValue()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         int mapped = await resultTask.MapOrElseAsync(
             err => ValueTask.FromResult(err.Length),
-            value => ValueTask.FromResult(value * 2));
+            value => ValueTask.FromResult(value * 2)
+        );
 
         mapped.Should().Be(84);
     }
@@ -51,11 +58,14 @@ public sealed class MapOrElseValueTaskExtensionTests
     [Fact]
     public async Task MapOrElseAsync_WhenValueTaskErrAndAsyncFns_ShouldReturnFallback()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
         int mapped = await resultTask.MapOrElseAsync(
             err => ValueTask.FromResult(err.Length),
-            value => ValueTask.FromResult(value * 2));
+            value => ValueTask.FromResult(value * 2)
+        );
 
         mapped.Should().Be(4);
     }
@@ -67,7 +77,8 @@ public sealed class MapOrElseValueTaskExtensionTests
 
         int mapped = await result.MapOrElseAsync(
             err => ValueTask.FromResult(err.Length),
-            value => ValueTask.FromResult(value * 2));
+            value => ValueTask.FromResult(value * 2)
+        );
 
         mapped.Should().Be(84);
     }
@@ -79,7 +90,8 @@ public sealed class MapOrElseValueTaskExtensionTests
 
         int mapped = await result.MapOrElseAsync(
             err => ValueTask.FromResult(err.Length),
-            value => ValueTask.FromResult(value * 2));
+            value => ValueTask.FromResult(value * 2)
+        );
 
         mapped.Should().Be(4);
     }
@@ -87,7 +99,9 @@ public sealed class MapOrElseValueTaskExtensionTests
     [Fact]
     public async Task MapOrElseAsync_WhenFallbackIsNullValueTaskAsyncFns_ShouldThrowArgumentNullException()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         Func<Task> act = async () =>
         {
@@ -101,7 +115,9 @@ public sealed class MapOrElseValueTaskExtensionTests
     [Fact]
     public async Task MapOrElseAsync_WhenOperationIsNullValueTaskAsyncFns_ShouldThrowArgumentNullException()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         Func<Task> act = async () =>
         {

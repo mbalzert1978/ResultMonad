@@ -27,10 +27,13 @@ public static class TransposeExtension
             ArgumentNullException.ThrowIfNull(self);
 
             return self.Match(
-                option => option.Match(
-                    value => Option.Some(Result.Ok<T, E>(value)),
-                    Option.None<Result<T, E>>),
-                err => Option.Some(Result.Err<T, E>(err)));
+                option =>
+                    option.Match(
+                        value => Option.Some(Result.Ok<T, E>(value)),
+                        Option.None<Result<T, E>>
+                    ),
+                err => Option.Some(Result.Err<T, E>(err))
+            );
         }
     }
 }

@@ -26,9 +26,7 @@ public static class FilterExtension
         {
             ArgumentNullException.ThrowIfNull(predicate);
 
-            return self.Match(
-                value => predicate(value) ? self : Option.None<T>(),
-                Option.None<T>);
+            return self.Match(value => predicate(value) ? self : Option.None<T>(), Option.None<T>);
         }
     }
 }

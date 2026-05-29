@@ -18,7 +18,5 @@ public abstract record Result<T, E>
     where E : notnull
     where T : notnull
 {
-    private protected Result()
-    {
-    }
+    private protected Result() { }
 }

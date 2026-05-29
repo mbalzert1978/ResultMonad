@@ -2,6 +2,8 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
+using Monads.Strings;
+
 namespace Monads.Options.Extensions.Async;
 
 /// <summary>
@@ -38,7 +40,10 @@ public static class MatchValueTaskExtension
         /// <returns>A value task that completes with the value produced by the invoked branch.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="onSome"/> or <paramref name="onNone"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the invoked branch returns a null result.</exception>
-        public async ValueTask<U> MatchAsync<U>(Func<T, ValueTask<U>> onSome, Func<ValueTask<U>> onNone)
+        public async ValueTask<U> MatchAsync<U>(
+            Func<T, ValueTask<U>> onSome,
+            Func<ValueTask<U>> onNone
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(onSome);
@@ -61,13 +66,17 @@ public static class MatchValueTaskExtension
         /// <param name="onNone">Asynchronous function invoked when this option is None.</param>
         /// <returns>A value task that completes with the value produced by the invoked branch.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="onSome"/> or <paramref name="onNone"/> is <see langword="null"/>.</exception>
-        public async ValueTask<U> MatchAsync<U>(Func<T, ValueTask<U>> onSome, Func<ValueTask<U>> onNone)
+        /// <exception cref="InvalidOperationException">Thrown when the invoked branch returns a null result.</exception>
+        public async ValueTask<U> MatchAsync<U>(
+            Func<T, ValueTask<U>> onSome,
+            Func<ValueTask<U>> onNone
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(onSome);
             ArgumentNullException.ThrowIfNull(onNone);
 
-            return await self.Match(onSome, onNone).ConfigureAwait(false);
+            return (await self.Match(onSome, onNone).ConfigureAwait(false)).OrThrowIfNull();
         }
     }
 }

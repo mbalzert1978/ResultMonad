@@ -20,7 +20,9 @@ public sealed class InspectValueTaskExtensionTests
     [Fact]
     public async Task InspectAsync_WhenValueTaskOkAndSyncAction_ShouldInvokeActionAndReturnResult()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
         int seen = 0;
 
         Result<int, string> inspected = await resultTask.InspectAsync(value => seen = value);
@@ -32,7 +34,9 @@ public sealed class InspectValueTaskExtensionTests
     [Fact]
     public async Task InspectAsync_WhenValueTaskErrAndSyncAction_ShouldNotInvokeAction()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
         bool invoked = false;
 
         Result<int, string> inspected = await resultTask.InspectAsync(_ => invoked = true);
@@ -44,7 +48,9 @@ public sealed class InspectValueTaskExtensionTests
     [Fact]
     public async Task InspectAsync_WhenValueTaskOkAndAsyncAction_ShouldAwaitActionAndReturnResult()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
         int seen = 0;
 
         Result<int, string> inspected = await resultTask.InspectAsync(async value =>
@@ -78,7 +84,9 @@ public sealed class InspectValueTaskExtensionTests
     [Fact]
     public async Task InspectAsync_WhenActionIsNullValueTaskSyncAction_ShouldThrowArgumentNullException()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         Func<Task> act = async () =>
         {
@@ -92,7 +100,9 @@ public sealed class InspectValueTaskExtensionTests
     [Fact]
     public async Task InspectAsync_WhenActionIsNullValueTaskAsyncAction_ShouldThrowArgumentNullException()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         Func<Task> act = async () =>
         {

@@ -20,7 +20,9 @@ public sealed class ToOkValueTaskExtensionTests
     [Fact]
     public async Task ToOkAsync_WhenValueTaskOk_ShouldReturnSome()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         Option<int> option = await resultTask.ToOkAsync();
 
@@ -31,7 +33,9 @@ public sealed class ToOkValueTaskExtensionTests
     [Fact]
     public async Task ToOkAsync_WhenValueTaskErr_ShouldReturnNone()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
         Option<int> option = await resultTask.ToOkAsync();
 

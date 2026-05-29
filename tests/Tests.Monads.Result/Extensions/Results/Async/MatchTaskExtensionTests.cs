@@ -160,4 +160,18 @@ public sealed class MatchTaskExtensionTests
         Success.Should().BeFalse();
         Message.Should().Be(ErrorMessage);
     }
+
+    [Fact]
+    public async Task MatchAsync_WhenAsyncOnOkReturnsNull_ShouldThrowInvalidOperationException()
+    {
+        Result<int, string> result = Ok<int, string>(SuccessValue);
+
+        Func<Task<string>> act = async () =>
+            await result.MatchAsync(
+                value => Task.FromResult<string>(null!),
+                error => Task.FromResult("err")
+            );
+
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
 }

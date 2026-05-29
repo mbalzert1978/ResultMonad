@@ -23,7 +23,11 @@ public sealed class OkOrElseTests
         var self = Option.Some(TestValue);
         bool invoked = false;
 
-        Result<int, string> result = self.OkOrElse(() => { invoked = true; return ErrorValue; });
+        Result<int, string> result = self.OkOrElse(() =>
+        {
+            invoked = true;
+            return ErrorValue;
+        });
 
         result.IsOk.Should().BeTrue();
         invoked.Should().BeFalse();

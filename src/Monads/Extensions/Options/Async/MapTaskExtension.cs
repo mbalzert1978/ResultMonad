@@ -44,7 +44,8 @@ public static class MapTaskExtension
 
             return await self.MatchAsync(
                     async value => Option.Some(await operation(value).ConfigureAwait(false)),
-                    () => Task.FromResult(Option.None<U>()))
+                    () => Task.FromResult(Option.None<U>())
+                )
                 .ConfigureAwait(false);
         }
     }
@@ -66,7 +67,8 @@ public static class MapTaskExtension
 
             return await self.MatchAsync(
                     async value => Option.Some(await operation(value).ConfigureAwait(false)),
-                    () => Task.FromResult(Option.None<U>()))
+                    () => Task.FromResult(Option.None<U>())
+                )
                 .ConfigureAwait(false);
         }
     }

@@ -46,8 +46,9 @@ public static class OkOrElseValueTaskExtension
             ArgumentNullException.ThrowIfNull(error);
 
             return await self.MatchAsync(
-                    value => new ValueTask<Result<T, E>>(Result.Ok<T, E>(value)),
-                    async () => Result.Err<T, E>(await error().ConfigureAwait(false)))
+                    value => new(Result.Ok<T, E>(value)),
+                    async () => Result.Err<T, E>(await error().ConfigureAwait(false))
+                )
                 .ConfigureAwait(false);
         }
     }
@@ -69,8 +70,9 @@ public static class OkOrElseValueTaskExtension
             ArgumentNullException.ThrowIfNull(error);
 
             return await self.MatchAsync(
-                    value => new ValueTask<Result<T, E>>(Result.Ok<T, E>(value)),
-                    async () => Result.Err<T, E>(await error().ConfigureAwait(false)))
+                    value => new(Result.Ok<T, E>(value)),
+                    async () => Result.Err<T, E>(await error().ConfigureAwait(false))
+                )
                 .ConfigureAwait(false);
         }
     }

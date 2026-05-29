@@ -100,8 +100,7 @@ public sealed class MapOrTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        Func<Task> act = async () =>
-            await self.MapOrAsync(Fallback, (Func<int, Task<int>>)null!);
+        Func<Task> act = async () => await self.MapOrAsync(Fallback, (Func<int, Task<int>>)null!);
 
         await act.Should().ThrowAsync<ArgumentNullException>();
     }

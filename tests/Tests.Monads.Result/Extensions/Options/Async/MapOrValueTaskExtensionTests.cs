@@ -40,7 +40,7 @@ public sealed class MapOrValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.Some(TestValue));
 
-        int result = await selfTask.MapOrAsync(Fallback, v => new ValueTask<int>(v * 2));
+        int result = await selfTask.MapOrAsync(Fallback, v => new(v * 2));
 
         result.Should().Be(84);
     }
@@ -50,7 +50,7 @@ public sealed class MapOrValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.None<int>());
 
-        int result = await selfTask.MapOrAsync(Fallback, v => new ValueTask<int>(v * 2));
+        int result = await selfTask.MapOrAsync(Fallback, v => new(v * 2));
 
         result.Should().Be(Fallback);
     }
@@ -60,7 +60,7 @@ public sealed class MapOrValueTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        int result = await self.MapOrAsync(Fallback, v => new ValueTask<int>(v * 2));
+        int result = await self.MapOrAsync(Fallback, v => new(v * 2));
 
         result.Should().Be(84);
     }
@@ -70,7 +70,7 @@ public sealed class MapOrValueTaskExtensionTests
     {
         var self = Option.None<int>();
 
-        int result = await self.MapOrAsync(Fallback, v => new ValueTask<int>(v * 2));
+        int result = await self.MapOrAsync(Fallback, v => new(v * 2));
 
         result.Should().Be(Fallback);
     }

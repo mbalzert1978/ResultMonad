@@ -18,8 +18,7 @@ public static class UnwrapOrValueTaskExtension
         /// </summary>
         /// <param name="fallback">The value to return when the awaited result is Err.</param>
         /// <returns>A value task producing the Ok value when Ok; otherwise <paramref name="fallback"/>.</returns>
-        public async ValueTask<T> UnwrapOrAsync(T fallback)
-            => await self.MatchAsync(static value => value, _ => fallback)
-                .ConfigureAwait(false);
+        public async ValueTask<T> UnwrapOrAsync(T fallback) =>
+            await self.MatchAsync(static value => value, _ => fallback).ConfigureAwait(false);
     }
 }

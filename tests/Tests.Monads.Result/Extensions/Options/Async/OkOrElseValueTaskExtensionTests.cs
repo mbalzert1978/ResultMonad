@@ -42,8 +42,9 @@ public sealed class OkOrElseValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.Some(TestValue));
 
-        Result<int, string> result = await selfTask.OkOrElseAsync(
-            () => new ValueTask<string>(ErrorValue));
+        Result<int, string> result = await selfTask.OkOrElseAsync(() =>
+            new ValueTask<string>(ErrorValue)
+        );
 
         result.IsOk.Should().BeTrue();
     }
@@ -53,8 +54,9 @@ public sealed class OkOrElseValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.None<int>());
 
-        Result<int, string> result = await selfTask.OkOrElseAsync(
-            () => new ValueTask<string>(ErrorValue));
+        Result<int, string> result = await selfTask.OkOrElseAsync(() =>
+            new ValueTask<string>(ErrorValue)
+        );
 
         result.IsErr.Should().BeTrue();
     }
@@ -64,8 +66,9 @@ public sealed class OkOrElseValueTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        Result<int, string> result = await self.OkOrElseAsync(
-            () => new ValueTask<string>(ErrorValue));
+        Result<int, string> result = await self.OkOrElseAsync(() =>
+            new ValueTask<string>(ErrorValue)
+        );
 
         result.IsOk.Should().BeTrue();
     }
@@ -75,8 +78,9 @@ public sealed class OkOrElseValueTaskExtensionTests
     {
         var self = Option.None<int>();
 
-        Result<int, string> result = await self.OkOrElseAsync(
-            () => new ValueTask<string>(ErrorValue));
+        Result<int, string> result = await self.OkOrElseAsync(() =>
+            new ValueTask<string>(ErrorValue)
+        );
 
         result.IsErr.Should().BeTrue();
     }

@@ -21,7 +21,11 @@ public sealed class UnwrapOrElseTests
         var self = Option.Some(TestValue);
         bool invoked = false;
 
-        int result = self.UnwrapOrElse(() => { invoked = true; return FallbackValue; });
+        int result = self.UnwrapOrElse(() =>
+        {
+            invoked = true;
+            return FallbackValue;
+        });
 
         result.Should().Be(TestValue);
         invoked.Should().BeFalse();

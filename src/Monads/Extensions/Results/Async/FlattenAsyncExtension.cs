@@ -46,7 +46,7 @@ public static class FlattenAsyncExtension
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
         /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
-        public async ValueTask<Result<T, E>> FlattenAsync()
-            => await self.MatchAsync(ok => ok, Result.Err<T, E>).ConfigureAwait(false);
+        public async ValueTask<Result<T, E>> FlattenAsync() =>
+            await self.MatchAsync(ok => ok, Result.Err<T, E>).ConfigureAwait(false);
     }
 }

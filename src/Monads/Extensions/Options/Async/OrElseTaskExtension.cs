@@ -37,9 +37,7 @@ public static class OrElseTaskExtension
             ArgumentNullException.ThrowIfNull(self);
             ArgumentNullException.ThrowIfNull(operation);
 
-            return await self.MatchAsync(
-                    value => Task.FromResult(Option.Some(value)),
-                    operation)
+            return await self.MatchAsync(value => Task.FromResult(Option.Some(value)), operation)
                 .ConfigureAwait(false);
         }
     }
@@ -57,9 +55,7 @@ public static class OrElseTaskExtension
         {
             ArgumentNullException.ThrowIfNull(operation);
 
-            return await self.MatchAsync(
-                    value => Task.FromResult(Option.Some(value)),
-                    operation)
+            return await self.MatchAsync(value => Task.FromResult(Option.Some(value)), operation)
                 .ConfigureAwait(false);
         }
     }

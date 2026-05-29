@@ -37,7 +37,10 @@ public static class MapTaskExtension
         {
             ArgumentNullException.ThrowIfNull(operation);
 
-            return await self.MatchAsync(value => Result.Ok<U, E>(operation(value)), Result.Err<U, E>)
+            return await self.MatchAsync(
+                    value => Result.Ok<U, E>(operation(value)),
+                    Result.Err<U, E>
+                )
                 .ConfigureAwait(false);
         }
 

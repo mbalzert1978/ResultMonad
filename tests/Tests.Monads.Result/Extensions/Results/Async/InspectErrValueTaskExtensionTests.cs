@@ -20,7 +20,9 @@ public sealed class InspectErrValueTaskExtensionTests
     [Fact]
     public async Task InspectErrAsync_WhenValueTaskErrAndSyncAction_ShouldInvokeActionAndReturnResult()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
         string seen = string.Empty;
 
         Result<int, string> inspected = await resultTask.InspectErrAsync(err => seen = err);
@@ -32,7 +34,9 @@ public sealed class InspectErrValueTaskExtensionTests
     [Fact]
     public async Task InspectErrAsync_WhenValueTaskOkAndSyncAction_ShouldNotInvokeAction()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
         bool invoked = false;
 
         Result<int, string> inspected = await resultTask.InspectErrAsync(_ => invoked = true);
@@ -44,7 +48,9 @@ public sealed class InspectErrValueTaskExtensionTests
     [Fact]
     public async Task InspectErrAsync_WhenValueTaskErrAndAsyncAction_ShouldAwaitActionAndReturnResult()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
         string seen = string.Empty;
 
         Result<int, string> inspected = await resultTask.InspectErrAsync(async err =>
@@ -78,7 +84,9 @@ public sealed class InspectErrValueTaskExtensionTests
     [Fact]
     public async Task InspectErrAsync_WhenActionIsNullValueTaskAsyncAction_ShouldThrowArgumentNullException()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
         Func<Task> act = async () =>
         {

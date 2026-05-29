@@ -26,7 +26,6 @@ public static class OkOrExtension
         /// otherwise an Err carrying <paramref name="error"/>.
         /// </returns>
         public Result<T, E> OkOr<E>(E error)
-            where E : notnull
-            => self.Match(Result.Ok<T, E>, () => Result.Err<T, E>(error));
+            where E : notnull => self.Match(Result.Ok<T, E>, () => Result.Err<T, E>(error));
     }
 }

@@ -4,6 +4,7 @@
 
 using System.Diagnostics;
 using Monads.Results.Extensions.Sync;
+using Monads.Strings;
 
 namespace Monads.Results.Extensions.Async;
 
@@ -53,7 +54,10 @@ public static class MatchValueTaskExtension
         /// This overload awaits the <paramref name="self"/> task and then delegates to the async-function overload on the synchronous result.
         /// Both the result and the selected match function are awaited asynchronously.
         /// </remarks>
-        public async ValueTask<U> MatchAsync<U>(Func<T, ValueTask<U>> onOk, Func<E, ValueTask<U>> onErr)
+        public async ValueTask<U> MatchAsync<U>(
+            Func<T, ValueTask<U>> onOk,
+            Func<E, ValueTask<U>> onErr
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(onOk);
@@ -83,7 +87,10 @@ public static class MatchValueTaskExtension
         /// This overload takes a synchronous result but invokes asynchronous match functions.
         /// The appropriate function is selected based on the result type and then awaited.
         /// </remarks>
-        public async ValueTask<U> MatchAsync<U>(Func<T, ValueTask<U>> onOk, Func<E, ValueTask<U>> onErr)
+        public async ValueTask<U> MatchAsync<U>(
+            Func<T, ValueTask<U>> onOk,
+            Func<E, ValueTask<U>> onErr
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(onOk);
@@ -91,10 +98,8 @@ public static class MatchValueTaskExtension
 
             U result = self switch
             {
-                Ok<T, E>(var value) => await onOk(value).ConfigureAwait(false)
-                    ?? throw new InvalidOperationException(Strings.Constants.OperationNullError),
-                Err<T, E>(var error) => await onErr(error).ConfigureAwait(false)
-                    ?? throw new InvalidOperationException(Strings.Constants.OperationNullError),
+                Ok<T, E>(var value) => (await onOk(value).ConfigureAwait(false)).OrThrowIfNull(),
+                Err<T, E>(var error) => (await onErr(error).ConfigureAwait(false)).OrThrowIfNull(),
                 _ => throw new UnreachableException(Strings.Constants.ExhaustedResultError),
             };
 

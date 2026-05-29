@@ -2,6 +2,8 @@
 // Copyright (c) Markus - Iorio. All rights reserved.
 // </copyright>
 
+using Monads.Strings;
+
 namespace Monads.Options.Extensions.Async;
 
 /// <summary>
@@ -70,8 +72,7 @@ public static class MatchTaskExtension
             ArgumentNullException.ThrowIfNull(onSome);
             ArgumentNullException.ThrowIfNull(onNone);
 
-            return await self.Match(onSome, onNone).ConfigureAwait(false)
-                ?? throw new InvalidOperationException(Strings.Constants.OperationNullError);
+            return (await self.Match(onSome, onNone).ConfigureAwait(false)).OrThrowIfNull();
         }
     }
 }

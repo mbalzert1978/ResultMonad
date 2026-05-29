@@ -22,9 +22,10 @@ public static class ZipExtension
         /// Some of the tuple <c>(T, U)</c> when both are Some; otherwise None.
         /// </returns>
         public Option<(T, U)> Zip<U>(Option<U> other)
-            where U : notnull
-            => self.Match(
+            where U : notnull =>
+            self.Match(
                 t => other.Match(u => Option.Some((t, u)), Option.None<(T, U)>),
-                Option.None<(T, U)>);
+                Option.None<(T, U)>
+            );
     }
 }

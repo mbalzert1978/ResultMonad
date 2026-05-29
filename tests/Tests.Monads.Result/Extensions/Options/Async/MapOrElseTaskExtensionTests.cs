@@ -42,7 +42,8 @@ public sealed class MapOrElseTaskExtensionTests
 
         int result = await selfTask.MapOrElseAsync(
             () => Task.FromResult(FallbackValue),
-            v => Task.FromResult(v * 2));
+            v => Task.FromResult(v * 2)
+        );
 
         result.Should().Be(84);
     }
@@ -54,7 +55,8 @@ public sealed class MapOrElseTaskExtensionTests
 
         int result = await selfTask.MapOrElseAsync(
             () => Task.FromResult(FallbackValue),
-            v => Task.FromResult(v * 2));
+            v => Task.FromResult(v * 2)
+        );
 
         result.Should().Be(FallbackValue);
     }
@@ -66,7 +68,8 @@ public sealed class MapOrElseTaskExtensionTests
 
         int result = await self.MapOrElseAsync(
             () => Task.FromResult(FallbackValue),
-            v => Task.FromResult(v * 2));
+            v => Task.FromResult(v * 2)
+        );
 
         result.Should().Be(84);
     }
@@ -78,7 +81,8 @@ public sealed class MapOrElseTaskExtensionTests
 
         int result = await self.MapOrElseAsync(
             () => Task.FromResult(FallbackValue),
-            v => Task.FromResult(v * 2));
+            v => Task.FromResult(v * 2)
+        );
 
         result.Should().Be(FallbackValue);
     }
@@ -98,8 +102,7 @@ public sealed class MapOrElseTaskExtensionTests
     {
         Task<Option<int>> selfTask = Task.FromResult(Option.Some(TestValue));
 
-        Func<Task> act = async () =>
-            await selfTask.MapOrElseAsync<int, int>(null!, v => v);
+        Func<Task> act = async () => await selfTask.MapOrElseAsync<int, int>(null!, v => v);
 
         await act.Should().ThrowAsync<ArgumentNullException>();
     }
@@ -109,9 +112,11 @@ public sealed class MapOrElseTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        Func<Task> act = async () => await self.MapOrElseAsync(
-            () => Task.FromResult(FallbackValue),
-            (Func<int, Task<int>>)null!);
+        Func<Task> act = async () =>
+            await self.MapOrElseAsync(
+                () => Task.FromResult(FallbackValue),
+                (Func<int, Task<int>>)null!
+            );
 
         await act.Should().ThrowAsync<ArgumentNullException>();
     }

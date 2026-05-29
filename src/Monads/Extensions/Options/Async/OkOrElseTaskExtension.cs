@@ -49,7 +49,8 @@ public static class OkOrElseTaskExtension
 
             return await self.MatchAsync(
                     value => Task.FromResult(Result.Ok<T, E>(value)),
-                    async () => Result.Err<T, E>(await error().ConfigureAwait(false)))
+                    async () => Result.Err<T, E>(await error().ConfigureAwait(false))
+                )
                 .ConfigureAwait(false);
         }
     }
@@ -72,7 +73,8 @@ public static class OkOrElseTaskExtension
 
             return await self.MatchAsync(
                     value => Task.FromResult(Result.Ok<T, E>(value)),
-                    async () => Result.Err<T, E>(await error().ConfigureAwait(false)))
+                    async () => Result.Err<T, E>(await error().ConfigureAwait(false))
+                )
                 .ConfigureAwait(false);
         }
     }

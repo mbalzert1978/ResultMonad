@@ -40,7 +40,7 @@ public sealed class UnwrapOrElseValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.Some(TestValue));
 
-        int result = await selfTask.UnwrapOrElseAsync(() => new ValueTask<int>(FallbackValue));
+        int result = await selfTask.UnwrapOrElseAsync(() => new(FallbackValue));
 
         result.Should().Be(TestValue);
     }
@@ -50,7 +50,7 @@ public sealed class UnwrapOrElseValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.None<int>());
 
-        int result = await selfTask.UnwrapOrElseAsync(() => new ValueTask<int>(FallbackValue));
+        int result = await selfTask.UnwrapOrElseAsync(() => new(FallbackValue));
 
         result.Should().Be(FallbackValue);
     }
@@ -60,7 +60,7 @@ public sealed class UnwrapOrElseValueTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        int result = await self.UnwrapOrElseAsync(() => new ValueTask<int>(FallbackValue));
+        int result = await self.UnwrapOrElseAsync(() => new(FallbackValue));
 
         result.Should().Be(TestValue);
     }
@@ -70,7 +70,7 @@ public sealed class UnwrapOrElseValueTaskExtensionTests
     {
         var self = Option.None<int>();
 
-        int result = await self.UnwrapOrElseAsync(() => new ValueTask<int>(FallbackValue));
+        int result = await self.UnwrapOrElseAsync(() => new(FallbackValue));
 
         result.Should().Be(FallbackValue);
     }

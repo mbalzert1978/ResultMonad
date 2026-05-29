@@ -76,9 +76,7 @@ public sealed class OrElseTests
     {
         Result<string, int> result = Err<string, int>(404);
 
-        Result<string, string> recovered = result.OrElse(error =>
-            Ok<string, string>("Recovered")
-        );
+        Result<string, string> recovered = result.OrElse(error => Ok<string, string>("Recovered"));
 
         recovered.IsOk.Should().BeTrue();
         recovered.Match(value => value, error => string.Empty).Should().Be("Recovered");
@@ -100,10 +98,9 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenOkResultWithComplexType_ShouldPreserveValue()
     {
-        Result<(bool Success, int Value), string> result = Ok<
-            (bool Success, int Value),
-            string
-        >((true, SuccessValue));
+        Result<(bool Success, int Value), string> result = Ok<(bool Success, int Value), string>(
+            (true, SuccessValue)
+        );
 
         Result<(bool Success, int Value), int> recovered = result.OrElse(error =>
             Err<(bool Success, int Value), int>(0)
@@ -118,10 +115,9 @@ public sealed class OrElseTests
     [Fact]
     public void OrElse_WhenErrResultWithComplexTypeRecovery_ShouldReturnRecoveredValue()
     {
-        Result<(bool Success, int Value), string> result = Err<
-            (bool Success, int Value),
-            string
-        >(ErrorMessage);
+        Result<(bool Success, int Value), string> result = Err<(bool Success, int Value), string>(
+            ErrorMessage
+        );
 
         Result<(bool Success, int Value), int> recovered = result.OrElse(error =>
             Ok<(bool Success, int Value), int>((false, FallbackValue))
@@ -139,9 +135,7 @@ public sealed class OrElseTests
         Result<int, int> result = Err<int, int>(10);
 
         Result<int, int> recovered = result
-            .OrElse(error =>
-                error < 20 ? Err<int, int>(error * 2) : Ok<int, int>(FallbackValue)
-            )
+            .OrElse(error => error < 20 ? Err<int, int>(error * 2) : Ok<int, int>(FallbackValue))
             .OrElse(error => Ok<int, int>(error + 5));
 
         recovered.IsOk.Should().BeTrue();

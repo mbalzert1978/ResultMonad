@@ -22,8 +22,13 @@ public sealed class MapOrElseTests
         bool fallbackInvoked = false;
 
         int result = self.MapOrElse(
-            () => { fallbackInvoked = true; return FallbackValue; },
-            value => value * 2);
+            () =>
+            {
+                fallbackInvoked = true;
+                return FallbackValue;
+            },
+            value => value * 2
+        );
 
         result.Should().Be(84);
         fallbackInvoked.Should().BeFalse();
@@ -37,7 +42,12 @@ public sealed class MapOrElseTests
 
         int result = self.MapOrElse(
             () => FallbackValue,
-            value => { operationInvoked = true; return value * 2; });
+            value =>
+            {
+                operationInvoked = true;
+                return value * 2;
+            }
+        );
 
         result.Should().Be(FallbackValue);
         operationInvoked.Should().BeFalse();

@@ -33,6 +33,5 @@ public static class Option
     /// <typeparam name="T">The type parameter of the option.</typeparam>
     /// <returns>An <see cref="Option{T}"/> in the None state.</returns>
     public static Option<T> None<T>()
-        where T : notnull
-        => default;
+        where T : notnull => default;
 }
