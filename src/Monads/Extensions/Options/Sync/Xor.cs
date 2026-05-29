@@ -20,9 +20,7 @@ public static class XorExtension
         /// <returns>
         /// The Some option when exactly one is Some; otherwise None.
         /// </returns>
-        public Option<T> Xor(Option<T> other)
-            => self.Match(
-                _ => other.Match(_ => Option.None<T>(), () => self),
-                () => other);
+        public Option<T> Xor(Option<T> other) =>
+            self.Match(_ => other.Match(_ => Option.None<T>(), () => self), () => other);
     }
 }

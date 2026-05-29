@@ -19,7 +19,9 @@ public sealed class UnwrapOrElseValueTaskExtensionTests
     [Fact]
     public async Task UnwrapOrElseAsync_WhenValueTaskOkAndSyncFn_ShouldReturnInnerValue()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         int unwrapped = await resultTask.UnwrapOrElseAsync(err => err.Length);
 
@@ -29,7 +31,9 @@ public sealed class UnwrapOrElseValueTaskExtensionTests
     [Fact]
     public async Task UnwrapOrElseAsync_WhenValueTaskErrAndSyncFn_ShouldReturnFallback()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
         int unwrapped = await resultTask.UnwrapOrElseAsync(err => err.Length);
 
@@ -39,7 +43,9 @@ public sealed class UnwrapOrElseValueTaskExtensionTests
     [Fact]
     public async Task UnwrapOrElseAsync_WhenValueTaskOkAndAsyncFn_ShouldReturnInnerValue()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         int unwrapped = await resultTask.UnwrapOrElseAsync(err => ValueTask.FromResult(err.Length));
 
@@ -49,7 +55,9 @@ public sealed class UnwrapOrElseValueTaskExtensionTests
     [Fact]
     public async Task UnwrapOrElseAsync_WhenValueTaskErrAndAsyncFn_ShouldReturnFallback()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
         int unwrapped = await resultTask.UnwrapOrElseAsync(err => ValueTask.FromResult(err.Length));
 
@@ -79,7 +87,9 @@ public sealed class UnwrapOrElseValueTaskExtensionTests
     [Fact]
     public async Task UnwrapOrElseAsync_WhenFallbackIsNullValueTaskFn_ShouldThrowArgumentNullException()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         Func<Task> act = async () =>
         {

@@ -66,7 +66,8 @@ public static class InspectErrTaskExtension
                     {
                         await action(error).ConfigureAwait(false);
                         return Unit.Default;
-                    })
+                    }
+                )
                 .ConfigureAwait(false);
 
             return self;

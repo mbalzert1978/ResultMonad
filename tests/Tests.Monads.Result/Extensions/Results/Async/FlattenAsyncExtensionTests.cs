@@ -158,10 +158,9 @@ public sealed class FlattenAsyncExtensionTests
     public async Task FlattenAsync_WhenCalledWithComplexNestedOkOk_ShouldWorkCorrectly()
     {
         Result<string, string> innerResult = Ok<string, string>("inner value");
-        Result<Result<string, string>, string> nestedResult = Ok<
-            Result<string, string>,
-            string
-        >(innerResult);
+        Result<Result<string, string>, string> nestedResult = Ok<Result<string, string>, string>(
+            innerResult
+        );
         Task<Result<Result<string, string>, string>> taskResult = Task.FromResult(nestedResult);
 
         Result<string, string> flattened = await taskResult.FlattenAsync();
@@ -199,10 +198,9 @@ public sealed class FlattenAsyncExtensionTests
     public async Task FlattenAsync_WhenCalledWithValueTaskAndComplexType_ShouldWorkCorrectly()
     {
         Result<string, string> innerResult = Ok<string, string>("test value");
-        Result<Result<string, string>, string> nestedResult = Ok<
-            Result<string, string>,
-            string
-        >(innerResult);
+        Result<Result<string, string>, string> nestedResult = Ok<Result<string, string>, string>(
+            innerResult
+        );
         ValueTask<Result<Result<string, string>, string>> valueTaskResult = ValueTask.FromResult(
             nestedResult
         );

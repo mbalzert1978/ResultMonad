@@ -75,9 +75,7 @@ public sealed class BindTests
     {
         Result<int, string> result = Ok<int, string>(SuccessValue);
 
-        Result<string, string> bound = result.Bind(value =>
-            Ok<string, string>($"Value: {value}")
-        );
+        Result<string, string> bound = result.Bind(value => Ok<string, string>($"Value: {value}"));
 
         bound.IsOk.Should().BeTrue();
         bound.Match(value => value, error => string.Empty).Should().Be("Value: 42");
@@ -88,9 +86,7 @@ public sealed class BindTests
     {
         Result<int, string> result = Err<int, string>(ErrorMessage);
 
-        Result<string, string> bound = result.Bind(value =>
-            Ok<string, string>($"Value: {value}")
-        );
+        Result<string, string> bound = result.Bind(value => Ok<string, string>($"Value: {value}"));
 
         bound.IsErr.Should().BeTrue();
         bound.Match(value => string.Empty, error => error).Should().Be(ErrorMessage);

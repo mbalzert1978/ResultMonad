@@ -43,11 +43,14 @@ public sealed class MapOrTests
         Result<int, string> result = Err<int, string>(ErrorMessage);
         bool invoked = false;
 
-        result.MapOr(Fallback, value =>
-        {
-            invoked = true;
-            return value * 2;
-        });
+        result.MapOr(
+            Fallback,
+            value =>
+            {
+                invoked = true;
+                return value * 2;
+            }
+        );
 
         invoked.Should().BeFalse();
     }

@@ -66,7 +66,8 @@ public static class InspectTaskExtension
                         await action(value).ConfigureAwait(false);
                         return Unit.Default;
                     },
-                    _ => Task.FromResult(Unit.Default))
+                    _ => Task.FromResult(Unit.Default)
+                )
                 .ConfigureAwait(false);
 
             return self;

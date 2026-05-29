@@ -38,7 +38,10 @@ public static class MapOrElseValueTaskExtension
         /// <param name="operation">The asynchronous function applied to the Ok value.</param>
         /// <returns>A value task producing <c>operation(value)</c> when Ok; otherwise <c>fallback(error)</c>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="fallback"/> or <paramref name="operation"/> is <see langword="null"/>.</exception>
-        public async ValueTask<U> MapOrElseAsync<U>(Func<E, ValueTask<U>> fallback, Func<T, ValueTask<U>> operation)
+        public async ValueTask<U> MapOrElseAsync<U>(
+            Func<E, ValueTask<U>> fallback,
+            Func<T, ValueTask<U>> operation
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(fallback);
@@ -60,7 +63,10 @@ public static class MapOrElseValueTaskExtension
         /// <param name="operation">The asynchronous function applied to the Ok value.</param>
         /// <returns>A value task producing <c>operation(value)</c> when Ok; otherwise <c>fallback(error)</c>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="fallback"/> or <paramref name="operation"/> is <see langword="null"/>.</exception>
-        public async ValueTask<U> MapOrElseAsync<U>(Func<E, ValueTask<U>> fallback, Func<T, ValueTask<U>> operation)
+        public async ValueTask<U> MapOrElseAsync<U>(
+            Func<E, ValueTask<U>> fallback,
+            Func<T, ValueTask<U>> operation
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(fallback);

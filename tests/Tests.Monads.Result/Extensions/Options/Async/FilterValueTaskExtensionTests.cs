@@ -49,7 +49,7 @@ public sealed class FilterValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.Some(TestValue));
 
-        Option<int> result = await selfTask.FilterAsync(v => new ValueTask<bool>(v > 0));
+        Option<int> result = await selfTask.FilterAsync(v => new(v > 0));
 
         result.Should().Be(Option.Some(TestValue));
     }
@@ -59,7 +59,7 @@ public sealed class FilterValueTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        Option<int> result = await self.FilterAsync(v => new ValueTask<bool>(v < 0));
+        Option<int> result = await self.FilterAsync(v => new(v < 0));
 
         result.IsNone.Should().BeTrue();
     }
@@ -69,7 +69,7 @@ public sealed class FilterValueTaskExtensionTests
     {
         var self = Option.None<int>();
 
-        Option<int> result = await self.FilterAsync(_ => new ValueTask<bool>(true));
+        Option<int> result = await self.FilterAsync(_ => new(true));
 
         result.IsNone.Should().BeTrue();
     }

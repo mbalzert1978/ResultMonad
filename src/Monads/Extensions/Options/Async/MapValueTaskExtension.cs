@@ -42,7 +42,8 @@ public static class MapValueTaskExtension
 
             return await self.MatchAsync(
                     async value => Option.Some(await operation(value).ConfigureAwait(false)),
-                    () => new ValueTask<Option<U>>(Option.None<U>()))
+                    () => new(Option.None<U>())
+                )
                 .ConfigureAwait(false);
         }
     }
@@ -64,7 +65,8 @@ public static class MapValueTaskExtension
 
             return await self.MatchAsync(
                     async value => Option.Some(await operation(value).ConfigureAwait(false)),
-                    () => new ValueTask<Option<U>>(Option.None<U>()))
+                    () => new(Option.None<U>())
+                )
                 .ConfigureAwait(false);
         }
     }

@@ -39,7 +39,7 @@ public static class BindValueTaskExtension
         {
             ArgumentNullException.ThrowIfNull(operation);
 
-            return await self.MatchAsync(operation, () => new ValueTask<Option<U>>(Option.None<U>()))
+            return await self.MatchAsync(operation, () => new(Option.None<U>()))
                 .ConfigureAwait(false);
         }
     }
@@ -59,7 +59,7 @@ public static class BindValueTaskExtension
         {
             ArgumentNullException.ThrowIfNull(operation);
 
-            return await self.MatchAsync(operation, () => new ValueTask<Option<U>>(Option.None<U>()))
+            return await self.MatchAsync(operation, () => new(Option.None<U>()))
                 .ConfigureAwait(false);
         }
     }

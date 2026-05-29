@@ -34,7 +34,7 @@ public static class FlattenAsyncExtension
         /// Awaits the option value task and collapses the nested option into a single-level option.
         /// </summary>
         /// <returns>A value task producing the inner option when Some; otherwise None.</returns>
-        public async ValueTask<Option<T>> FlattenAsync()
-            => (await self.ConfigureAwait(false)).Flatten();
+        public async ValueTask<Option<T>> FlattenAsync() =>
+            (await self.ConfigureAwait(false)).Flatten();
     }
 }

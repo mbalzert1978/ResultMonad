@@ -21,7 +21,8 @@ public sealed class TransposeAsyncExtensionTests
     public async Task TransposeAsync_WhenTaskOkSome_ShouldReturnSomeOk()
     {
         Task<Result<Option<int>, string>> task = Task.FromResult(
-            Ok<Option<int>, string>(Option.Some(SuccessValue)));
+            Ok<Option<int>, string>(Option.Some(SuccessValue))
+        );
 
         Option<Result<int, string>> transposed = await task.TransposeAsync();
 
@@ -32,7 +33,8 @@ public sealed class TransposeAsyncExtensionTests
     public async Task TransposeAsync_WhenTaskOkNone_ShouldReturnNone()
     {
         Task<Result<Option<int>, string>> task = Task.FromResult(
-            Ok<Option<int>, string>(Option.None<int>()));
+            Ok<Option<int>, string>(Option.None<int>())
+        );
 
         Option<Result<int, string>> transposed = await task.TransposeAsync();
 
@@ -43,7 +45,8 @@ public sealed class TransposeAsyncExtensionTests
     public async Task TransposeAsync_WhenTaskErr_ShouldReturnSomeErr()
     {
         Task<Result<Option<int>, string>> task = Task.FromResult(
-            Err<Option<int>, string>(ErrorMessage));
+            Err<Option<int>, string>(ErrorMessage)
+        );
 
         Option<Result<int, string>> transposed = await task.TransposeAsync();
 
@@ -54,7 +57,8 @@ public sealed class TransposeAsyncExtensionTests
     public async Task TransposeAsync_WhenValueTaskOkSome_ShouldReturnSomeOk()
     {
         ValueTask<Result<Option<int>, string>> task = ValueTask.FromResult(
-            Ok<Option<int>, string>(Option.Some(SuccessValue)));
+            Ok<Option<int>, string>(Option.Some(SuccessValue))
+        );
 
         Option<Result<int, string>> transposed = await task.TransposeAsync();
 
@@ -65,7 +69,8 @@ public sealed class TransposeAsyncExtensionTests
     public async Task TransposeAsync_WhenValueTaskOkNone_ShouldReturnNone()
     {
         ValueTask<Result<Option<int>, string>> task = ValueTask.FromResult(
-            Ok<Option<int>, string>(Option.None<int>()));
+            Ok<Option<int>, string>(Option.None<int>())
+        );
 
         Option<Result<int, string>> transposed = await task.TransposeAsync();
 

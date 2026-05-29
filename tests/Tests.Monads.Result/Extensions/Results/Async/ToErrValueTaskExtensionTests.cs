@@ -20,7 +20,9 @@ public sealed class ToErrValueTaskExtensionTests
     [Fact]
     public async Task ToErrAsync_WhenValueTaskErr_ShouldReturnSome()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
         Option<string> option = await resultTask.ToErrAsync();
 
@@ -31,7 +33,9 @@ public sealed class ToErrValueTaskExtensionTests
     [Fact]
     public async Task ToErrAsync_WhenValueTaskOk_ShouldReturnNone()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         Option<string> option = await resultTask.ToErrAsync();
 

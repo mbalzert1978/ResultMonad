@@ -171,9 +171,7 @@ public sealed class MapErrValueTaskExtensionTests
     [Fact]
     public async Task MapErrAsync_WhenMappingWithCultureSpecificOperation_ShouldWorkCorrectly()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
-            Err<int, string>("error")
-        );
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>("error"));
 
         Result<int, string> mapped = await resultTask.MapErrAsync(error =>
             error.ToUpper(CultureInfo.InvariantCulture)

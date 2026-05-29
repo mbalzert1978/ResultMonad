@@ -25,9 +25,7 @@ public sealed class BindValueTaskExtensionTests
             Ok<int, string>(SuccessValue)
         );
 
-        Result<int, string> bound = await resultTask.BindAsync(value =>
-            Ok<int, string>(value * 2)
-        );
+        Result<int, string> bound = await resultTask.BindAsync(value => Ok<int, string>(value * 2));
 
         bound.IsOk.Should().BeTrue();
         bound.Match(value => value, error => 0).Should().Be(84);
@@ -40,9 +38,7 @@ public sealed class BindValueTaskExtensionTests
             Err<int, string>(ErrorMessage)
         );
 
-        Result<int, string> bound = await resultTask.BindAsync(value =>
-            Ok<int, string>(value * 2)
-        );
+        Result<int, string> bound = await resultTask.BindAsync(value => Ok<int, string>(value * 2));
 
         bound.IsErr.Should().BeTrue();
         bound.Match(value => string.Empty, error => error).Should().Be(ErrorMessage);

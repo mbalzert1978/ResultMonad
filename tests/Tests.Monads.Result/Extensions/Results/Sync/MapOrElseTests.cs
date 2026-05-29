@@ -48,7 +48,8 @@ public sealed class MapOrElseTests
                 invoked = true;
                 return err.Length;
             },
-            value => value * 2);
+            value => value * 2
+        );
 
         invoked.Should().BeFalse();
     }
@@ -65,7 +66,8 @@ public sealed class MapOrElseTests
             {
                 invoked = true;
                 return value * 2;
-            });
+            }
+        );
 
         invoked.Should().BeFalse();
     }

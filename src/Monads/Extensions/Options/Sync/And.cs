@@ -22,7 +22,6 @@ public static class AndExtension
         /// <paramref name="other"/> when this option is Some; otherwise <see cref="Option.None{U}"/>.
         /// </returns>
         public Option<U> And<U>(Option<U> other)
-            where U : notnull
-            => self.Match(_ => other, Option.None<U>);
+            where U : notnull => self.Match(_ => other, Option.None<U>);
     }
 }

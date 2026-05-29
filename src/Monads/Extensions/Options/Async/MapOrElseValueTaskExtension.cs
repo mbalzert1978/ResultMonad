@@ -39,7 +39,8 @@ public static class MapOrElseValueTaskExtension
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="fallback"/> or <paramref name="operation"/> is <see langword="null"/>.</exception>
         public async ValueTask<U> MapOrElseAsync<U>(
             Func<ValueTask<U>> fallback,
-            Func<T, ValueTask<U>> operation)
+            Func<T, ValueTask<U>> operation
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(fallback);
@@ -62,7 +63,8 @@ public static class MapOrElseValueTaskExtension
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="fallback"/> or <paramref name="operation"/> is <see langword="null"/>.</exception>
         public async ValueTask<U> MapOrElseAsync<U>(
             Func<ValueTask<U>> fallback,
-            Func<T, ValueTask<U>> operation)
+            Func<T, ValueTask<U>> operation
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(fallback);

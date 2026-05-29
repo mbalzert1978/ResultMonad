@@ -35,8 +35,7 @@ public static class UnwrapOrElseValueTaskExtension
         {
             ArgumentNullException.ThrowIfNull(fallback);
 
-            return await self.MatchAsync(value => new ValueTask<T>(value), fallback)
-                .ConfigureAwait(false);
+            return await self.MatchAsync(value => new(value), fallback).ConfigureAwait(false);
         }
     }
 
@@ -53,8 +52,7 @@ public static class UnwrapOrElseValueTaskExtension
         {
             ArgumentNullException.ThrowIfNull(fallback);
 
-            return await self.MatchAsync(value => new ValueTask<T>(value), fallback)
-                .ConfigureAwait(false);
+            return await self.MatchAsync(value => new(value), fallback).ConfigureAwait(false);
         }
     }
 }

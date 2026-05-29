@@ -49,8 +49,9 @@ public sealed class OkOrElseTaskExtensionTests
     {
         Task<Option<int>> selfTask = Task.FromResult(Option.Some(TestValue));
 
-        Result<int, string> result = await selfTask.OkOrElseAsync(
-            () => Task.FromResult(ErrorValue));
+        Result<int, string> result = await selfTask.OkOrElseAsync(() =>
+            Task.FromResult(ErrorValue)
+        );
 
         result.IsOk.Should().BeTrue();
     }
@@ -60,8 +61,9 @@ public sealed class OkOrElseTaskExtensionTests
     {
         Task<Option<int>> selfTask = Task.FromResult(Option.None<int>());
 
-        Result<int, string> result = await selfTask.OkOrElseAsync(
-            () => Task.FromResult(ErrorValue));
+        Result<int, string> result = await selfTask.OkOrElseAsync(() =>
+            Task.FromResult(ErrorValue)
+        );
 
         result.IsErr.Should().BeTrue();
     }

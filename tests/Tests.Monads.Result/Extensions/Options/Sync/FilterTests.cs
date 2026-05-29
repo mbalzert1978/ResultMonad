@@ -40,7 +40,11 @@ public sealed class FilterTests
         var self = Option.None<int>();
         bool invoked = false;
 
-        Option<int> result = self.Filter(_ => { invoked = true; return true; });
+        Option<int> result = self.Filter(_ =>
+        {
+            invoked = true;
+            return true;
+        });
 
         result.IsNone.Should().BeTrue();
         invoked.Should().BeFalse();

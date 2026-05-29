@@ -20,7 +20,9 @@ public sealed class UnwrapOrValueTaskExtensionTests
     [Fact]
     public async Task UnwrapOrAsync_WhenValueTaskOk_ShouldReturnInnerValue()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         int unwrapped = await resultTask.UnwrapOrAsync(Fallback);
 
@@ -30,7 +32,9 @@ public sealed class UnwrapOrValueTaskExtensionTests
     [Fact]
     public async Task UnwrapOrAsync_WhenValueTaskErr_ShouldReturnFallback()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
         int unwrapped = await resultTask.UnwrapOrAsync(Fallback);
 

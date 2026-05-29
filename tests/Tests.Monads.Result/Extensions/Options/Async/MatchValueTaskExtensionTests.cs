@@ -42,7 +42,8 @@ public sealed class MatchValueTaskExtensionTests
 
         int matched = await selfTask.MatchAsync(
             value => new ValueTask<int>(value * 2),
-            () => new ValueTask<int>(NoneValue));
+            () => new ValueTask<int>(NoneValue)
+        );
 
         matched.Should().Be(84);
     }
@@ -54,7 +55,8 @@ public sealed class MatchValueTaskExtensionTests
 
         int matched = await selfTask.MatchAsync(
             value => new ValueTask<int>(value),
-            () => new ValueTask<int>(NoneValue));
+            () => new ValueTask<int>(NoneValue)
+        );
 
         matched.Should().Be(NoneValue);
     }
@@ -66,7 +68,8 @@ public sealed class MatchValueTaskExtensionTests
 
         int matched = await self.MatchAsync(
             value => new ValueTask<int>(value * 2),
-            () => new ValueTask<int>(NoneValue));
+            () => new ValueTask<int>(NoneValue)
+        );
 
         matched.Should().Be(84);
     }
@@ -78,7 +81,8 @@ public sealed class MatchValueTaskExtensionTests
 
         int matched = await self.MatchAsync(
             value => new ValueTask<int>(value),
-            () => new ValueTask<int>(NoneValue));
+            () => new ValueTask<int>(NoneValue)
+        );
 
         matched.Should().Be(NoneValue);
     }
@@ -108,9 +112,8 @@ public sealed class MatchValueTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        Func<Task<int>> act = async () => await self.MatchAsync(
-            null!,
-            () => new ValueTask<int>(NoneValue));
+        Func<Task<int>> act = async () =>
+            await self.MatchAsync(null!, () => new ValueTask<int>(NoneValue));
 
         await act.Should().ThrowAsync<ArgumentNullException>();
     }

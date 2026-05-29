@@ -49,12 +49,17 @@ public static class BindValueTaskExtension
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
         /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
-        public async ValueTask<Result<U, E>> BindAsync<U>(Func<T, ValueTask<Result<U, E>>> operation)
+        public async ValueTask<Result<U, E>> BindAsync<U>(
+            Func<T, ValueTask<Result<U, E>>> operation
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(operation);
 
-            return await self.MatchAsync(operation, err => ValueTask.FromResult(Result.Err<U, E>(err)))
+            return await self.MatchAsync(
+                    operation,
+                    err => ValueTask.FromResult(Result.Err<U, E>(err))
+                )
                 .ConfigureAwait(false);
         }
     }
@@ -76,12 +81,17 @@ public static class BindValueTaskExtension
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown if the operation returns null.</exception>
         /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
-        public async ValueTask<Result<U, E>> BindAsync<U>(Func<T, ValueTask<Result<U, E>>> operation)
+        public async ValueTask<Result<U, E>> BindAsync<U>(
+            Func<T, ValueTask<Result<U, E>>> operation
+        )
             where U : notnull
         {
             ArgumentNullException.ThrowIfNull(operation);
 
-            return await self.MatchAsync(operation, err => ValueTask.FromResult(Result.Err<U, E>(err)))
+            return await self.MatchAsync(
+                    operation,
+                    err => ValueTask.FromResult(Result.Err<U, E>(err))
+                )
                 .ConfigureAwait(false);
         }
     }

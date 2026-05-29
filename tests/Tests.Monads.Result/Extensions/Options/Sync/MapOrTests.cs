@@ -31,11 +31,14 @@ public sealed class MapOrTests
         var self = Option.None<int>();
         bool invoked = false;
 
-        int result = self.MapOr(Fallback, value =>
-        {
-            invoked = true;
-            return value * 2;
-        });
+        int result = self.MapOr(
+            Fallback,
+            value =>
+            {
+                invoked = true;
+                return value * 2;
+            }
+        );
 
         result.Should().Be(Fallback);
         invoked.Should().BeFalse();

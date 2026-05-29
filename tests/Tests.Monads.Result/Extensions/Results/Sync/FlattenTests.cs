@@ -72,10 +72,9 @@ public sealed class FlattenTests
     public void Flatten_WhenCalledWithComplexNestedOkOk_ShouldWorkCorrectly()
     {
         Result<string, string> innerResult = Ok<string, string>("inner value");
-        Result<Result<string, string>, string> nestedResult = Ok<
-            Result<string, string>,
-            string
-        >(innerResult);
+        Result<Result<string, string>, string> nestedResult = Ok<Result<string, string>, string>(
+            innerResult
+        );
 
         Result<string, string> flattened = nestedResult.Flatten();
 

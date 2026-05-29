@@ -40,8 +40,7 @@ public sealed class OrElseValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.Some(TestValue));
 
-        Option<int> result = await selfTask.OrElseAsync(
-            () => new ValueTask<Option<int>>(Option.Some(FallbackValue)));
+        Option<int> result = await selfTask.OrElseAsync(() => new(Option.Some(FallbackValue)));
 
         result.Should().Be(Option.Some(TestValue));
     }
@@ -51,8 +50,7 @@ public sealed class OrElseValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.None<int>());
 
-        Option<int> result = await selfTask.OrElseAsync(
-            () => new ValueTask<Option<int>>(Option.Some(FallbackValue)));
+        Option<int> result = await selfTask.OrElseAsync(() => new(Option.Some(FallbackValue)));
 
         result.Should().Be(Option.Some(FallbackValue));
     }
@@ -62,8 +60,7 @@ public sealed class OrElseValueTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        Option<int> result = await self.OrElseAsync(
-            () => new ValueTask<Option<int>>(Option.Some(FallbackValue)));
+        Option<int> result = await self.OrElseAsync(() => new(Option.Some(FallbackValue)));
 
         result.Should().Be(Option.Some(TestValue));
     }
@@ -73,8 +70,7 @@ public sealed class OrElseValueTaskExtensionTests
     {
         var self = Option.None<int>();
 
-        Option<int> result = await self.OrElseAsync(
-            () => new ValueTask<Option<int>>(Option.Some(FallbackValue)));
+        Option<int> result = await self.OrElseAsync(() => new(Option.Some(FallbackValue)));
 
         result.Should().Be(Option.Some(FallbackValue));
     }

@@ -17,7 +17,7 @@ public static class UnwrapOrValueTaskExtension
         /// </summary>
         /// <param name="fallback">The value to return when the awaited option is None.</param>
         /// <returns>A value task producing the wrapped value when Some; otherwise <paramref name="fallback"/>.</returns>
-        public async ValueTask<T> UnwrapOrAsync(T fallback)
-            => await self.MatchAsync(static value => value, () => fallback).ConfigureAwait(false);
+        public async ValueTask<T> UnwrapOrAsync(T fallback) =>
+            await self.MatchAsync(static value => value, () => fallback).ConfigureAwait(false);
     }
 }

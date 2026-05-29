@@ -39,7 +39,9 @@ public sealed class BindValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.Some(TestValue));
 
-        Option<int> result = await selfTask.BindAsync(v => new ValueTask<Option<int>>(Option.Some(v + 1)));
+        Option<int> result = await selfTask.BindAsync(v => new ValueTask<Option<int>>(
+            Option.Some(v + 1)
+        ));
 
         result.Should().Be(Option.Some(43));
     }
@@ -49,7 +51,9 @@ public sealed class BindValueTaskExtensionTests
     {
         ValueTask<Option<int>> selfTask = new(Option.None<int>());
 
-        Option<int> result = await selfTask.BindAsync(v => new ValueTask<Option<int>>(Option.Some(v)));
+        Option<int> result = await selfTask.BindAsync(v => new ValueTask<Option<int>>(
+            Option.Some(v)
+        ));
 
         result.IsNone.Should().BeTrue();
     }
@@ -59,7 +63,9 @@ public sealed class BindValueTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        Option<int> result = await self.BindAsync(v => new ValueTask<Option<int>>(Option.Some(v + 1)));
+        Option<int> result = await self.BindAsync(v => new ValueTask<Option<int>>(
+            Option.Some(v + 1)
+        ));
 
         result.Should().Be(Option.Some(43));
     }

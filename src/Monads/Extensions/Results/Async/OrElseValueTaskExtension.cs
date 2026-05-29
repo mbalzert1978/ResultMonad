@@ -47,7 +47,9 @@ public static class OrElseValueTaskExtension
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="operation"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown if the result is Err and the operation returns an Err.</exception>
         /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
-        public async ValueTask<Result<T, F>> OrElseAsync<F>(Func<E, ValueTask<Result<T, F>>> operation)
+        public async ValueTask<Result<T, F>> OrElseAsync<F>(
+            Func<E, ValueTask<Result<T, F>>> operation
+        )
             where F : notnull
         {
             ArgumentNullException.ThrowIfNull(operation);
@@ -77,7 +79,9 @@ public static class OrElseValueTaskExtension
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="self"/> or <paramref name="operation"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown if the result is Err and the operation returns an Err.</exception>
         /// <exception cref="UnreachableException">Thrown if the result is neither <see cref="Ok{T, E}"/> nor <see cref="Err{T, E}"/>.</exception>
-        public async ValueTask<Result<T, F>> OrElseAsync<F>(Func<E, ValueTask<Result<T, F>>> operation)
+        public async ValueTask<Result<T, F>> OrElseAsync<F>(
+            Func<E, ValueTask<Result<T, F>>> operation
+        )
             where F : notnull
         {
             ArgumentNullException.ThrowIfNull(self);

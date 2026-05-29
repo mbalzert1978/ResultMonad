@@ -31,7 +31,8 @@ public static class InspectExtension
                     action(value);
                     return self;
                 },
-                _ => self);
+                _ => self
+            );
         }
     }
 }

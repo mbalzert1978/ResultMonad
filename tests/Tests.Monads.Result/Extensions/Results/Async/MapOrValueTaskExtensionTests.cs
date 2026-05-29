@@ -20,7 +20,9 @@ public sealed class MapOrValueTaskExtensionTests
     [Fact]
     public async Task MapOrAsync_WhenValueTaskOkAndSyncOp_ShouldReturnMappedValue()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         int mapped = await resultTask.MapOrAsync(Fallback, value => value * 2);
 
@@ -30,7 +32,9 @@ public sealed class MapOrValueTaskExtensionTests
     [Fact]
     public async Task MapOrAsync_WhenValueTaskErrAndSyncOp_ShouldReturnFallback()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
         int mapped = await resultTask.MapOrAsync(Fallback, value => value * 2);
 
@@ -40,9 +44,14 @@ public sealed class MapOrValueTaskExtensionTests
     [Fact]
     public async Task MapOrAsync_WhenValueTaskOkAndAsyncOp_ShouldReturnMappedValue()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
-        int mapped = await resultTask.MapOrAsync(Fallback, value => ValueTask.FromResult(value * 2));
+        int mapped = await resultTask.MapOrAsync(
+            Fallback,
+            value => ValueTask.FromResult(value * 2)
+        );
 
         mapped.Should().Be(84);
     }
@@ -50,9 +59,14 @@ public sealed class MapOrValueTaskExtensionTests
     [Fact]
     public async Task MapOrAsync_WhenValueTaskErrAndAsyncOp_ShouldReturnFallback()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Err<int, string>(ErrorMessage));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Err<int, string>(ErrorMessage)
+        );
 
-        int mapped = await resultTask.MapOrAsync(Fallback, value => ValueTask.FromResult(value * 2));
+        int mapped = await resultTask.MapOrAsync(
+            Fallback,
+            value => ValueTask.FromResult(value * 2)
+        );
 
         mapped.Should().Be(Fallback);
     }
@@ -80,7 +94,9 @@ public sealed class MapOrValueTaskExtensionTests
     [Fact]
     public async Task MapOrAsync_WhenOperationIsNullValueTaskSyncOp_ShouldThrowArgumentNullException()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         Func<Task> act = async () =>
         {
@@ -94,7 +110,9 @@ public sealed class MapOrValueTaskExtensionTests
     [Fact]
     public async Task MapOrAsync_WhenOperationIsNullValueTaskAsyncOp_ShouldThrowArgumentNullException()
     {
-        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(Ok<int, string>(SuccessValue));
+        ValueTask<Result<int, string>> resultTask = ValueTask.FromResult(
+            Ok<int, string>(SuccessValue)
+        );
 
         Func<Task> act = async () =>
         {

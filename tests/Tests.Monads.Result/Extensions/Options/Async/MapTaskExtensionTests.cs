@@ -89,8 +89,7 @@ public sealed class MapTaskExtensionTests
     {
         Task<Option<int>> selfTask = Task.FromResult(Option.Some(TestValue));
 
-        Func<Task<Option<int>>> act = async () =>
-            await selfTask.MapAsync((Func<int, int>)null!);
+        Func<Task<Option<int>>> act = async () => await selfTask.MapAsync((Func<int, int>)null!);
 
         await act.Should().ThrowAsync<ArgumentNullException>();
     }
@@ -111,8 +110,7 @@ public sealed class MapTaskExtensionTests
     {
         var self = Option.Some(TestValue);
 
-        Func<Task<Option<int>>> act = async () =>
-            await self.MapAsync((Func<int, Task<int>>)null!);
+        Func<Task<Option<int>>> act = async () => await self.MapAsync((Func<int, Task<int>>)null!);
 
         await act.Should().ThrowAsync<ArgumentNullException>();
     }

@@ -31,7 +31,8 @@ public static class InspectErrExtension
                 {
                     action(error);
                     return self;
-                });
+                }
+            );
         }
     }
 }

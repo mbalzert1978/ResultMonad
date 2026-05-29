@@ -64,7 +64,8 @@ public static class InspectValueTaskExtension
                         await action(value).ConfigureAwait(false);
                         return Unit.Default;
                     },
-                    _ => ValueTask.FromResult(Unit.Default))
+                    _ => ValueTask.FromResult(Unit.Default)
+                )
                 .ConfigureAwait(false);
 
             return self;

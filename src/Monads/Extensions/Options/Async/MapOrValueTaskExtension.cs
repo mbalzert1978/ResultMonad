@@ -41,8 +41,7 @@ public static class MapOrValueTaskExtension
         {
             ArgumentNullException.ThrowIfNull(operation);
 
-            return await self.MatchAsync(operation, () => new ValueTask<U>(fallback))
-                .ConfigureAwait(false);
+            return await self.MatchAsync(operation, () => new(fallback)).ConfigureAwait(false);
         }
     }
 
@@ -62,8 +61,7 @@ public static class MapOrValueTaskExtension
         {
             ArgumentNullException.ThrowIfNull(operation);
 
-            return await self.MatchAsync(operation, () => new ValueTask<U>(fallback))
-                .ConfigureAwait(false);
+            return await self.MatchAsync(operation, () => new(fallback)).ConfigureAwait(false);
         }
     }
 }

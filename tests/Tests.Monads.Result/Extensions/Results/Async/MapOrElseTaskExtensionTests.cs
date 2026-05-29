@@ -43,7 +43,8 @@ public sealed class MapOrElseTaskExtensionTests
 
         int mapped = await resultTask.MapOrElseAsync(
             err => Task.FromResult(err.Length),
-            value => Task.FromResult(value * 2));
+            value => Task.FromResult(value * 2)
+        );
 
         mapped.Should().Be(84);
     }
@@ -55,7 +56,8 @@ public sealed class MapOrElseTaskExtensionTests
 
         int mapped = await resultTask.MapOrElseAsync(
             err => Task.FromResult(err.Length),
-            value => Task.FromResult(value * 2));
+            value => Task.FromResult(value * 2)
+        );
 
         mapped.Should().Be(4);
     }
@@ -67,7 +69,8 @@ public sealed class MapOrElseTaskExtensionTests
 
         int mapped = await result.MapOrElseAsync(
             err => Task.FromResult(err.Length),
-            value => Task.FromResult(value * 2));
+            value => Task.FromResult(value * 2)
+        );
 
         mapped.Should().Be(84);
     }
@@ -79,7 +82,8 @@ public sealed class MapOrElseTaskExtensionTests
 
         int mapped = await result.MapOrElseAsync(
             err => Task.FromResult(err.Length),
-            value => Task.FromResult(value * 2));
+            value => Task.FromResult(value * 2)
+        );
 
         mapped.Should().Be(4);
     }

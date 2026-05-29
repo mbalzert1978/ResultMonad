@@ -24,7 +24,8 @@ public static class FilterValueTaskExtension
 
             return await self.MatchAsync(
                     value => predicate(value) ? Option.Some(value) : Option.None<T>(),
-                    Option.None<T>)
+                    Option.None<T>
+                )
                 .ConfigureAwait(false);
         }
 
@@ -39,10 +40,12 @@ public static class FilterValueTaskExtension
             ArgumentNullException.ThrowIfNull(predicate);
 
             return await self.MatchAsync(
-                    async value => await predicate(value).ConfigureAwait(false)
-                        ? Option.Some(value)
-                        : Option.None<T>(),
-                    () => new ValueTask<Option<T>>(Option.None<T>()))
+                    async value =>
+                        await predicate(value).ConfigureAwait(false)
+                            ? Option.Some(value)
+                            : Option.None<T>(),
+                    () => new(Option.None<T>())
+                )
                 .ConfigureAwait(false);
         }
     }
@@ -61,10 +64,12 @@ public static class FilterValueTaskExtension
             ArgumentNullException.ThrowIfNull(predicate);
 
             return await self.MatchAsync(
-                    async value => await predicate(value).ConfigureAwait(false)
-                        ? Option.Some(value)
-                        : Option.None<T>(),
-                    () => new ValueTask<Option<T>>(Option.None<T>()))
+                    async value =>
+                        await predicate(value).ConfigureAwait(false)
+                            ? Option.Some(value)
+                            : Option.None<T>(),
+                    () => new(Option.None<T>())
+                )
                 .ConfigureAwait(false);
         }
     }
