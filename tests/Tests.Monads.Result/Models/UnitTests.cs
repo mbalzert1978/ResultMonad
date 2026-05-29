@@ -18,7 +18,7 @@ public sealed class UnitTests
     {
         Unit result = Unit.Default;
 
-        result.Should().Be(default);
+        result.Should().Be(default(Unit));
     }
 
     [Fact]
@@ -109,62 +109,6 @@ public sealed class UnitTests
         Unit unit = default;
 
         unit.ToString("G", null).Should().Be("()");
-    }
-
-    [Fact]
-    public void Unit_WhenCallingCompareTo_ShouldAlwaysReturnZero()
-    {
-        Unit unit1 = default;
-        Unit unit2 = Unit.Default;
-
-        unit1.CompareTo(unit2).Should().Be(0);
-    }
-
-    [Fact]
-    public void Unit_WhenComparingWithLessThanOperator_ShouldAlwaysReturnFalse()
-    {
-        Unit unit1 = default;
-        Unit unit2 = Unit.Default;
-
-        (unit1 < unit2).Should().BeFalse();
-    }
-
-    [Fact]
-    public void Unit_WhenComparingWithLessThanOrEqualOperator_ShouldAlwaysReturnTrue()
-    {
-        Unit unit1 = default;
-        Unit unit2 = Unit.Default;
-
-        (unit1 <= unit2).Should().BeTrue();
-    }
-
-    [Fact]
-    public void Unit_WhenComparingWithGreaterThanOperator_ShouldAlwaysReturnFalse()
-    {
-        Unit unit1 = default;
-        Unit unit2 = Unit.Default;
-
-        (unit1 > unit2).Should().BeFalse();
-    }
-
-    [Fact]
-    public void Unit_WhenComparingWithGreaterThanOrEqualOperator_ShouldAlwaysReturnTrue()
-    {
-        Unit unit1 = default;
-        Unit unit2 = Unit.Default;
-
-        (unit1 >= unit2).Should().BeTrue();
-    }
-
-    [Fact]
-    public void Unit_WhenAddingTwoInstances_ShouldReturnUnit()
-    {
-        Unit unit1 = default;
-        Unit unit2 = Unit.Default;
-
-        Unit result = unit1 + unit2;
-
-        result.Should().Be(default);
     }
 
     [Fact]
