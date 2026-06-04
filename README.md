@@ -8,7 +8,7 @@ Monads provides two types: `Result<T, E>` for railway-oriented error handling an
 
 ## Status
 
-Not published to NuGet. No CI pipeline. No LICENSE file. Use as a `<ProjectReference>` by cloning the repository.
+Not published to NuGet. No CI pipeline. Use as a `<ProjectReference>` by cloning the repository.
 
 ## Installation
 
@@ -190,4 +190,4 @@ Unit                   ← readonly struct (void-equivalent for Result<Unit, E>)
 
 ## License
 
-No license file is present in this repository. All rights reserved by the copyright holder (see file headers) until a license is added.
+This project is licensed under the [MIT License](LICENSE).
