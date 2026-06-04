@@ -74,66 +74,113 @@ var filtered = some.Filter(x => x > 10);
 Result<int, string> asResult = some.OkOr("not found");
 ```
 
-## API Surface
-
-### `Result<T, E>`
-
-| Operation | Description | Async |
-|-----------|-------------|:-----:|
-| `Match` | Dispatch on Ok/Err; all other operations are implemented in terms of this | Y |
-| `Map` | Transform the Ok value | Y |
-| `MapErr` | Transform the Err value | Y |
-| `MapOr` | Map Ok or return a default | Y |
-| `MapOrElse` | Map Ok or compute a default from Err | Y |
-| `Bind` | Chain a fallible operation | Y |
-| `And` | Return `other` if Ok, otherwise propagate Err | N |
-| `Or` | Return self if Ok, otherwise `other` | N |
-| `OrElse` | Return self if Ok, otherwise compute a fallback | Y |
-| `Flatten` | Collapse `Result<Result<T,E>,E>` | Y |
-| `Inspect` | Run a side-effect on Ok value, return self | Y |
-| `InspectErr` | Run a side-effect on Err value, return self | Y |
-| `ToOk` | Convert to `Option<T>` (Ok→Some, Err→None) | Y |
-| `ToErr` | Convert to `Option<E>` (Err→Some, Ok→None) | Y |
-| `Transpose` | Convert `Result<Option<T>,E>` ↔ `Option<Result<T,E>>` | Y |
-| `UnwrapOr` | Return Ok value or a default | Y |
-| `UnwrapOrElse` | Return Ok value or compute a default from Err | Y |
-| `IsOk` | `true` if Ok | N |
-| `IsErr` | `true` if Err | N |
-| `IsOkAnd` | `true` if Ok and predicate holds | N |
-| `IsErrAnd` | `true` if Err and predicate holds | N |
-
-Async (Y): three overloads exist per operation — `Task<Result>` + sync op, `Result` + async op, `Task<Result>` + async op. A `ValueTask` variant is provided for every `Task` variant.
-
-### `Option<T>`
-
-| Operation | Description | Async |
-|-----------|-------------|:-----:|
-| `IsSome` | `true` if Some (built-in property) | — |
-| `IsNone` | `true` if None (built-in property) | — |
-| `Match` | Dispatch on Some/None (built-in instance method) | Y |
-| `Map` | Transform the Some value | Y |
-| `MapOr` | Map Some or return a default | Y |
-| `MapOrElse` | Map Some or compute a default | Y |
-| `Bind` | Chain a fallible operation | Y |
-| `And` | Return `other` if Some, otherwise None | N |
-| `Or` | Return self if Some, otherwise `other` | N |
-| `OrElse` | Return self if Some, otherwise compute a fallback | Y |
-| `Filter` | Keep Some if predicate holds, otherwise None | Y |
-| `Flatten` | Collapse `Option<Option<T>>` | Y |
-| `OkOr` | Convert to `Result<T,E>` with an eager error | Y |
-| `OkOrElse` | Convert to `Result<T,E>` with a lazy error | Y |
-| `UnwrapOr` | Return Some value or a default | Y |
-| `UnwrapOrElse` | Return Some value or compute a default | Y |
-| `IsSomeAnd` | `true` if Some and predicate holds | N |
-| `IsNoneOr` | `true` if None or predicate holds | N |
-| `Xor` | Some if exactly one of self/other is Some, otherwise None | N |
-| `Zip` | Pair two Some values into `Option<(T, U)>`, otherwise None | N |
-
-Async (Y): same three-overload pattern as `Result<T, E>` above.
-
 ## Architecture
 
-`Result<T, E>` is an `abstract record` with a `private protected` constructor; `Ok<T, E>` and `Err<T, E>` are `internal sealed` variants — a third variant is unrepresentable and external subclassing is impossible. The entire public API is delivered via C# 14 `extension` blocks; `Match` is the only primitive for `Result<T, E>` and all other operations are implemented in terms of it. Method names and signatures deliberately mirror Rust's `Result` / `Option` to give Rust developers a familiar surface (see `CONTEXT.md` for the full glossary).
+```
+Result<T, E>           ← abstract record, T/E : notnull
+├── Ok<T, E>           ← internal sealed record (success variant)
+└── Err<T, E>          ← internal sealed record (failure variant)
+
+Option<T>              ← readonly record struct, T : notnull
+├── Some(value)        ← IsSome = true
+└── None               ← default state (IsSome = false)
+
+Unit                   ← readonly struct (void-equivalent for Result<Unit, E>)
+```
+
+`Result<T, E>` has a `private protected` constructor; external subclassing is impossible and a third variant is unrepresentable. The entire public API is delivered via C# 14 `extension` blocks. `Match` is the single dispatch primitive for `Result<T, E>` — every other extension is implemented in terms of it. Method names deliberately mirror Rust's `Result` / `Option` API.
+
+## Documentation
+
+### Core Types
+
+| Type | Description | Reference |
+|------|-------------|-----------|
+| `Result<T, E>` | Discriminated union for railway-oriented programming | [→ docs/models/result.md](docs/models/result.md) |
+| `Option<T>` | Explicit optional value, null-free | [→ docs/models/option.md](docs/models/option.md) |
+| `Unit` | Void-equivalent functional type | [→ docs/models/unit.md](docs/models/unit.md) |
+
+### Result&lt;T, E&gt; Extensions — Synchronous
+
+| Method | Description | Reference |
+|--------|-------------|-----------|
+| `Match` | Dispatch on Ok/Err — the primitive all others use | [→ sync/match.md](docs/extensions/results/sync/match.md) |
+| `Map` | Transform the Ok value | [→ sync/map.md](docs/extensions/results/sync/map.md) |
+| `MapErr` | Transform the Err value | [→ sync/map-err.md](docs/extensions/results/sync/map-err.md) |
+| `MapOr` | Map Ok or return an eager fallback | [→ sync/map-or.md](docs/extensions/results/sync/map-or.md) |
+| `MapOrElse` | Map Ok or lazily compute a fallback from Err | [→ sync/map-or-else.md](docs/extensions/results/sync/map-or-else.md) |
+| `Bind` | Chain a fallible operation (flatMap) | [→ sync/bind.md](docs/extensions/results/sync/bind.md) |
+| `Or` | Return self if Ok, otherwise `other` | [→ sync/or.md](docs/extensions/results/sync/or.md) |
+| `OrElse` | Return self if Ok, otherwise compute fallback | [→ sync/or-else.md](docs/extensions/results/sync/or-else.md) |
+| `Inspect` | Side-effect on Ok value, return self | [→ sync/inspect.md](docs/extensions/results/sync/inspect.md) |
+| `InspectErr` | Side-effect on Err value, return self | [→ sync/inspect-err.md](docs/extensions/results/sync/inspect-err.md) |
+| `UnwrapOr` | Extract Ok value or return eager fallback | [→ sync/unwrap-or.md](docs/extensions/results/sync/unwrap-or.md) |
+| `UnwrapOrElse` | Extract Ok value or compute fallback from Err | [→ sync/unwrap-or-else.md](docs/extensions/results/sync/unwrap-or-else.md) |
+| `Flatten` | Collapse `Result<Result<T,E>,E>` → `Result<T,E>` | [→ sync/flatten.md](docs/extensions/results/sync/flatten.md) |
+| `Transpose` | Convert `Result<Option<T>,E>` ↔ `Option<Result<T,E>>` | [→ sync/transpose.md](docs/extensions/results/sync/transpose.md) |
+| `ToOk` | Convert to `Option<T>` (Ok→Some, Err→None) | [→ sync/to-ok.md](docs/extensions/results/sync/to-ok.md) |
+| `ToErr` | Convert to `Option<E>` (Err→Some, Ok→None) | [→ sync/to-err.md](docs/extensions/results/sync/to-err.md) |
+| `IsOk`, `IsErr`, `IsOkAnd`, `IsErrAnd` | Boolean predicates | [→ sync/predicates.md](docs/extensions/results/sync/predicates.md) |
+
+### Result&lt;T, E&gt; Extensions — Asynchronous (Task + ValueTask)
+
+| Method | Description | Reference |
+|--------|-------------|-----------|
+| `MatchAsync` | Async dispatch on Ok/Err | [→ async/match.md](docs/extensions/results/async/match.md) |
+| `MapAsync` | Async transform Ok value | [→ async/map.md](docs/extensions/results/async/map.md) |
+| `MapErrAsync` | Async transform Err value | [→ async/map-err.md](docs/extensions/results/async/map-err.md) |
+| `MapOrAsync` | Async map Ok or eager fallback | [→ async/map-or.md](docs/extensions/results/async/map-or.md) |
+| `MapOrElseAsync` | Async map Ok or lazy fallback | [→ async/map-or-else.md](docs/extensions/results/async/map-or-else.md) |
+| `BindAsync` | Async chain fallible operation | [→ async/bind.md](docs/extensions/results/async/bind.md) |
+| `OrElseAsync` | Async compute fallback on Err | [→ async/or-else.md](docs/extensions/results/async/or-else.md) |
+| `InspectAsync` | Async side-effect on Ok, return self | [→ async/inspect.md](docs/extensions/results/async/inspect.md) |
+| `InspectErrAsync` | Async side-effect on Err, return self | [→ async/inspect-err.md](docs/extensions/results/async/inspect-err.md) |
+| `UnwrapOrAsync` | Async extract Ok or eager fallback | [→ async/unwrap-or.md](docs/extensions/results/async/unwrap-or.md) |
+| `UnwrapOrElseAsync` | Async extract Ok or compute from Err | [→ async/unwrap-or-else.md](docs/extensions/results/async/unwrap-or-else.md) |
+| `FlattenAsync` | Async collapse nested Result | [→ async/flatten.md](docs/extensions/results/async/flatten.md) |
+| `TransposeAsync` | Async transpose Result/Option | [→ async/transpose.md](docs/extensions/results/async/transpose.md) |
+| `ToOkAsync` | Async convert to Option over Ok | [→ async/to-ok.md](docs/extensions/results/async/to-ok.md) |
+| `ToErrAsync` | Async convert to Option over Err | [→ async/to-err.md](docs/extensions/results/async/to-err.md) |
+
+> Each async method has three overloads: `Task<Result>` + sync op, `Result` + async op, `Task<Result>` + async op. A `ValueTask` variant exists for every `Task` variant.
+
+### Option&lt;T&gt; Extensions — Synchronous
+
+| Method | Description | Reference |
+|--------|-------------|-----------|
+| `Match` | Dispatch on Some/None (built-in instance method) | [→ sync/match.md](docs/extensions/options/sync/match.md) |
+| `Map` | Transform Some value | [→ sync/map.md](docs/extensions/options/sync/map.md) |
+| `MapOr` | Map Some or return eager fallback | [→ sync/map-or.md](docs/extensions/options/sync/map-or.md) |
+| `MapOrElse` | Map Some or lazily compute fallback | [→ sync/map-or-else.md](docs/extensions/options/sync/map-or-else.md) |
+| `Bind` | Chain option-returning operation | [→ sync/bind.md](docs/extensions/options/sync/bind.md) |
+| `Filter` | Keep Some if predicate holds, else None | [→ sync/filter.md](docs/extensions/options/sync/filter.md) |
+| `OrElse` | Return self if Some, else invoke fallback | [→ sync/or-else.md](docs/extensions/options/sync/or-else.md) |
+| `UnwrapOr` | Extract value or eager fallback | [→ sync/unwrap-or.md](docs/extensions/options/sync/unwrap-or.md) |
+| `UnwrapOrElse` | Extract value or compute fallback | [→ sync/unwrap-or-else.md](docs/extensions/options/sync/unwrap-or-else.md) |
+| `Flatten` | Collapse `Option<Option<T>>` | [→ sync/flatten.md](docs/extensions/options/sync/flatten.md) |
+| `OkOr` | Convert to `Result<T,E>` with eager error | [→ sync/ok-or.md](docs/extensions/options/sync/ok-or.md) |
+| `OkOrElse` | Convert to `Result<T,E>` with lazy error | [→ sync/ok-or-else.md](docs/extensions/options/sync/ok-or-else.md) |
+| `And` | Return `other` if Some, else None | [→ sync/and.md](docs/extensions/options/sync/and.md) |
+| `Xor` | Some if exactly one is Some, else None | [→ sync/xor.md](docs/extensions/options/sync/xor.md) |
+| `Zip` | Pair two Some values, else None | [→ sync/zip.md](docs/extensions/options/sync/zip.md) |
+| `IsSome`, `IsNone`, `IsSomeAnd`, `IsNoneOr` | Boolean predicates | [→ sync/predicates.md](docs/extensions/options/sync/predicates.md) |
+
+### Option&lt;T&gt; Extensions — Asynchronous (Task + ValueTask)
+
+| Method | Description | Reference |
+|--------|-------------|-----------|
+| `MatchAsync` | Async dispatch on Some/None | [→ async/match.md](docs/extensions/options/async/match.md) |
+| `MapAsync` | Async transform Some value | [→ async/map.md](docs/extensions/options/async/map.md) |
+| `MapOrAsync` | Async map Some or eager fallback | [→ async/map-or.md](docs/extensions/options/async/map-or.md) |
+| `MapOrElseAsync` | Async map Some or lazy fallback | [→ async/map-or-else.md](docs/extensions/options/async/map-or-else.md) |
+| `BindAsync` | Async chain option-returning op | [→ async/bind.md](docs/extensions/options/async/bind.md) |
+| `FilterAsync` | Async predicate filter | [→ async/filter.md](docs/extensions/options/async/filter.md) |
+| `OrElseAsync` | Async compute fallback on None | [→ async/or-else.md](docs/extensions/options/async/or-else.md) |
+| `UnwrapOrAsync` | Async extract or eager fallback | [→ async/unwrap-or.md](docs/extensions/options/async/unwrap-or.md) |
+| `UnwrapOrElseAsync` | Async extract or compute fallback | [→ async/unwrap-or-else.md](docs/extensions/options/async/unwrap-or-else.md) |
+| `FlattenAsync` | Async collapse nested Option | [→ async/flatten.md](docs/extensions/options/async/flatten.md) |
+| `OkOrAsync` | Async convert to Result with eager error | [→ async/ok-or.md](docs/extensions/options/async/ok-or.md) |
+| `OkOrElseAsync` | Async convert to Result with lazy error | [→ async/ok-or-else.md](docs/extensions/options/async/ok-or-else.md) |
 
 ## Further Reading
 
