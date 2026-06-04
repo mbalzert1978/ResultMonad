@@ -29,8 +29,8 @@ internal static class Constants
     /// <summary>
     /// Extension method for any non-nullable type that throws an InvalidOperationException with a predefined error message if the value is null.
     /// </summary>
-    /// <typeparam name="U"></typeparam>
-    /// <param name="value"></param>
+    /// <typeparam name="U">The type of the value to check for null.</typeparam>
+    /// <param name="value">The value to check; if null, throws an InvalidOperationException.</param>
     extension<U>(U value)
         where U : notnull
     {
